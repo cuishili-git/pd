@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 500" width="960" height="500">
+<rect x="0" y="0" width="960" height="500" fill="#FFFFFF"/>
+<text x="480" y="38" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="20" font-weight="bold" fill="#1F2933">T 节点电压 · 一个周期（100 Hz，10 ms）</text>
+<text x="480" y="62" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" font-weight="normal" fill="#5B6770">47 kΩ 慢慢充 → 保持 → 雪崩瞬间被 50 Ω 抽空 → 重新充电</text>
+<line x1="90" y1="380.0" x2="900" y2="380.0" stroke="#E3E9EF" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="78" y="384.0" text-anchor="end" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="normal" fill="#5B6770">0V</text>
+<line x1="90" y1="305.0" x2="900" y2="305.0" stroke="#E3E9EF" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="78" y="309.0" text-anchor="end" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="normal" fill="#5B6770">50V</text>
+<line x1="90" y1="230.0" x2="900" y2="230.0" stroke="#E3E9EF" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="78" y="234.0" text-anchor="end" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="normal" fill="#5B6770">100V</text>
+<line x1="90" y1="191.0" x2="900" y2="191.0" stroke="#E3E9EF" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="78" y="195.0" text-anchor="end" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="normal" fill="#5B6770">126V</text>
+<line x1="90" y1="155.0" x2="900" y2="155.0" stroke="#E3E9EF" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="78" y="159.0" text-anchor="end" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="normal" fill="#5B6770">150V</text>
+<line x1="90" y1="80.0" x2="900" y2="80.0" stroke="#E3E9EF" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="78" y="84.0" text-anchor="end" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="normal" fill="#5B6770">200V</text>
+<line x1="90.0" y1="80" x2="90.0" y2="380" stroke="#E3E9EF" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="90.0" y="400" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="normal" fill="#5B6770">0</text>
+<line x1="171.0" y1="80" x2="171.0" y2="380" stroke="#E3E9EF" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="171.0" y="400" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="normal" fill="#5B6770">1</text>
+<line x1="252.0" y1="80" x2="252.0" y2="380" stroke="#E3E9EF" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="252.0" y="400" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="normal" fill="#5B6770">2</text>
+<line x1="280.4" y1="80" x2="280.4" y2="380" stroke="#E3E9EF" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="280.35" y="400" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="normal" fill="#5B6770">2.35</text>
+<line x1="414.0" y1="80" x2="414.0" y2="380" stroke="#E3E9EF" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="414.0" y="400" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="normal" fill="#5B6770">4</text>
+<line x1="576.0" y1="80" x2="576.0" y2="380" stroke="#E3E9EF" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="576.0" y="400" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="normal" fill="#5B6770">6</text>
+<line x1="738.0" y1="80" x2="738.0" y2="380" stroke="#E3E9EF" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="738.0" y="400" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="normal" fill="#5B6770">8</text>
+<line x1="900.0" y1="80" x2="900.0" y2="380" stroke="#E3E9EF" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="900.0" y="400" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="normal" fill="#5B6770">10</text>
+<text x="495.0" y="422" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" font-weight="normal" fill="#5B6770">时间 / ms</text>
+<line x1="90" y1="80" x2="90" y2="380" stroke="#1F2933" stroke-width="1.5"/>
+<line x1="90" y1="380" x2="900" y2="380" stroke="#1F2933" stroke-width="1.5"/>
+<polyline points="90.0,380.0 93.9,351.9 97.9,326.6 101.8,303.8 105.8,283.2 109.7,264.7 113.7,248.0 117.6,232.9 121.6,219.3 125.5,207.1 129.5,196.0 133.4,186.1 137.4,177.1 141.3,169.0 145.3,161.7 149.2,155.1 153.2,149.2 157.1,143.9 161.1,139.1 165.0,134.7 169.0,130.8 172.9,127.3 176.9,124.1 180.8,121.2 184.8,118.6 188.7,116.3 192.7,114.2 196.6,112.3 200.6,110.6 204.5,109.1 208.5,107.7 212.4,106.4 216.4,105.3 220.3,104.3 224.3,103.4 228.2,102.6 232.2,101.8 236.1,101.1 240.1,100.5 244.0,100.0 248.0,99.5 251.9,99.1 255.8,98.7 259.8,98.3 263.7,98.0 267.7,97.7 271.6,97.4 275.6,97.2 279.5,97.0 283.5,96.8 287.4,96.6 291.4,96.4 295.3,96.3 299.3,96.2 303.2,96.1 307.2,95.9 311.1,95.9 315.1,95.8 319.0,95.7 323.0,95.6 326.9,95.6 330.9,95.5 334.8,95.5 338.8,95.4 342.7,95.4 346.7,95.3 350.6,95.3 354.6,95.3 358.5,95.2 362.5,95.2 366.4,95.2 370.4,95.2 374.3,95.2 378.3,95.1 382.2,95.1 386.2,95.1 390.1,95.1 394.1,95.1 398.0,95.1 402.0,95.1 405.9,95.1 409.8,95.1 413.8,95.1 417.7,95.1 421.7,95.0 425.6,95.0 429.6,95.0 433.5,95.0 437.5,95.0 441.4,95.0 445.4,95.0 449.3,95.0 453.3,95.0 457.2,95.0 461.2,95.0 465.1,95.0 469.1,95.0 473.0,95.0 477.0,95.0 480.9,95.0 484.9,95.0 488.8,95.0 492.8,95.0 496.7,95.0 500.7,95.0 504.6,95.0 508.6,95.0 512.5,95.0 516.5,95.0 520.4,95.0 524.4,95.0 528.3,95.0 532.3,95.0 536.2,95.0 540.2,95.0 544.1,95.0 548.1,95.0 552.0,95.0 556.0,95.0 559.9,95.0 563.8,95.0 567.8,95.0 571.7,95.0 575.7,95.0 579.6,95.0 583.6,95.0 587.5,95.0 591.5,95.0 595.4,95.0 599.4,95.0 603.3,95.0 607.3,95.0 611.2,95.0 615.2,95.0 619.1,95.0 623.1,95.0 627.0,95.0 631.0,95.0 634.9,95.0 638.9,95.0 642.8,95.0 646.8,95.0 650.7,95.0 654.7,95.0 658.6,95.0 662.6,95.0 666.5,95.0 670.5,95.0 674.4,95.0 678.4,95.0 682.3,95.0 686.3,95.0 690.2,95.0 694.2,95.0 698.1,95.0 702.1,95.0 706.0,95.0 710.0,95.0 713.9,95.0 717.9,95.0 721.8,95.0 725.7,95.0 729.7,95.0 733.6,95.0 737.6,95.0 741.5,95.0 745.5,95.0 749.4,95.0 753.4,95.0 757.3,95.0 761.3,95.0 765.2,95.0 769.2,95.0 773.1,95.0 777.1,95.0 781.0,95.0 785.0,95.0 788.9,95.0 792.9,95.0 796.8,95.0 800.8,95.0 804.7,95.0 808.7,95.0 812.6,95.0 816.6,95.0 820.5,95.0 824.5,95.0 828.4,95.0 832.4,95.0 836.3,95.0 840.3,95.0 844.2,95.0 848.2,95.0 852.1,95.0 856.1,95.0 860.0,95.0 864.0,95.0 867.9,95.0 871.9,95.0 875.8,95.0 879.8,95.0" fill="none" stroke="#D64545" stroke-width="3"/>
+<line x1="879.8" y1="95.0" x2="879.8" y2="379.7" stroke="#D64545" stroke-width="3"/>
+<line x1="879.8" y1="379.7" x2="900.0" y2="379.7" stroke="#D64545" stroke-width="3" stroke-dasharray="6 4"/>
+<line x1="128.1" y1="80" x2="128.1" y2="200.0" stroke="#E8871A" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="138.07" y="120" text-anchor="start" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="normal" fill="#E8871A">1τ = 470µs → 120V (63.2%)</text>
+<text x="290.35" y="140" text-anchor="start" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="normal" fill="#E8871A">5τ = 2.35ms，充到 99.3%</text>
+<text x="478.8" y="114" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" font-weight="bold" fill="#D64545">稳态 V_T = 190V（47kΩ 平均压掉 10V）</text>
+<text x="871.75" y="114" text-anchor="end" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" font-weight="bold" fill="#D64545">雪崩！190V → 0.21V</text>
+<text x="871.75" y="132" text-anchor="end" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="normal" fill="#5B6770">峰值 3.8A / 500ns</text>
+<text x="110" y="352" text-anchor="start" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="normal" fill="#5B6770">V(t) = V_T·(1 − e^(−t/τ))，τ = R·C = 47kΩ × 10nF</text>
+<rect x="90" y="430" width="810" height="46" rx="8" fill="#F7F9FB" stroke="#D6DEE5"/>
+<text x="106" y="450" text-anchor="start" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" font-weight="normal" fill="#1F2933">周期 10ms = 20.8τ ✅ 每次都充满；旧版 1kHz 只有 2.1τ，T 节点塌到 ≈135V</text>
+<text x="106" y="468" text-anchor="start" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="normal" fill="#5B6770">放电走「ZTX415 + 50Ω」，不是 47kΩ；47kΩ 上游接着电源，只负责慢慢灌。</text>
+</svg>

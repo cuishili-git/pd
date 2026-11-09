@@ -1,0 +1,221 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="480 90 430 645" width="430" height="645">
+<rect x="480" y="90" width="430" height="645" fill="#FFFFFF"/>
+
+<rect x="0" y="0" width="1280" height="880" fill="#FFFFFF"/>
+
+<defs>
+<g id="gnd" stroke="#5B6770" stroke-width="2" fill="none" stroke-linecap="round">
+<line x1="-14" y1="0" x2="14" y2="0"/>
+<line x1="-9" y1="5" x2="9" y2="5"/>
+<line x1="-4" y1="10" x2="4" y2="10"/>
+</g>
+</defs>
+
+<text x="640" y="46" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="26" font-weight="700" fill="#1F2933">雪崩脉冲源 · 完整接线图（100 Hz 版）</text>
+<text x="640" y="74" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" fill="#5B6770">ZTX415 ＋ 45–390V 模块（调至 200–250V）＋ NE555 ≈100Hz（Ct=104）｜12V 适配器直供｜2026-11-09</text>
+
+<!-- ============ 分区底框 ============ -->
+<rect x="40" y="100" width="430" height="620" rx="12" fill="#FFF9F2" stroke="#F0D6B4" stroke-width="1.5"/>
+<text x="60" y="128" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16" font-weight="700" fill="#B4650A">① 低压 / 触发链（12V，面包板可放）</text>
+
+<rect x="490" y="100" width="400" height="620" rx="12" fill="#FFF4F4" stroke="#F0CACA" stroke-width="1.5"/>
+<text x="510" y="128" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16" font-weight="700" fill="#B03030">② 高压充电级（200–250V，洞洞板焊接）</text>
+
+<rect x="910" y="100" width="330" height="620" rx="12" fill="#F4F9FF" stroke="#C9DCF0" stroke-width="1.5"/>
+<text x="930" y="128" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16" font-weight="700" fill="#1D5FA8">③ 雪崩级 / 输出</text>
+
+<!-- ============ 12V 供电 ============ -->
+<rect x="80" y="158" width="160" height="66" rx="8" fill="#FFFFFF" stroke="#E8871A" stroke-width="2"/>
+<text x="160" y="186" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="15" font-weight="700" fill="#1F2933">12V 适配器</text>
+<text x="160" y="208" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">本轮不用 XL6009</text>
+
+<!-- 12V 到高压模块 -->
+<line x1="240" y1="191" x2="515" y2="191" stroke="#E8871A" stroke-width="2.5"/>
+<circle cx="240" cy="191" r="3.5" fill="#E8871A"/>
+
+<!-- 12V 母线 -->
+<line x1="160" y1="224" x2="160" y2="270" stroke="#E8871A" stroke-width="2.5"/>
+<line x1="160" y1="270" x2="340" y2="270" stroke="#E8871A" stroke-width="2.5"/>
+<text x="168" y="262" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" font-weight="700" fill="#B4650A">12V</text>
+
+<!-- R1 / R2 / Ct 竖链 -->
+<line x1="157" y1="270" x2="157" y2="292" stroke="#E8871A" stroke-width="2"/>
+<rect x="146" y="292" width="22" height="48" fill="#FFFFFF" stroke="#E8871A" stroke-width="2"/>
+<text x="138" y="320" text-anchor="end" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#1F2933">R1 4.7kΩ</text>
+<line x1="157" y1="340" x2="157" y2="360" stroke="#E8871A" stroke-width="2"/>
+<circle cx="157" cy="350" r="3.5" fill="#E8871A"/>
+<rect x="146" y="360" width="22" height="48" fill="#FFFFFF" stroke="#E8871A" stroke-width="2"/>
+<text x="138" y="388" text-anchor="end" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#1F2933">R2 68kΩ</text>
+<line x1="157" y1="408" x2="157" y2="432" stroke="#E8871A" stroke-width="2"/>
+<circle cx="157" cy="420" r="3.5" fill="#E8871A"/>
+<line x1="140" y1="432" x2="174" y2="432" stroke="#E8871A" stroke-width="3" stroke-linecap="round"/>
+<line x1="140" y1="444" x2="174" y2="444" stroke="#E8871A" stroke-width="3" stroke-linecap="round"/>
+<text x="138" y="442" text-anchor="end" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#1F2933">Ct 100nF (104)</text>
+<line x1="157" y1="449" x2="157" y2="468" stroke="#E8871A" stroke-width="2"/>
+<use href="#gnd" x="157" y="468"/>
+
+<!-- 7 DIS 接 R1/R2 中点 -->
+<line x1="157" y1="350" x2="215" y2="350" stroke="#E8871A" stroke-width="2"/>
+
+<!-- 6 THR + 2 TRG 短接 -->
+<line x1="215" y1="405" x2="203" y2="405" stroke="#E8871A" stroke-width="2"/>
+<line x1="215" y1="435" x2="203" y2="435" stroke="#E8871A" stroke-width="2"/>
+<line x1="203" y1="405" x2="203" y2="435" stroke="#E8871A" stroke-width="2"/>
+<circle cx="203" cy="420" r="3.5" fill="#E8871A"/>
+<line x1="203" y1="420" x2="157" y2="420" stroke="#E8871A" stroke-width="2"/>
+
+<!-- NE555 8/4 接 VCC -->
+<line x1="250" y1="270" x2="250" y2="320" stroke="#E8871A" stroke-width="2"/>
+<line x1="340" y1="270" x2="340" y2="320" stroke="#E8871A" stroke-width="2"/>
+<circle cx="250" cy="270" r="3.5" fill="#E8871A"/>
+<circle cx="340" cy="270" r="3.5" fill="#E8871A"/>
+
+<!-- NE555 芯片 -->
+<rect x="215" y="320" width="175" height="200" rx="8" fill="#FFFFFF" stroke="#B4650A" stroke-width="2"/>
+<text x="302" y="378" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="21" font-weight="700" fill="#1F2933">NE555</text>
+<text x="302" y="400" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">无稳态 · ≈100Hz</text>
+<text x="221" y="345" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">7 DIS</text>
+<text x="221" y="400" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">6 THR</text>
+<text x="221" y="430" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">2 TRG</text>
+<text x="384" y="405" text-anchor="end" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">3 OUT</text>
+<text x="252" y="338" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="700" fill="#B4650A">8 VCC</text>
+<text x="338" y="338" text-anchor="end" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="700" fill="#B4650A">4 RST</text>
+<text x="252" y="514" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">5 CTRL</text>
+<text x="340" y="514" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">1 GND</text>
+<text x="302" y="480" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="700" fill="#B03030">8/4 必须接 VCC</text>
+
+<!-- 5 CTRL 到地 -->
+<line x1="250" y1="520" x2="250" y2="545" stroke="#E8871A" stroke-width="2"/>
+<line x1="242" y1="545" x2="258" y2="545" stroke="#E8871A" stroke-width="3" stroke-linecap="round"/>
+<line x1="242" y1="554" x2="258" y2="554" stroke="#E8871A" stroke-width="3" stroke-linecap="round"/>
+<line x1="250" y1="559" x2="250" y2="580" stroke="#E8871A" stroke-width="2"/>
+<text x="266" y="554" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">10nF 抗扰</text>
+<use href="#gnd" x="250" y="580"/>
+<!-- 1 GND 到地 -->
+<line x1="340" y1="520" x2="340" y2="552" stroke="#E8871A" stroke-width="2"/>
+<use href="#gnd" x="340" y="552"/>
+
+<!-- ============ 触发链（紫，低位通道，零交叉） ============ -->
+<line x1="390" y1="410" x2="405" y2="410" stroke="#7B5BD6" stroke-width="2.5"/>
+<line x1="405" y1="394" x2="405" y2="426" stroke="#7B5BD6" stroke-width="3" stroke-linecap="round"/>
+<line x1="415" y1="394" x2="415" y2="426" stroke="#7B5BD6" stroke-width="3" stroke-linecap="round"/>
+<line x1="415" y1="410" x2="462" y2="410" stroke="#7B5BD6" stroke-width="2.5"/>
+<text x="410" y="388" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#7B5BD6">100pF 微分</text>
+<circle cx="435" cy="410" r="4" fill="#7B5BD6"/>
+<line x1="435" y1="410" x2="435" y2="455" stroke="#7B5BD6" stroke-width="2"/>
+<rect x="423" y="455" width="24" height="52" fill="#FFFFFF" stroke="#7B5BD6" stroke-width="2"/>
+<line x1="435" y1="507" x2="435" y2="530" stroke="#7B5BD6" stroke-width="2"/>
+<use href="#gnd" x="435" y="530"/>
+<text x="435" y="556" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#7B5BD6">10kΩ 下拉</text>
+
+<line x1="462" y1="410" x2="462" y2="600" stroke="#7B5BD6" stroke-width="2.5"/>
+<line x1="462" y1="600" x2="940" y2="600" stroke="#7B5BD6" stroke-width="2.5"/>
+<text x="700" y="590" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#7B5BD6">触发线刻意走低位：与 200–250V 高压线拉开距离，实物布线同样别平行贴着走</text>
+<line x1="940" y1="600" x2="940" y2="380" stroke="#7B5BD6" stroke-width="2.5"/>
+<line x1="940" y1="380" x2="950" y2="380" stroke="#7B5BD6" stroke-width="2.5"/>
+
+<!-- A 区提示框 -->
+<rect x="60" y="628" width="380" height="94" rx="8" fill="#FFFFFF" stroke="#F0D6B4"/>
+<text x="76" y="650" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#1F2933">3 脚直流档 ≈6V ⇒ 已起振（12V 方波 / 占空比 51.7%）</text>
+<text x="76" y="670" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#1F2933">恒 12V 或恒 0V ⇒ 停振：查 4 脚 VCC、2/6 短接、Ct</text>
+<text x="76" y="690" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">f ≈ 102Hz（R1 4.7k / R2 68k / Ct 100nF=104）</text>
+<text x="76" y="710" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">50Hz 档：两颗 104 并联 = 200nF ⇒ f ≈ 51Hz，其余不动</text>
+
+<!-- ============ 高压充电级 ============ -->
+<rect x="515" y="155" width="225" height="72" rx="8" fill="#FFFFFF" stroke="#D64545" stroke-width="2"/>
+<text x="627" y="184" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" font-weight="700" fill="#1F2933">45–390V 升压模块</text>
+<text x="627" y="206" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#B03030">空载调 200V 起步，250V 封顶</text>
+
+<line x1="740" y1="191" x2="770" y2="191" stroke="#D64545" stroke-width="2.5"/>
+<line x1="770" y1="191" x2="770" y2="215" stroke="#D64545" stroke-width="2.5"/>
+<rect x="758" y="215" width="24" height="60" fill="#FFFFFF" stroke="#D64545" stroke-width="2"/>
+<text x="750" y="250" text-anchor="end" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#1F2933">47kΩ / 3W</text>
+<text x="750" y="266" text-anchor="end" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">限流</text>
+<line x1="770" y1="275" x2="770" y2="310" stroke="#D64545" stroke-width="2.5"/>
+<circle cx="770" cy="310" r="4" fill="#D64545"/>
+
+<!-- T 节点水平线 -->
+<line x1="770" y1="310" x2="950" y2="310" stroke="#D64545" stroke-width="2.5"/>
+<text x="830" y="298" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="700" fill="#B03030">T 节点 200–250V</text>
+
+<!-- 10nF 储能 -->
+<circle cx="822" cy="310" r="3.5" fill="#D64545"/>
+<line x1="822" y1="310" x2="822" y2="350" stroke="#D64545" stroke-width="2"/>
+<line x1="810" y1="350" x2="834" y2="350" stroke="#D64545" stroke-width="3" stroke-linecap="round"/>
+<line x1="810" y1="362" x2="834" y2="362" stroke="#D64545" stroke-width="3" stroke-linecap="round"/>
+<line x1="822" y1="367" x2="822" y2="388" stroke="#D64545" stroke-width="2"/>
+<use href="#gnd" x="822" y="390"/>
+<text x="822" y="418" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" font-weight="700" fill="#1F2933">10nF / 1kV</text>
+<text x="822" y="434" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">(103) 储能</text>
+
+<!-- 10MΩ 泄放 -->
+<circle cx="880" cy="310" r="3.5" fill="#D64545"/>
+<line x1="880" y1="310" x2="880" y2="350" stroke="#D64545" stroke-width="2"/>
+<rect x="868" y="350" width="24" height="56" fill="#FFFFFF" stroke="#D64545" stroke-width="2"/>
+<line x1="880" y1="406" x2="880" y2="426" stroke="#D64545" stroke-width="2"/>
+<use href="#gnd" x="880" y="428"/>
+<text x="880" y="458" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" font-weight="700" fill="#1F2933">10MΩ / 1W</text>
+<text x="880" y="474" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">泄放（常接）</text>
+
+<!-- 高压安全框 -->
+<rect x="530" y="492" width="340" height="72" rx="8" fill="#FFFFFF" stroke="#F0CACA"/>
+<text x="546" y="514" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" font-weight="700" fill="#B03030">⚠ 200–250V 不上面包板（普通面包板额定约 250V）</text>
+<text x="546" y="535" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#1F2933">洞洞板焊接或引脚架空，相邻高压节点爬电 ≥3mm</text>
+<text x="546" y="554" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#1F2933">断电后确认 HV &lt; 5V 才允许装 / 拆 ZTX415</text>
+
+<!-- ============ 雪崩级 ============ -->
+<text x="938" y="304" text-anchor="end" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" font-weight="700" fill="#B03030">C</text>
+<text x="938" y="375" text-anchor="end" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" font-weight="700" fill="#7B5BD6">B</text>
+<rect x="950" y="250" width="190" height="150" rx="8" fill="#FFFFFF" stroke="#1D5FA8" stroke-width="2"/>
+<text x="1045" y="322" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="19" font-weight="700" fill="#1F2933">ZTX415</text>
+<text x="1045" y="347" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#5B6770">雪崩管 · E-Line 封装</text>
+<text x="1045" y="370" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#B03030">左 C · 中 B · 右 E（见专图）</text>
+
+<text x="1152" y="334" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" font-weight="700" fill="#1E9E6A">E</text>
+<line x1="1140" y1="340" x2="1180" y2="340" stroke="#1E9E6A" stroke-width="2.5"/>
+<circle cx="1180" cy="340" r="4" fill="#1E9E6A"/>
+
+<!-- 50Ω 负载 -->
+<line x1="1180" y1="340" x2="1180" y2="380" stroke="#1E9E6A" stroke-width="2"/>
+<rect x="1168" y="380" width="24" height="56" fill="#FFFFFF" stroke="#1E9E6A" stroke-width="2"/>
+<line x1="1180" y1="436" x2="1180" y2="458" stroke="#1E9E6A" stroke-width="2"/>
+<use href="#gnd" x="1180" y="458"/>
+<text x="1160" y="412" text-anchor="end" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#1F2933">50Ω 负载</text>
+
+<!-- 天线 -->
+<polyline points="1180,340 1210,310 1235,280" fill="none" stroke="#1E9E6A" stroke-width="2.5" stroke-linejoin="round"/>
+<text x="1230" y="262" text-anchor="end" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#1E9E6A">~10cm 硬导线（天线）</text>
+
+<!-- V0 验源判据 -->
+<rect x="930" y="492" width="290" height="112" rx="8" fill="#FFFFFF" stroke="#C9DCF0"/>
+<text x="946" y="516" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" font-weight="700" fill="#1D5FA8">V0 验源判据（不接射频设备）</text>
+<text x="946" y="538" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#1F2933">量 47kΩ 两端直流压降：</text>
+<text x="946" y="558" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#1F2933">未雪崩 ≈1V（10MΩ 泄放仅 20–25µA）</text>
+<text x="946" y="578" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="700" fill="#B03030">反复雪崩 → 跳到 ≈10V（100Hz）</text>
+<text x="946" y="596" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">跳变 ≈10 倍；1000V 档确认后切 20V 档读准</text>
+
+<!-- ============ 底部说明 ============ -->
+<rect x="40" y="740" width="1200" height="112" rx="10" fill="#F7F9FB" stroke="#D6DEE5" stroke-width="1.5"/>
+<rect x="60" y="756" width="14" height="12" fill="#D64545"/><text x="80" y="767" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#1F2933">高压</text>
+<rect x="180" y="756" width="14" height="12" fill="#E8871A"/><text x="200" y="767" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#1F2933">12V 低压</text>
+<rect x="300" y="756" width="14" height="12" fill="#7B5BD6"/><text x="320" y="767" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#1F2933">触发</text>
+<rect x="380" y="756" width="14" height="12" fill="#1E9E6A"/><text x="400" y="767" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#1F2933">雪崩输出</text>
+<rect x="490" y="756" width="14" height="12" fill="#8A98A3"/><text x="510" y="767" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#1F2933">GND</text>
+<text x="590" y="767" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">● 实心圆点 = 相连；本图已做到零交叉，交叉即不相连的规则不再需要</text>
+
+<text x="60" y="794" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#1F2933">共地：所有接地符号必须用导线汇到同一点 —— 12V 适配器负极（高压模块 / NE555 / 所有阻容 / 50Ω 全在这里）。</text>
+<text x="60" y="816" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#1F2933">本轮 V0：XL6009、UF4007 不接；Ct 用 104（≈102Hz）；47kΩ/3W 两端压降是验源判据（静态 ≈1V → 雪崩 ≈10V）。</text>
+<text x="60" y="838" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="700" fill="#B03030">安全：红表笔插 VΩ 孔（插 A 孔量 200–250V = 直接短路）；单手操作；鳄鱼夹先夹稳再上电；禁止用螺丝刀短路放电。</text>
+
+<!-- 盖掉属于①区的跨区布线说明（y=590 文字 + y=600 横线在本区被截断） -->
+<rect x="480" y="575" width="430" height="50" fill="#FFFFFF"/>
+<rect x="490" y="575" width="400" height="50" fill="#FFF4F4"/>
+<!-- 10MΩ 标注原居中于 x=880，右半越出裁剪边界，补画一份完整且略左移 -->
+<rect x="826" y="442" width="84" height="40" fill="#FFF4F4"/>
+<text x="868" y="458" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12"
+      font-weight="700" fill="#1F2933">10MΩ / 1W</text>
+<text x="868" y="474" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11"
+      fill="#5B6770">泄放（常接）</text>
+
+<rect x="481" y="91" width="428" height="643" fill="none" stroke="#C9D3DC" stroke-width="2"/>
+</svg>

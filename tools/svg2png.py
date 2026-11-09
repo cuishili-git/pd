@@ -39,8 +39,9 @@ def main():
     scale = float(sys.argv[3]) if len(sys.argv) > 3 else 2.0
 
     svg = src.read_text(encoding="utf-8")
-    m = re.search(r'viewBox="0 0 ([\d.]+) ([\d.]+)"', svg)
-    w, h = (float(m.group(1)), float(m.group(2))) if m else (680.0, 650.0)
+    # 支持任意 viewBox="x y w h"（分区裁剪图的 x/y 非 0）
+    m = re.search(r'viewBox="\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)\s*"', svg)
+    w, h = (float(m.group(3)), float(m.group(4))) if m else (680.0, 650.0)
     W, H = int(w * scale), int(h * scale)
 
     html = ('<!doctype html><html><head><meta charset="utf-8"><style>'

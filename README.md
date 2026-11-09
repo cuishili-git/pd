@@ -30,9 +30,11 @@
 | [01 · 上电验收卡](docs/01-上电验收卡.md) | 分步 × 打勾 × 判据，动手时摊在桌上 |
 | [02 · 模拟源子项目](docs/02-模拟源子项目.md) | V0–V3 完整方案、链路预算、器件清单与原理 |
 | [03 · 参数推导与踩坑 FAQ](docs/03-参数推导与踩坑FAQ.md) | 「为什么」深入版：下拉电阻、钳位 0.8 V、淬灭、双端口关断、τ 与 5τ |
+| [**04 · 元件参数计算手册**](docs/04-元件参数计算手册.md) | **7 个电容位 + 6 个电阻位逐个算**：公式 → 代入 → 结果 → 边界，附可重算脚本 |
+| [**05 · 电路图图文讲解**](docs/05-电路图图文讲解.md) | 整机图拆成三块逐根线讲，含充电波形 / 微分尖峰曲线与跨区连线表 |
 | [figures/](docs/figures/) | 接线图（SVG 可编辑 / PNG 可直接打印 / HTML 可缩放） |
 
-**看图顺序**：[完整接线图 100Hz](docs/figures/雪崩源_完整接线图_100Hz.png)（照着焊）→ [ZTX415 雪崩级单张版](docs/figures/ZTX415_雪崩级接线图_单张版.png) → [引脚专图](docs/figures/ZTX415_引脚与接线专图.png)（脚位拿不准才翻）。
+**看图顺序**：[完整接线图 100Hz](docs/figures/雪崩源_完整接线图_100Hz.png)（照着焊）→ [**05 图文讲解**](docs/05-电路图图文讲解.md)（看不懂总图就从这里逐块拆）→ [ZTX415 雪崩级单张版](docs/figures/ZTX415_雪崩级接线图_单张版.png) → [引脚专图](docs/figures/ZTX415_引脚与接线专图.png)（脚位拿不准才翻）。
 
 ---
 
@@ -66,15 +68,34 @@ pd/
 │   ├── 01-上电验收卡.md
 │   ├── 02-模拟源子项目.md
 │   ├── 03-参数推导与踩坑FAQ.md
+│   ├── 04-元件参数计算手册.md     ★ 每个数值怎么算
+│   ├── 05-电路图图文讲解.md       ★ 总图拆三块逐根线讲
 │   └── figures/
 │       ├── 雪崩源_完整接线图_100Hz.svg / .png / _预览.html
+│       ├── 模块1_低压触发链 / 模块2_高压充电级 / 模块3_雪崩输出级 .svg / .png
+│       ├── 参数曲线_充电与放电 / 参数曲线_微分尖峰 .svg / .png
 │       ├── ZTX415_雪崩级接线图_单张版.svg / .png
 │       ├── ZTX415_引脚与接线专图.svg / .png
 │       └── 雪崩脉冲源接线图_V0终版.svg / .png（备份）
 └── tools/
     ├── push.sh                   ← 一键推送（SSH-over-443 隧道，免 token）
-    └── ssh-https-proxy.py        ← HTTP CONNECT 隧道，供 OpenSSH ProxyCommand 使用
+    ├── ssh-https-proxy.py        ← HTTP CONNECT 隧道，供 OpenSSH ProxyCommand 使用
+    ├── calc_params.py            ← 改数值重算全部参数（--compare / --json）
+    ├── make_figures.py           ← 一键重生成分区图与参数曲线（--png）
+    ├── svg2png.py                ← SVG → 独立 PNG（支持任意 viewBox）
+    └── make_preview.py           ← 生成可缩放网页版
 ```
+
+### 参数与配图都能自己重算
+
+```bash
+cd D:/workbuddy/docs/pd
+python tools/calc_params.py              # 打印完整计算书
+python tools/calc_params.py --compare    # 换电容 / 换频率会怎样
+python tools/make_figures.py --png       # 重生成 3 张分区图 + 2 张曲线
+```
+
+`calc_params.py` 顶部的 `Params(...)` 是唯一输入源，`make_figures.py` 从总图裁剪（不改任何连线）并按同一套公式画曲线，改完跑一遍，文档里的数字就不会和图各说各话。
 
 ---
 
