@@ -38,6 +38,29 @@
 
 ---
 
+## HTML 博客版（浏览器直接看）
+
+上面那些 `.md` 是**源文档**；仓库另有一套由它们编译出来的**静态 HTML 博客**，给人读而不是给 GitHub 渲染 Markdown：
+
+| 入口 | 说明 |
+|---|---|
+| [`index.html`](index.html) | 博客首页，6 篇文章卡片 + 版本信息 |
+| [`blog/00-新人教程.html`](blog/00-新人教程.html) | 从主教程开始读 |
+| `blog/01…05-*.html` | 验收卡、方案、FAQ、计算手册、图文讲解 |
+
+每篇都带**左侧目录、上一篇/下一篇、表格与接线图**，公式用仓库自带的轻量渲染器排版（分式 / 上下标 / 希腊字母），**不依赖任何 CDN，离线双击也能看**。图片仍引用 `docs/figures/`，不复制第二份。
+
+重新生成（改完 `.md` 后跑一次即可）：
+
+```bash
+cd D:/workbuddy/docs/pd
+node tools/make_blog.js
+```
+
+`tools/vendor/marked.cjs` 已随仓库带上，构建期零依赖、运行时零依赖。若要变成在线博客：GitHub 仓库 **Settings → Pages → Build from `main` / `(root)`**，保存后约 1 分钟即可访问 `https://cuishili-git.github.io/pd/`（Pages 认 `index.html`，与仓库页显示 README 互不冲突）。
+
+---
+
 ## 当前硬件版本（2026-11-09 定稿）
 
 | 项 | 值 |
@@ -61,7 +84,9 @@
 
 ```
 pd/
-├── README.md                     ← 本页
+├── README.md                     ← 本页（GitHub 仓库页）
+├── index.html                    ★ HTML 博客首页（Pages 入口）
+├── blog/                         ★ 6 篇博客文章页（由 docs/*.md 编译）
 ├── .gitignore
 ├── docs/
 │   ├── 00-新人教程.md             ★ 主教程
@@ -83,7 +108,9 @@ pd/
     ├── calc_params.py            ← 改数值重算全部参数（--compare / --json）
     ├── make_figures.py           ← 一键重生成分区图与参数曲线（--png）
     ├── svg2png.py                ← SVG → 独立 PNG（支持任意 viewBox）
-    └── make_preview.py           ← 生成可缩放网页版
+    ├── make_preview.py           ← 生成可缩放网页版
+    ├── make_blog.js              ← Markdown → 静态 HTML 博客（离线公式渲染）
+    └── vendor/marked.cjs         ← 构建期 Markdown 解析器（随仓库自带）
 ```
 
 ### 参数与配图都能自己重算

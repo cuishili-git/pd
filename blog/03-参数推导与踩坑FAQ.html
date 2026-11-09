@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>12 个「为什么」FAQ · 局放信号源 V0 · 新人教程</title>
+<meta name="description" content="原理答疑 · 原理">
+<style>
+:root{--ink:#1F2933;--muted:#5B6770;--line:#E1E7EC;--bg:#FFFFFF;--soft:#F7F9FB;
+--accent:#2C5F7C;--accent-soft:#EAF2F7;--code:#F2F5F7;--red:#B03030;--green:#1D7A5F}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);
+ font-family:"Microsoft YaHei","PingFang SC","Segoe UI",Arial,sans-serif;
+ font-size:16px;line-height:1.85;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+header.top{border-bottom:1px solid var(--line);background:var(--bg)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:20px}
+.brand{font-size:17px;font-weight:700;color:var(--ink);letter-spacing:.2px}
+.brand span{color:var(--accent)}
+nav.top a{margin-left:22px;font-size:14px;color:var(--muted)}
+nav.top a:hover{color:var(--accent)}
+.hero{padding:52px 0 34px;border-bottom:1px solid var(--line);background:var(--soft)}
+.hero h1{font-size:32px;line-height:1.4;margin:0 0 12px;font-weight:700}
+.hero p{margin:0;color:var(--muted);font-size:15px;max-width:760px}
+.hero .meta{margin-top:18px;font-size:13px;color:var(--muted)}
+.hero .meta b{color:var(--accent);font-weight:600}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px;padding:38px 0 60px}
+.card{border:1px solid var(--line);border-radius:10px;padding:22px 22px 20px;background:var(--bg);
+ transition:border-color .15s}
+.card:hover{border-color:var(--accent);text-decoration:none}
+.card .no{font-size:12px;color:var(--muted);letter-spacing:1px}
+.card h2{font-size:19px;margin:8px 0 4px;line-height:1.45;color:var(--ink)}
+.card .sub{font-size:13px;color:var(--accent);margin:0 0 12px}
+.card p{font-size:14px;color:var(--muted);line-height:1.75;margin:0}
+.card .foot{margin-top:16px;padding-top:12px;border-top:1px solid var(--line);
+ font-size:12px;color:var(--muted);display:flex;justify-content:space-between}
+.tag{display:inline-block;background:var(--accent-soft);color:var(--accent);
+ border-radius:4px;padding:1px 8px;font-size:12px}
+/* 文章页 */
+.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:44px;padding:34px 0 70px}
+aside.toc{position:sticky;top:24px;align-self:start;font-size:13px;max-height:calc(100vh - 48px);overflow:auto}
+aside.toc .t{font-weight:700;color:var(--muted);letter-spacing:1px;font-size:12px;
+ padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:10px}
+aside.toc a{display:block;color:var(--muted);padding:4px 0;line-height:1.55}
+aside.toc a:hover{color:var(--accent)}
+aside.toc a.lv3{padding-left:14px;font-size:12px}
+article{min-width:0}
+article > h1{font-size:29px;line-height:1.45;margin:0 0 6px}
+.article-sub{color:var(--muted);font-size:14px;margin:0 0 26px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+article h2{font-size:22px;margin:42px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line);scroll-margin-top:20px}
+article h3{font-size:18px;margin:30px 0 10px;scroll-margin-top:20px}
+article h4{font-size:16px;margin:22px 0 8px;color:var(--muted)}
+article p{margin:0 0 14px}
+article ul,article ol{padding-left:24px;margin:0 0 16px}
+article li{margin:4px 0}
+article blockquote{margin:16px 0;padding:10px 16px;background:var(--soft);
+ border-left:3px solid var(--accent);color:var(--muted)}
+article blockquote p{margin:0}
+article table{border-collapse:collapse;width:100%;margin:16px 0 22px;font-size:14px;display:block;overflow-x:auto}
+article th,article td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+article th{background:var(--soft);font-weight:600;white-space:nowrap}
+article tr:nth-child(even) td{background:#FCFDFE}
+article code{background:var(--code);border-radius:3px;padding:2px 5px;font-size:13px;
+ font-family:Consolas,"Cascadia Mono",monospace}
+article pre{background:#F4F7F9;border:1px solid var(--line);border-radius:8px;
+ padding:16px 18px;overflow-x:auto;margin:16px 0 22px;line-height:1.6}
+article pre code{background:none;padding:0;font-size:13px}
+article img{max-width:100%;height:auto;display:block;margin:18px auto;border:1px solid var(--line);border-radius:8px}
+article hr{border:0;border-top:1px solid var(--line);margin:34px 0}
+.math{background:var(--soft);border:1px solid var(--line);border-radius:6px;
+ padding:12px 16px;margin:16px 0;overflow-x:auto;text-align:center;
+ font-family:"Cambria Math",Georgia,serif;font-size:16px;color:var(--ink)}
+.math span.im{font-style:italic}
+.math .frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 3px}
+.math .frac i{font-style:normal;border-bottom:1px solid currentColor;padding:0 4px 2px}
+.math .frac b{font-weight:400;padding:2px 4px 0}
+.pager{display:flex;justify-content:space-between;gap:16px;margin-top:52px;
+ padding-top:22px;border-top:1px solid var(--line);font-size:14px}
+.pager a{display:block;max-width:46%}
+.pager .dir{font-size:12px;color:var(--muted);display:block;margin-bottom:3px}
+footer{border-top:1px solid var(--line);padding:22px 0 40px;color:var(--muted);font-size:13px}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+@media(max-width:900px){.layout{grid-template-columns:1fr;gap:0}aside.toc{position:static;max-height:none;
+ margin-bottom:24px;padding:14px;background:var(--soft);border-radius:8px}.wrap{padding:0 18px}}
+</style></head><body>
+<header class="top"><div class="wrap">
+  <div class="brand"><a href="../index.html">局放信号源 V0 · 新人教程</a></div>
+  <nav class="top"><a href="../blog/00-新人教程.html">开始阅读</a>
+  <a href="https://github.com/cuishili-git/pd">GitHub 源码</a></nav>
+</div></header>
+<div class="wrap layout"><aside class="toc"><div class="t">本页目录</div><a class="" href="#q1-基极那个-10-k-下拉不是把电平拉到-0-了吗尖峰来了不会直接走地">Q1. 基极那个 10 kΩ 下拉，不是把电平拉到 0 了吗？尖峰来了不会直接走地？</a><a class="" href="#q2-那不就是并联分流吗10-k-和-b-e-结并联电流不就被分走了">Q2. 那不就是并联分流吗？10 kΩ 和 B-E 结并联，电流不就被分走了？</a><a class="" href="#q3-一个钳位到-gnd一个钳位到-08-v那此时电压到底多少">Q3. 一个「钳位到 GND」，一个「钳位到 0.8 V」，那此时电压到底多少？</a><a class="" href="#q4-47-k-另一端接着电源怎么能泄放">Q4. 47 kΩ 另一端接着电源，怎么能「泄放」？</a><a class="lv3" href="#三条通路别再混">三条通路，别再混</a><a class="" href="#q5-雪崩后让管子能关断不是靠另一个电阻吗">Q5. 「雪崩后让管子能关断」——不是靠另一个电阻吗？</a><a class="" href="#q6-104-电容充电要多久是不是存的能量太多了">Q6. 104 电容充电要多久？是不是存的能量太多了？</a><a class="" href="#q7-470-s235-ms-是怎么算出来的">Q7. 470 µs、2.35 ms 是怎么算出来的？</a><a class="" href="#q8-14-w-电阻到底能不能用">Q8. 1/4 W 电阻到底能不能用？</a><a class="" href="#q9-为什么-200-v-起步而不是击穿电压-270-v">Q9. 为什么 200 V 起步，而不是「击穿电压 270 V」？</a><a class="" href="#q10-为什么-100-hz-而不是-1-khz">Q10. 为什么 100 Hz 而不是 1 kHz？</a><a class="" href="#q11-储能电容为什么必须是-10-nf100-pf-微分电容又是怎么定的">Q11. 储能电容为什么必须是 10 nF？100 pF 微分电容又是怎么定的？</a><a class="" href="#q12-10-nf-和-10-m-都挂在-t-节点对地看着像一对各干什么">Q12. 10 nF 和 10 MΩ 都挂在 T 节点对地，看着像一对，各干什么？</a><a class="" href="#附所有定稿数字一页速查">附：所有定稿数字一页速查</a></aside><article>
+    <h1>12 个「为什么」FAQ</h1><div class="article-sub">原理答疑 · 原理</div>
+    <blockquote>
+<p>这篇是「为什么」的深入版，按实际调试时提出的疑问组织。主教程在 <a href="00-新人教程.html"><code>00-新人教程.md</code></a>，动手步骤在 <a href="01-上电验收卡.html"><code>01-上电验收卡.md</code></a>。
+所有问答按 2026-11-09 定稿参数（100 Hz / 200 V / ZTX415）重算过。</p>
+</blockquote>
+<hr>
+<h2 id="q1-基极那个-10-k-下拉不是把电平拉到-0-了吗尖峰来了不会直接走地">Q1. 基极那个 10 kΩ 下拉，不是把电平拉到 0 了吗？尖峰来了不会直接走地？</h2>
+<p><strong>下拉拉的是直流，尖峰走的是交流，两条路互不打架。</strong></p>
+<p>关键物理事实：<strong>阶跃瞬间，100 pF 电容相当于短路</strong>。NE555 输出从 0 V 跳到 12 V 那一刻，这个跳变<strong>全部</strong>出现在基极节点上——不是被 10 kΩ 分压成一点点，而是节点直接被顶到 ≈12 V。然后这点电荷经 10 kΩ 往地泄放，1 µs 后回到 4.4 V、3 µs 后基本归零：</p>
+<div class="math" data-tex="V_{base}(t) \approx 12\,\text{V} \cdot e^{-t/\tau}, \qquad \tau = 10\,\text{k}\Omega \times 100\,\text{pF} = 1\,\mu\text{s}">V_{base}(t) \approx 12\,\text{V} \cdot e^{-t/\tau}, \qquad \tau = 10\,\text{k}\Omega \times 100\,\text{pF} = 1\,\mu\text{s}</div>
+<p>用你熟的场景类比：<strong>这就是 GPIO 配内部下拉</strong>。输入脚配了下拉，静态是 0，外面来一个 fast pulse 照样能触发中断——下拉只定义「没信号时在哪」，不决定「边沿来了跳多高」。</p>
+<p><strong>为什么必须有它</strong>：100 pF 是隔直电容，没有下拉基极就是悬空节点（直流断路）。555 漏电流、空间感应电荷会越积越多，电位慢慢漂到管子自己导通 → 常亮不雪崩或随机乱触发。</p>
+<table>
+<thead>
+<tr>
+<th>下拉值</th>
+<th>τ</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1 kΩ</td>
+<td>0.1 µs</td>
+<td>尖峰窄但峰值不变，抗扰最好；555 要多供电流</td>
+</tr>
+<tr>
+<td><strong>10 kΩ</strong></td>
+<td><strong>1 µs</strong></td>
+<td>触发窗口够宽，3 µs 归零，抗扰好。<strong>平衡点</strong></td>
+</tr>
+<tr>
+<td>1 MΩ</td>
+<td>100 µs</td>
+<td>回复太慢，正尖峰后基极长时间带正电位，易误触发</td>
+</tr>
+</tbody></table>
+<p>一句话：<strong>尖峰的「头部」走电容（瞬时全幅度到达），「尾巴」才走下拉电阻往地漏</strong>。</p>
+<hr>
+<h2 id="q2-那不就是并联分流吗10-k-和-b-e-结并联电流不就被分走了">Q2. 那不就是并联分流吗？10 kΩ 和 B-E 结并联，电流不就被分走了？</h2>
+<p><strong>是并联分流，但要说准：被分走的是电流，电压没被分走。</strong> 而且分流量在几个纳秒里会骤变。</p>
+<p>从基极节点往两头看，对地有两条并联通路：一条经 100 pF 回到 555 输出（输出阻抗 ≈10 Ω，对交流等于接电源轨），一条经 10 kΩ 到地。节点电压是这两个阻抗的分压：</p>
+<div class="math" data-tex="V_{node} = 12\,\text{V} \times \frac{R_{10k}}{Z_{100p} + R_{10k}}">V_{node} = 12\,\text{V} \times \frac{R_{10k}}{Z_{100p} + R_{10k}}</div>
+<p>**分母里的 </p>
+<span class="math" data-tex="Z_{100p}" style="display:inline;padding:1px 6px">Z_{100p}</span>
+<p> 是时间的函数**，是一个「会自己长大的电阻」：</p>
+<table>
+<thead>
+<tr>
+<th>时刻</th>
+<th>100 pF 等效容抗</th>
+<th>分压比</th>
+<th>节点电压</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>t = 0（边沿瞬间）</td>
+<td>≈0 Ω（短路）</td>
+<td>R/(0+R) = <strong>1</strong></td>
+<td><strong>12 V</strong></td>
+</tr>
+<tr>
+<td>t = 1 µs</td>
+<td>≈R</td>
+<td>0.5</td>
+<td>4.4 V</td>
+</tr>
+<tr>
+<td>t = 3 µs</td>
+<td>≈10 R</td>
+<td>0.09</td>
+<td>0.6 V</td>
+</tr>
+<tr>
+<td>t → ∞</td>
+<td>∞（充满，断路）</td>
+<td>0</td>
+<td>0 V</td>
+</tr>
+</tbody></table>
+<p>t=0 时 <strong>10 kΩ 根本没机会参与分压，它面对的是一个 0 Ω 的短路</strong>。所以下拉再大也削不掉峰值，改下拉值只改尾巴长度。</p>
+<p><strong>什么时候并联分流才会真的削峰</strong>：当 </p>
+<span class="math" data-tex="R_{10k}" style="display:inline;padding:1px 6px">R_{10k}</span>
+<p> 小到和 555 输出阻抗（~10 Ω）可比时。10 kΩ 是它的 1000 倍，这个比值就是「分压比≈1」的保证；改成 50 Ω 就只剩 12×50/60 = 10 V 了。</p>
+<p>再看 B-E 结参与之后：</p>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>节点电压</th>
+<th>10 kΩ 分走的电流</th>
+<th>进基极的电流</th>
+<th>发生了什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>① 结未导通（头几 ns）</td>
+<td>冲向 12 V</td>
+<td>最多 1.2 mA</td>
+<td>给结电容充电</td>
+<td>B-E 还没打开，确实在「漏」</td>
+</tr>
+<tr>
+<td>② 结导通</td>
+<td><strong>被钳在 ≈0.8 V</strong></td>
+<td><strong>只剩 80 µA</strong></td>
+<td><strong>其余全部进基极</strong></td>
+<td>V_BE 达 0.7 V，节点被钳位</td>
+</tr>
+<tr>
+<td>③ 雪崩点燃</td>
+<td>≈0.8 V</td>
+<td>80 µA</td>
+<td>持续点火</td>
+<td>C 极 200 V 雪崩击穿，脉冲发射</td>
+</tr>
+</tbody></table>
+<p>核心转折在②：结一导通，动态电阻只有几欧（10 kΩ 的千分之一），<strong>节点立刻被结接管</strong>，10 kΩ 上自然只剩 0.8 V / 10 kΩ = 80 µA。被电阻漏掉的是零头：80 µA × 1 µs ≈ 0.08 nC，而 100 pF @ 12 V 总共存 1.2 nC。</p>
+<p>结论：<strong>并联分流存在，但分走的是点火前后的零头，不是主干</strong>。触发的决定者是节点电压，不是流过 10 kΩ 的那点漏电流。</p>
+<hr>
+<h2 id="q3-一个钳位到-gnd一个钳位到-08-v那此时电压到底多少">Q3. 一个「钳位到 GND」，一个「钳位到 0.8 V」，那此时电压到底多少？</h2>
+<p><strong>任一时刻只有一个电压值</strong>，只是不同时刻归不同元件「说了算」。先纠正用词：<strong>10 kΩ 接 GND 不叫钳位，叫下拉/泄放</strong>。钳位是把电压硬按在某值上，电阻做不到，它只会「电压多少就漏多少电流」（I = V/R）。所以不是两个钳位器打架，而是「一个大力士（PN 结）+ 一根漏水管（10 kΩ）」。</p>
+<table>
+<thead>
+<tr>
+<th>时刻</th>
+<th>节点电压</th>
+<th>谁在控制</th>
+<th>10 kΩ 在干什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>无触发（静态）</td>
+<td><strong>0 V</strong></td>
+<td>10 kΩ 唯一定义</td>
+<td>把基极拉到 0，锁死待命</td>
+</tr>
+<tr>
+<td>边沿刚注入（0~几 ns）</td>
+<td><strong>冲到 ≈12 V</strong></td>
+<td>100 pF（容抗≈0，硬灌）</td>
+<td>被压制，只能漏 1.2 mA</td>
+</tr>
+<tr>
+<td>结一导通（几十 ns 后）</td>
+<td><strong>锁在 ≈0.8 V</strong></td>
+<td>B-E 结（动态电阻几 Ω）</td>
+<td>认输，只能漏 80 µA</td>
+</tr>
+<tr>
+<td>电荷耗尽后</td>
+<td><strong>0.8 V → 0 V</strong></td>
+<td>10 kΩ 收回控制权</td>
+<td>花 1 µs 把节点放回 0</td>
+</tr>
+</tbody></table>
+<p><strong>0.8 V 不是算出来的常数，是两条曲线的交点</strong>：紫线是 B-E 结的伏安特性（指数关系，电压多 60 mV 电流涨 10 倍），另一条是 10 kΩ 能提供的电流（12 V ÷ R，几乎是水平线）。下拉从 10 kΩ 改成 1 kΩ，电流能力翻 10 倍，工作点只从 0.75 V 挪到 0.81 V，<strong>动 60 mV</strong>——这就是指数特性的威力：用电阻去「拉」这个节点，是拉不动的。</p>
+<blockquote>
+<p><strong>实操提醒</strong>：别用万用表测这个节点。脉冲占空比 &lt;0.01%，万用表只会显示 0 V 或几 mV 乱跳，看起来像「没信号」。只有示波器（10× 探头）能看到 12 V 窄尖峰后面跟着 0.8 V 小平台。测出 0 V 就以为电路不工作，会白折腾半天。</p>
+</blockquote>
+<p><strong>顺带</strong>：555 下降沿会产生 −12 V 起始的负尖峰，打在 B-E 结上是反向的。ZTX415 的 B-E 反向击穿一般 6 V 左右，但能量极小（12 V/10 kΩ = 1.2 mA、1 µs、约 0.01 µJ），实际打不坏。万一实测停振或波形怪异，在 B-E 间反并 1N4148 钳到 −0.7 V 即可，<strong>先不加</strong>。</p>
+<hr>
+<h2 id="q4-47-k-另一端接着电源怎么能泄放">Q4. 47 kΩ 另一端接着电源，怎么能「泄放」？</h2>
+<p><strong>这个质疑是对的：47 kΩ 不泄放任何东西，它上游接着电源。真正把 10 nF 放空的是雪崩管自己加 50 Ω。</strong></p>
+<p>准确说法：<strong>47 kΩ 把 200 V「硬电压源」变成了 ≈4.3 mA 的「软电流源」</strong>（限流淬灭）。</p>
+<p>雪崩一导通，ZTX415 相当于闭合开关，T 节点经 50 Ω 直接落地。此刻整个回路就是个分压器：</p>
+<div class="math" data-tex="V_T = 200\,\text{V} \times \frac{50}{47\,000 + 50} \approx 0.21\ \text{V}, \qquad I = \frac{200}{47\,050} \approx 4.3\ \text{mA}">V_T = 200\,\text{V} \times \frac{50}{47\,000 + 50} \approx 0.21\ \text{V}, \qquad I = \frac{200}{47\,050} \approx 4.3\ \text{mA}</div>
+<p>电源还挂着 200 V，但它经 47 kΩ 最多只能挤进来 4.3 mA；放电那条路阻抗只有几十欧、瞬时吞 3.8 A。<strong>一个每秒只能写 4.3 KB 的生产者，对着一个每秒能消费 3.8 GB 的消费者，队列（10 nF）瞬间被清空，生产者根本填不满</strong>——所以 T 节点电位塌到 0.21 V。10 nF 里的电荷不是「泄」掉的，是被雪崩支路抽空的。</p>
+<p>等电容放空，能维持电流就只剩 4.3 mA，而雪崩自持要几十 mA（I_H）→ 跌破阈值 → 管子关断 → 低阻通路消失 → 47 kΩ 才重新开始充电（τ = 470 µs、2.35 ms 回到 190 V）。</p>
+<h3 id="三条通路别再混">三条通路，别再混</h3>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>电流走哪条路</th>
+<th>量级</th>
+<th>T 节点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>充电</td>
+<td>200 V → <strong>47 kΩ</strong> → 10 nF → GND</td>
+<td>4.3 mA 递减到 20 µA</td>
+<td>0 → 190 V</td>
+</tr>
+<tr>
+<td>脉冲放电</td>
+<td>10 nF → <strong>ZTX415 → 50 Ω</strong> → GND</td>
+<td>峰值 ≈3.8 A</td>
+<td>190 V → 0.21 V</td>
+</tr>
+<tr>
+<td>雪崩末期</td>
+<td>200 V → 47 kΩ → ZTX415 → 50 Ω → GND</td>
+<td>仅 4.3 mA</td>
+<td>0.21 V，&lt; I_H → 关断</td>
+</tr>
+<tr>
+<td>断电残压</td>
+<td>10 nF → <strong>10 MΩ</strong> → GND</td>
+<td>20 µA，τ = 0.1 s</td>
+<td>190 V → &lt; 5 V</td>
+</tr>
+</tbody></table>
+<p>所以「泄放」只属于 10 MΩ，而且只在<strong>断电后</strong>；「放电」走雪崩管 + 50 Ω；47 kΩ 一头是电源，只管慢慢灌。换成 4.7 kΩ 时末期补给变 <strong>42 mA</strong> &gt; I_H，管子永远关不断——这才是「锁死」的准确机理。</p>
+<blockquote>
+<p>数字校正：50 Ω × 10 nF 的放电时间常数是 <strong>500 ns</strong>，拖尾其实到 µs 量级；高频分量靠的是雪崩倍增本身的亚 ns 前沿，不是 RC。这不影响 V0「只数脉冲」的验收。</p>
+</blockquote>
+<hr>
+<h2 id="q5-雪崩后让管子能关断不是靠另一个电阻吗">Q5. 「雪崩后让管子能关断」——不是靠另一个电阻吗？</h2>
+<p><strong>对，之前的说法简化过头了。关断是两个端口同时收工才成立。</strong></p>
+<p>雪崩管要关断，必须同时满足：</p>
+<ol>
+<li><strong>基极侧</strong>：点火驱动撤掉 → <strong>10 kΩ 下拉</strong>（τ = 100 pF × 10 kΩ ≈ 1 µs）</li>
+<li><strong>集电极侧</strong>：电流跌破维持电流 I_H（几十 mA）→ 10 nF 放空后只剩 <strong>47 kΩ 的 4.3 mA</strong></li>
+</ol>
+<p>用软件话说：像一个进程退出要同时「撤掉事件源」+「断掉数据源」，只关一个 worker，主线程还在跑，进程照样不退。</p>
+<table>
+<thead>
+<tr>
+<th>电阻</th>
+<th>端口</th>
+<th>时间尺度</th>
+<th>职责</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>50 Ω</td>
+<td>E 极</td>
+<td>ns</td>
+<td>给脉冲电流回路，定 3.8 A 峰值</td>
+</tr>
+<tr>
+<td><strong>10 kΩ</strong></td>
+<td><strong>基极</strong></td>
+<td><strong>≈1 µs</strong></td>
+<td><strong>撤掉点火尖峰，静态锁 0 V</strong></td>
+</tr>
+<tr>
+<td><strong>47 kΩ</strong></td>
+<td><strong>C 极 / T 节点</strong></td>
+<td>全程</td>
+<td><strong>放空后把补给封在 4.3 mA &lt; I_H，防自持</strong></td>
+</tr>
+<tr>
+<td>10 MΩ</td>
+<td>T 节点</td>
+<td>0.1 s</td>
+<td>断电后放净残压，安全阀</td>
+</tr>
+</tbody></table>
+<p>两个反例：</p>
+<ul>
+<li><strong>只有 10 kΩ、没有 47 kΩ</strong>（高压直连 T 节点）：基极火撤了，集电极侧无限量供电，电流永远跌不破 I_H → 持续电弧 → 烧管。</li>
+<li><strong>只有 47 kΩ、没有 10 kΩ</strong>：基极悬空，杂散电荷积累 → 随机自触发。</li>
+</ul>
+<p><strong>10 MΩ 不参与关断</strong>：τ = 0.1 s 比 ns 级脉冲慢 6 个数量级，脉冲那几十 ns 里只流 20 µA，对 3.8 A 峰值毫无影响。之前把它叫「关闸放水」，那个「闸」是<strong>断电闸</strong>，不是脉冲闸，用词确实容易混。</p>
+<hr>
+<h2 id="q6-104-电容充电要多久是不是存的能量太多了">Q6. 104 电容充电要多久？是不是存的能量太多了？</h2>
+<p><strong>先分清两颗长得像的电容，位置完全不同</strong>：104 在 NE555 定时位（12 V 侧），储能位（200 V 侧）用的是 103。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>104 = 100 nF（定时位）</strong></th>
+<th><strong>103 = 10 nF / 1 kV（储能位）</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>位置</td>
+<td>NE555 的 2/6 脚 → GND</td>
+<td>T 节点 → GND（200 V 高压区）</td>
+</tr>
+<tr>
+<td>两端最高电压</td>
+<td><strong>8 V</strong>（2/3 VCC）</td>
+<td><strong>200 V</strong></td>
+</tr>
+<tr>
+<td>充电回路</td>
+<td>12 V → R1+R2 (72.7 kΩ)</td>
+<td>200 V → 47 kΩ</td>
+</tr>
+<tr>
+<td>充电时间</td>
+<td><code>ln2×(R1+R2)×C</code> = <strong>5.04 ms</strong></td>
+<td>τ = 47 kΩ × 10 nF = <strong>470 µs</strong>，5τ = 2.35 ms</td>
+</tr>
+<tr>
+<td>单周期储能</td>
+<td>½×100 n×8² = <strong>3.2 µJ</strong></td>
+<td>½×10 n×200² = <strong>0.20 mJ</strong></td>
+</tr>
+</tbody></table>
+<p><strong>104 一点都不「能量太多」</strong>：它只在 4 V ↔ 8 V 之间来回充放，每周期吞吐 <code>½C(8²−4²) = 2.4 µJ</code>，全耗在 555 内部放电管里，连发热都谈不上。5.04 ms 充电 + 4.71 ms 放电 = 9.75 ms ≈ 102 Hz，正好是我们要的 100 Hz。它压根不在高压回路。</p>
+<p><strong>但如果 104 被焊到储能位，确实太多，而且死法不是「能量大」</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>10 nF（正确）</th>
+<th>100 nF（错误）</th>
+<th>倍数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>τ = 47 kΩ × C</td>
+<td>470 µs</td>
+<td><strong>4.7 ms</strong></td>
+<td>10×</td>
+</tr>
+<tr>
+<td>100 Hz 周期 / τ</td>
+<td>21τ ✅</td>
+<td><strong>2.1τ</strong> ❌</td>
+<td>—</td>
+</tr>
+<tr>
+<td>平均电流 C·V·f</td>
+<td>0.2 mA</td>
+<td><strong>2 mA</strong></td>
+<td>10×</td>
+</tr>
+<tr>
+<td>47 kΩ 压降</td>
+<td>≈9 V</td>
+<td><strong>≈94 V</strong></td>
+<td>10×</td>
+</tr>
+<tr>
+<td>T 节点实际电压</td>
+<td>≈190 V</td>
+<td><strong>≈100 V</strong></td>
+<td><strong>反而更低</strong></td>
+</tr>
+<tr>
+<td>单脉冲能量</td>
+<td>0.20 mJ</td>
+<td>2.0 mJ</td>
+<td>10×</td>
+</tr>
+<tr>
+<td>放电 τ（50 Ω × C）</td>
+<td>500 ns</td>
+<td>5 µs</td>
+<td>10×</td>
+</tr>
+</tbody></table>
+<p><strong>充不满 + 47 kΩ 压降吃掉大半电压</strong>才是致命的：电容大 10 倍，脉冲幅度不升反降。这和 1 kHz 版踩的是同一个坑（那时周期太短、这次 τ 太长，本质都是「周期 / τ 不够」）。</p>
+<p><strong>还有一个硬危险</strong>：两颗电容耐压差 100 倍。把普通 50 V 瓷片 104 焊到 200 V 的 T 节点，<strong>会直接击穿甚至炸裂</strong>；反方向把 103/1 kV 焊到定时位，频率跑回 ≈1 kHz。上电前按丝印核一遍。</p>
+<hr>
+<h2 id="q7-470-s235-ms-是怎么算出来的">Q7. 470 µs、2.35 ms 是怎么算出来的？</h2>
+<p><strong>一个公式 + 一条工程约定。τ 是 R×C 乘出来的，2.35 ms 是「5 个 τ」——而 5 这个数字是人定的。</strong></p>
+<pre><code>τ = R·C = 47 000 Ω × 10×10⁻⁹ F = 4.7×10⁻⁴ s = 470 µs
+</code></pre>
+<p>口算技巧：<strong>kΩ × nF = µs</strong>（10³ × 10⁻⁹ = 10⁻⁶），47 × 10 = 470，单位直接是 µs。</p>
+<p>电容充电越接近目标越慢：<code>V(t) = V₀(1 − e^(−t/RC))</code>。这个式子从 <code>i = C·dV/dt</code> 与 <code>i = (V₀−V)/R</code> 相等而来，翻译成熟的形式就是<strong>每一步只补上「剩余差距」的一小部分</strong>：</p>
+<pre><code class="language-python">V, dt, tau = 0.0, 1e-6, 470e-6
+for _ in range(10000):
+    V += (200.0 - V) * dt / tau   # 每 µs 补上剩余差距的 0.21%
+</code></pre>
+<p>代 <code>t = τ</code> 得 <code>1 − e⁻¹ = 0.632</code>，所以 <strong>τ 的准确含义是「充到 63.2% 的时间」，不是充满时间</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>t</th>
+<th>1 − e^(−t/τ)</th>
+<th>本电路</th>
+<th>电压（V₀ = 200 V）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1τ</td>
+<td>63.2%</td>
+<td>470 µs</td>
+<td>126 V</td>
+</tr>
+<tr>
+<td>2τ</td>
+<td>86.5%</td>
+<td>940 µs</td>
+<td>173 V</td>
+</tr>
+<tr>
+<td>3τ</td>
+<td>95.0%</td>
+<td>1.41 ms</td>
+<td>190 V</td>
+</tr>
+<tr>
+<td>4τ</td>
+<td>98.2%</td>
+<td>1.88 ms</td>
+<td>196 V</td>
+</tr>
+<tr>
+<td><strong>5τ</strong></td>
+<td><strong>99.3%</strong></td>
+<td><strong>2.35 ms</strong></td>
+<td><strong>198.6 V</strong></td>
+</tr>
+</tbody></table>
+<p>工程上约定 <strong>5τ 算「充满」</strong>：只剩 0.7%（200 V 系统里 1.4 V），比元件误差、模块纹波都小。要更严格用 7τ（99.9%），但没人为这个多等 1 ms。</p>
+<p><strong>同一个公式串起所有时间尺度</strong>（换的只是 R，C 一直是 10 nF）：</p>
+<table>
+<thead>
+<tr>
+<th>过程</th>
+<th>R</th>
+<th>τ</th>
+<th>5τ</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>充电</td>
+<td>47 kΩ</td>
+<td>470 µs</td>
+<td>2.35 ms</td>
+</tr>
+<tr>
+<td>脉冲放电</td>
+<td>50 Ω</td>
+<td>500 ns</td>
+<td>2.5 µs</td>
+</tr>
+<tr>
+<td>断电泄放</td>
+<td>10 MΩ</td>
+<td>0.1 s</td>
+<td><strong>0.5 s</strong>（「断电等 0.5 秒」就是这么来的）</td>
+</tr>
+</tbody></table>
+<p><strong>唯一例外是 NE555 定时位</strong>：它在 1/3 VCC ↔ 2/3 VCC 之间来回，充到 2/3 就翻转向下放，用 <code>ln2·(R1+R2)·Ct = 0.693 × 72.7k × 100n = 5.04 ms</code>，不是 5τ（7.27 ms × 5 = 36 ms，那就完全错了）。判断用哪个，看「是不是充到头才停」。</p>
+<blockquote>
+<p><strong>数字巧合提醒</strong>：表里 3τ 的「190 V」是单次充电的瞬时值；文档里「T 节点稳定在 ≈190 V」是 100 Hz 反复放电下的稳态自洽解（<code>200/(1+C·f·47k) ≈ 190.9 V</code>）。两者撞了，含义完全不同。</p>
+</blockquote>
+<hr>
+<h2 id="q8-14-w-电阻到底能不能用">Q8. 1/4 W 电阻到底能不能用？</h2>
+<p><strong>能，但要具体算：这个电路里 1/4 W 的麻烦基本不是「瓦数不够」，而是「耐压不够」。</strong></p>
+<p>所有电阻都在高阻回路里，电流 µA<del>mA 级，功耗天然小；但常见 1/4 W 电阻额定工作电压只有 200</del>250 V，而 T 节点正好 200 V，长期会膜层劣化、阻值漂移、引脚间爬电——这种故障不上电看不出来，几天后才变成「信号忽大忽小」。</p>
+<table>
+<thead>
+<tr>
+<th>位置</th>
+<th>实际功耗</th>
+<th>跨压</th>
+<th>判定</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>47 kΩ 充电限流</td>
+<td>正常 ≈2 mW；T 节点短路时 0.85 W@200 V</td>
+<td>雪崩瞬间 ≈200 V</td>
+<td>❌ 必须换 / 串联</td>
+</tr>
+<tr>
+<td>10 MΩ 泄放</td>
+<td>4 mW</td>
+<td><strong>长期 190 V</strong></td>
+<td>⚠️ 功耗够、耐压卡边</td>
+</tr>
+<tr>
+<td>10 kΩ 基极下拉</td>
+<td>峰值 14 mW</td>
+<td>12 V</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>R1 4.7 kΩ</td>
+<td>≤31 mW</td>
+<td>12 V</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>R2 68 kΩ</td>
+<td>≤2 mW</td>
+<td>12 V</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>50 Ω 负载</td>
+<td>平均 20 mW，µs 级约 400 W 脉冲</td>
+<td>190 V 脉冲</td>
+<td>⚠️ 凑合，1 W 无感更好</td>
+</tr>
+</tbody></table>
+<p>零采购方案：<strong>47 kΩ 位串 4×12 kΩ = 48 kΩ</strong>（最坏每颗 50 V / 0.21 W）、<strong>10 MΩ 位串 2×5.1 MΩ = 10.2 MΩ</strong>（每颗 95 V）。τ 变 480 µs、5τ ≈ 2.4 ms，验源判据几乎不动。串联件架空焊、逐颗套热缩管，串得长反而拉大爬电距离。</p>
+<p>顺带解释「47 kΩ / 3 W」这个规格：<strong>3 W 不是功率需求，是耐压需求</strong>。正常功耗只有几 mW，最坏（T 节点对地短路）也就 0.85 W；3 W 的水泥 / 金属氧化膜件耐压通常 ≥350~500 V，顺带把「200 V 顶在 1/4 W 极限」这个问题解决了。</p>
+<hr>
+<h2 id="q9-为什么-200-v-起步而不是击穿电压-270-v">Q9. 为什么 200 V 起步，而不是「击穿电压 270 V」？</h2>
+<p>早期把「ZTX415 击穿 260–300 V」当成下限，推出要 270 V 才点得燃，<strong>这是错的</strong>。查 Diodes datasheet 与 Zetex AN8 后纠正：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>早期说法</th>
+<th>官方数据</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>V_CBO = 260 V</code></td>
+<td>击穿下限</td>
+<td><strong>绝对最大额定值</strong></td>
+</tr>
+<tr>
+<td>点火机理</td>
+<td>靠电压自然击穿</td>
+<td>靠<strong>基极触发</strong>强制点火</td>
+</tr>
+<tr>
+<td>10 nF 下起始电压</td>
+<td>—</td>
+<td>AN8 图 6：<code>V_MIN ≈ 120–175 V</code>（基极驱动 50–200 mA）</td>
+</tr>
+<tr>
+<td>官方单电容电路</td>
+<td>—</td>
+<td>AN8 图 11a 标注 <strong>+170–260 V</strong>，拓扑几乎一样</td>
+</tr>
+</tbody></table>
+<p>我们基极驱动只有 ≈1.2 mA，比 AN8 测试条件弱几十倍，<strong>这才是点火电压偏高的真正原因</strong>。正解是加强触发（<code>100 pF → 470 pF</code>、<code>10 kΩ → 1 kΩ</code>），不是越过 260 V 继续加压。</p>
+<blockquote>
+<p><strong>200 V 起步 → 不出脉冲小幅上调 → 250 V 封顶。</strong> 原「上调到 280–290 V、不要超 300 V」整条作废。</p>
+</blockquote>
+<hr>
+<h2 id="q10-为什么-100-hz-而不是-1-khz">Q10. 为什么 100 Hz 而不是 1 kHz？</h2>
+<p><code>τ = 47 kΩ × 10 nF = 470 µs</code> 是充电时间常数。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>1 kHz（旧）</th>
+<th>100 Hz（定稿）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>周期</td>
+<td>1 ms</td>
+<td>10 ms</td>
+</tr>
+<tr>
+<td>周期 / τ</td>
+<td><strong>2.1τ</strong> ❌</td>
+<td><strong>21τ</strong> ✅</td>
+</tr>
+<tr>
+<td>电容是否充满</td>
+<td>充不满</td>
+<td>充到 ≈190 V</td>
+</tr>
+<tr>
+<td>T 节点自洽解</td>
+<td>≈136 V</td>
+<td>≈190 V</td>
+</tr>
+<tr>
+<td>平均功耗</td>
+<td>≈200 mW</td>
+<td>≈20 mW</td>
+</tr>
+<tr>
+<td>47 kΩ 压降（验源判据）</td>
+<td>几十~100 V</td>
+<td><strong>≈10 V</strong></td>
+</tr>
+</tbody></table>
+<p>做法只换一颗电容：<strong>Ct 从 10 nF(103) → 100 nF(104)</strong>，R1/R2 不动，<code>f = 1.44/((R1+2R2)·Ct) ≈ 102 Hz</code>。要 50 Hz 就两颗 104 并联。</p>
+<blockquote>
+<p><strong>判据必须跟着改</strong>：<code>C·V·f = 10 nF × 200 V × 100 Hz = 0.2 mA</code>，47 kΩ 压降 ≈10 V（50 Hz ≈5.6 V）。照旧判据找「几十伏」会白白误判成没点着火。两表笔共模虽在 200 V、差压只有 1~10 V，<strong>先用 DCV 1000 V 档确认差压 &lt;20 V，再切 DCV 20 V 档读准</strong>。</p>
+</blockquote>
+<hr>
+<h2 id="q11-储能电容为什么必须是-10-nf100-pf-微分电容又是怎么定的">Q11. 储能电容为什么必须是 10 nF？100 pF 微分电容又是怎么定的？</h2>
+<p>两颗电容的取值逻辑完全不同，别混：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>储能位 10 nF</th>
+<th>微分位 100 pF</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>决定什么</td>
+<td>单脉冲能量 ½CV²、充电 τ</td>
+<td>触发尖峰宽度 τ = RC</td>
+</tr>
+<tr>
+<td>约束</td>
+<td>½CV² ≤ 0.5 mJ、平均功率 ≤0.5 W、τ 与周期匹配（三条夹出 ≈13.7 nF，降一档取 10 nF）</td>
+<td>太小点不着火（Q 不够），太大关不干净（B-E 长时间导通）</td>
+</tr>
+<tr>
+<td>与频率关系</td>
+<td><strong>强相关</strong>（周期必须是 τ 的 20 倍以上）</td>
+<td><strong>无关</strong>（只看方波边沿）</td>
+</tr>
+<tr>
+<td>耐压</td>
+<td>≥630 V，推荐 1 kV</td>
+<td>≥50 V</td>
+</tr>
+</tbody></table>
+<p>100 pF 的四档对比见主教程 5.5 节。<strong>100 pF 是经验起点不是精算值</strong>，备 470 pF 就是为了实焊点不着火时当场能试。</p>
+<hr>
+<h2 id="q12-10-nf-和-10-m-都挂在-t-节点对地看着像一对各干什么">Q12. 10 nF 和 10 MΩ 都挂在 T 节点对地，看着像一对，各干什么？</h2>
+<p><strong>10 nF 是「存钱」的，10 MΩ 是「断电后关闸放水」的，干的活完全相反。</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>10 nF 储能</th>
+<th>10 MΩ 泄放</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>角色</td>
+<td>脉冲能量库</td>
+<td>安全阀</td>
+</tr>
+<tr>
+<td>平时</td>
+<td>200 V 下存 0.20 mJ</td>
+<td>只漏 20 µA，功耗 4 mW</td>
+</tr>
+<tr>
+<td>雪崩瞬间</td>
+<td>几十 ns 放出 ≈3.8 A 峰值（47 kΩ 只给得出 4.3 mA，差 900 倍，全靠它预付）</td>
+<td>完全不参与（τ = 0.1 s，慢 6 个数量级）</td>
+</tr>
+<tr>
+<td>断电后</td>
+<td>带着 200 V 残压</td>
+<td>5τ = 0.5 s 放到 &lt;5 V</td>
+</tr>
+</tbody></table>
+<p>没 10 nF：雪崩瞬间要 3.8 A，47 kΩ 只给 4.3 mA，脉冲根本形不成。
+没 10 MΩ：断电后 T 节点长期带 200 V，伸手就挨一下（升压模块内部 µF 级电容更危险，所以规程仍要求断电等 60 s 并万用表确认）。</p>
+<hr>
+<h2 id="附所有定稿数字一页速查">附：所有定稿数字一页速查</h2>
+<table>
+<thead>
+<tr>
+<th>量</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>高压工作点</td>
+<td>200 V 起步 / 250 V 封顶（<code>V_CBO</code> 绝对最大 260 V）</td>
+</tr>
+<tr>
+<td>重复率</td>
+<td>≈102 Hz（Ct = 104）；50 Hz 档 Ct = 200 nF</td>
+</tr>
+<tr>
+<td>NE555 占空比</td>
+<td>51.7%，3 脚直流 ≈6 V</td>
+</tr>
+<tr>
+<td>充电 τ / 5τ</td>
+<td>470 µs / 2.35 ms；10 ms 周期 = 21τ</td>
+</tr>
+<tr>
+<td>单脉冲能量</td>
+<td>½CV² = 0.20 mJ @ 200 V</td>
+</tr>
+<tr>
+<td>峰值放电电流</td>
+<td>≈3.8~4 A（经 50 Ω）</td>
+</tr>
+<tr>
+<td>放电 τ</td>
+<td>50 Ω × 10 nF = 500 ns</td>
+</tr>
+<tr>
+<td>平均电流</td>
+<td>C·V·f = 0.2 mA</td>
+</tr>
+<tr>
+<td>47 kΩ 压降</td>
+<td>静态 ≈1 V → 雪崩 ≈10 V（50 Hz ≈5.6 V）</td>
+</tr>
+<tr>
+<td>静态泄放电流</td>
+<td>200 V / 10 MΩ = 20 µA</td>
+</tr>
+<tr>
+<td>断电泄放</td>
+<td>τ = 0.1 s，5τ = 0.5 s</td>
+</tr>
+<tr>
+<td>触发尖峰</td>
+<td>峰值 12 V（与 C 无关），τ = 1 µs，3τ = 3 µs</td>
+</tr>
+<tr>
+<td>注入电荷</td>
+<td>Q = 100 pF × 12 V = 1.2 nC</td>
+</tr>
+<tr>
+<td>ZTX415 脚位</td>
+<td>印字面朝自己、引脚朝下：左 C(1) · 中 B(2) · 右 E(3)</td>
+</tr>
+</tbody></table>
+<div class="pager">
+    <a href="02-模拟源子项目.html"><span class="dir">← 上一篇</span>模拟源子项目 V0–V3 方案</a>
+    <a href="04-元件参数计算手册.html" style="text-align:right"><span class="dir">下一篇 →</span>元件参数计算手册</a>
+  </div></article></div>
+<footer><div class="wrap"><span>局放信号模拟源 V0 · 200–250V / 100Hz · 纯单机 DIY 记录</span>
+<span>静态博客 · 由 <code>tools/make_blog.js</code> 从 Markdown 生成</span></div></footer>
+<script>
+(function(){
+  var G={'\\times':'×','\\cdot':'·','\\approx':'≈','\\le':'≤','\\geq':'≥','\\ge':'≥',
+    '\\neq':'≠','\\tau':'τ','\\mu':'μ','\\Omega':'Ω','\\pi':'π','\\parallel':'∥',
+    '\\qquad':'　','\\quad':'　','\\,':' ','\;':' ','\!':'','\\ ':' ',
+    '\\cdots':'…','\\infty':'∞','\\Rightarrow':'⇒','\\pm':'±','\\left':'','\\right':'',
+    '\\%':'%','\\$':'$'};
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function render(src){
+    var i=0;
+    function group(){
+      if(src[i]!=='{') return null;
+      var d=0,out='';
+      for(;i<src.length;i++){
+        var c=src[i];
+        if(c==='{'){d++; if(d>1) out+=c; continue;}
+        if(c==='}'){d--; if(d===0){i++; return out;} out+=c; continue;}
+        out+=c;
+      }
+      return out;
+    }
+    function skip(){while(src[i]===' ')i++;}
+    function parse(){
+      var out='';
+      while(i<src.length){
+        var c=src[i];
+        if(c==='\\'){
+          var m=/^\\([a-zA-Z]+|.)/.exec(src.slice(i));
+          var tok=m?m[0]:'\\', cmd=m?m[1]:'';
+          i+=tok.length;
+          if(cmd==='frac'||cmd==='dfrac'||cmd==='tfrac'){
+            skip(); var a=group()||''; skip(); var b=group()||'';
+            out+='<span class="frac"><i>'+render(a)+'</i><b>'+render(b)+'</b></span>';
+          }else if(cmd==='text'||cmd==='mathrm'||cmd==='boxed'||cmd==='operatorname'){
+            skip(); var g=group(); out+= (g===null?'':esc(g));
+          }else if(cmd==='sqrt'){
+            skip(); var r=group(); out+='√'+(r===null?'':render(r));
+          }else if(G['\\'+cmd]!==undefined){ out+=G['\\'+cmd]; }
+          else if(/^[a-zA-Z]+$/.test(cmd)){ out+=cmd; }
+          continue;
+        }
+        if(c==='^'||c==='_'){
+          i++; var tag=(c==='^'?'sup':'sub'); skip();
+          var g2=group(); var body=(g2===null?(src[i++]||''):g2);
+          out+='<'+tag+'>'+render(body)+'</'+tag+'>';
+          continue;
+        }
+        if(c==='{'){ var g3=group(); out+=(g3===null?'':render(g3)); continue; }
+        if(c==='}'||c==='$'){ i++; continue; }
+        out+=esc(c); i++;
+      }
+      return out;
+    }
+    return parse();
+  }
+  document.querySelectorAll('.math').forEach(function(el){
+    el.innerHTML=render(el.getAttribute('data-tex')||el.textContent);
+  });
+})();
+</script>
+</body></html>

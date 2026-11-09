@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>首页 · 局放信号源 V0 · 新人教程</title>
+<meta name="description" content="局放信号源 V0 · 新人教程">
+<style>
+:root{--ink:#1F2933;--muted:#5B6770;--line:#E1E7EC;--bg:#FFFFFF;--soft:#F7F9FB;
+--accent:#2C5F7C;--accent-soft:#EAF2F7;--code:#F2F5F7;--red:#B03030;--green:#1D7A5F}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);
+ font-family:"Microsoft YaHei","PingFang SC","Segoe UI",Arial,sans-serif;
+ font-size:16px;line-height:1.85;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+header.top{border-bottom:1px solid var(--line);background:var(--bg)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:20px}
+.brand{font-size:17px;font-weight:700;color:var(--ink);letter-spacing:.2px}
+.brand span{color:var(--accent)}
+nav.top a{margin-left:22px;font-size:14px;color:var(--muted)}
+nav.top a:hover{color:var(--accent)}
+.hero{padding:52px 0 34px;border-bottom:1px solid var(--line);background:var(--soft)}
+.hero h1{font-size:32px;line-height:1.4;margin:0 0 12px;font-weight:700}
+.hero p{margin:0;color:var(--muted);font-size:15px;max-width:760px}
+.hero .meta{margin-top:18px;font-size:13px;color:var(--muted)}
+.hero .meta b{color:var(--accent);font-weight:600}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px;padding:38px 0 60px}
+.card{border:1px solid var(--line);border-radius:10px;padding:22px 22px 20px;background:var(--bg);
+ transition:border-color .15s}
+.card:hover{border-color:var(--accent);text-decoration:none}
+.card .no{font-size:12px;color:var(--muted);letter-spacing:1px}
+.card h2{font-size:19px;margin:8px 0 4px;line-height:1.45;color:var(--ink)}
+.card .sub{font-size:13px;color:var(--accent);margin:0 0 12px}
+.card p{font-size:14px;color:var(--muted);line-height:1.75;margin:0}
+.card .foot{margin-top:16px;padding-top:12px;border-top:1px solid var(--line);
+ font-size:12px;color:var(--muted);display:flex;justify-content:space-between}
+.tag{display:inline-block;background:var(--accent-soft);color:var(--accent);
+ border-radius:4px;padding:1px 8px;font-size:12px}
+/* 文章页 */
+.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:44px;padding:34px 0 70px}
+aside.toc{position:sticky;top:24px;align-self:start;font-size:13px;max-height:calc(100vh - 48px);overflow:auto}
+aside.toc .t{font-weight:700;color:var(--muted);letter-spacing:1px;font-size:12px;
+ padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:10px}
+aside.toc a{display:block;color:var(--muted);padding:4px 0;line-height:1.55}
+aside.toc a:hover{color:var(--accent)}
+aside.toc a.lv3{padding-left:14px;font-size:12px}
+article{min-width:0}
+article > h1{font-size:29px;line-height:1.45;margin:0 0 6px}
+.article-sub{color:var(--muted);font-size:14px;margin:0 0 26px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+article h2{font-size:22px;margin:42px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line);scroll-margin-top:20px}
+article h3{font-size:18px;margin:30px 0 10px;scroll-margin-top:20px}
+article h4{font-size:16px;margin:22px 0 8px;color:var(--muted)}
+article p{margin:0 0 14px}
+article ul,article ol{padding-left:24px;margin:0 0 16px}
+article li{margin:4px 0}
+article blockquote{margin:16px 0;padding:10px 16px;background:var(--soft);
+ border-left:3px solid var(--accent);color:var(--muted)}
+article blockquote p{margin:0}
+article table{border-collapse:collapse;width:100%;margin:16px 0 22px;font-size:14px;display:block;overflow-x:auto}
+article th,article td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+article th{background:var(--soft);font-weight:600;white-space:nowrap}
+article tr:nth-child(even) td{background:#FCFDFE}
+article code{background:var(--code);border-radius:3px;padding:2px 5px;font-size:13px;
+ font-family:Consolas,"Cascadia Mono",monospace}
+article pre{background:#F4F7F9;border:1px solid var(--line);border-radius:8px;
+ padding:16px 18px;overflow-x:auto;margin:16px 0 22px;line-height:1.6}
+article pre code{background:none;padding:0;font-size:13px}
+article img{max-width:100%;height:auto;display:block;margin:18px auto;border:1px solid var(--line);border-radius:8px}
+article hr{border:0;border-top:1px solid var(--line);margin:34px 0}
+.math{background:var(--soft);border:1px solid var(--line);border-radius:6px;
+ padding:12px 16px;margin:16px 0;overflow-x:auto;text-align:center;
+ font-family:"Cambria Math",Georgia,serif;font-size:16px;color:var(--ink)}
+.math span.im{font-style:italic}
+.math .frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 3px}
+.math .frac i{font-style:normal;border-bottom:1px solid currentColor;padding:0 4px 2px}
+.math .frac b{font-weight:400;padding:2px 4px 0}
+.pager{display:flex;justify-content:space-between;gap:16px;margin-top:52px;
+ padding-top:22px;border-top:1px solid var(--line);font-size:14px}
+.pager a{display:block;max-width:46%}
+.pager .dir{font-size:12px;color:var(--muted);display:block;margin-bottom:3px}
+footer{border-top:1px solid var(--line);padding:22px 0 40px;color:var(--muted);font-size:13px}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+@media(max-width:900px){.layout{grid-template-columns:1fr;gap:0}aside.toc{position:static;max-height:none;
+ margin-bottom:24px;padding:14px;background:var(--soft);border-radius:8px}.wrap{padding:0 18px}}
+</style></head><body>
+<header class="top"><div class="wrap">
+  <div class="brand">局放信号源 V0 · 新人教程</div>
+  <nav class="top"><a href="blog/00-新人教程.html">开始阅读</a>
+  <a href="https://github.com/cuishili-git/pd">GitHub 源码</a></nav>
+</div></header>
+<section class="hero"><div class="wrap">
+    <h1>局放信号源 V0 · 新人教程</h1>
+    <p>一台能在 300–1500MHz 空间辐射脉冲的雪崩源，从「电容为什么是 10nF」到「万用表怎么判断它在放电」，
+    全部按软件工程师能自己推一遍的方式写清楚。不看示波器、不买射频仪器也能验源。</p>
+    <div class="meta">版本 <b>100Hz / 200–250V / ZTX415</b> &nbsp;·&nbsp; 6 篇 &nbsp;·&nbsp;
+    配套 4 张接线图 + 5 张局部图与曲线 &nbsp;·&nbsp; 参数可重算脚本 <code>tools/calc_params.py</code></div>
+  </div></section><div class="wrap"><div class="cards">
+    <a class="card" href="blog/00-新人教程.html">
+      <div class="no">01 / 06</div>
+      <h2>从零做出第一个局放脉冲</h2><div class="sub">新人教程 · 主线</div>
+      <p>软件工程师视角的心智模型、逐个元件为什么在、物料与 1/4W 串联方案、四步上电、零射频验源、故障表与 10 条纠错记录。</p>
+      <div class="foot"><span class="tag">入门必读</span><span>30 节</span></div>
+    </a>
+    <a class="card" href="blog/01-上电验收卡.html">
+      <div class="no">02 / 06</div>
+      <h2>上电验收卡（照着打勾）</h2><div class="sub">现场操作卡</div>
+      <p>到货清点、200–250V 安全规程、Step 1–4 分步动作与判据、47kΩ 压降验源法、故障排查顺序。</p>
+      <div class="foot"><span class="tag">动手时翻</span><span>14 节</span></div>
+    </a>
+    <a class="card" href="blog/02-模拟源子项目.html">
+      <div class="no">03 / 06</div>
+      <h2>模拟源子项目 V0–V3 方案</h2><div class="sub">完整设计</div>
+      <p>空间辐射 300–1500MHz、幅度可调的完整方案演进，最简雪崩版清单与原理，后续升级路线。</p>
+      <div class="foot"><span class="tag">背景</span><span>24 节</span></div>
+    </a>
+    <a class="card" href="blog/03-参数推导与踩坑FAQ.html">
+      <div class="no">04 / 06</div>
+      <h2>12 个「为什么」FAQ</h2><div class="sub">原理答疑</div>
+      <p>下拉电阻、钳位 0.8V、47kΩ 淬灭、双端口关断、τ 与 5τ、103/104 不可互换等高频疑问。</p>
+      <div class="foot"><span class="tag">原理</span><span>14 节 · 含公式</span></div>
+    </a>
+    <a class="card" href="blog/04-元件参数计算手册.html">
+      <div class="no">05 / 06</div>
+      <h2>元件参数计算手册</h2><div class="sub">能自己重算一遍</div>
+      <p>7 个电容位 + 6 个电阻位逐个「公式 → 代入 → 结果 → 边界」；含验源判据 10V 的稳态自洽解。</p>
+      <div class="foot"><span class="tag">计算</span><span>20 节 · 含公式</span></div>
+    </a>
+    <a class="card" href="blog/05-电路图图文讲解.html">
+      <div class="no">06 / 06</div>
+      <h2>电路图逐块图文讲解</h2><div class="sub">照图施工</div>
+      <p>总图拆成低压触发链 / 高压充电级 / 雪崩输出级三块，逐根线讲来龙去脉、参数、实物焊法与错接后果。</p>
+      <div class="foot"><span class="tag">接线</span><span>22 节 · 含公式</span></div>
+    </a></div></div>
+<footer><div class="wrap"><span>局放信号模拟源 V0 · 200–250V / 100Hz · 纯单机 DIY 记录</span>
+<span>静态博客 · 由 <code>tools/make_blog.js</code> 从 Markdown 生成</span></div></footer>
+<script>
+(function(){
+  var G={'\\times':'×','\\cdot':'·','\\approx':'≈','\\le':'≤','\\geq':'≥','\\ge':'≥',
+    '\\neq':'≠','\\tau':'τ','\\mu':'μ','\\Omega':'Ω','\\pi':'π','\\parallel':'∥',
+    '\\qquad':'　','\\quad':'　','\\,':' ','\;':' ','\!':'','\\ ':' ',
+    '\\cdots':'…','\\infty':'∞','\\Rightarrow':'⇒','\\pm':'±','\\left':'','\\right':'',
+    '\\%':'%','\\$':'$'};
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function render(src){
+    var i=0;
+    function group(){
+      if(src[i]!=='{') return null;
+      var d=0,out='';
+      for(;i<src.length;i++){
+        var c=src[i];
+        if(c==='{'){d++; if(d>1) out+=c; continue;}
+        if(c==='}'){d--; if(d===0){i++; return out;} out+=c; continue;}
+        out+=c;
+      }
+      return out;
+    }
+    function skip(){while(src[i]===' ')i++;}
+    function parse(){
+      var out='';
+      while(i<src.length){
+        var c=src[i];
+        if(c==='\\'){
+          var m=/^\\([a-zA-Z]+|.)/.exec(src.slice(i));
+          var tok=m?m[0]:'\\', cmd=m?m[1]:'';
+          i+=tok.length;
+          if(cmd==='frac'||cmd==='dfrac'||cmd==='tfrac'){
+            skip(); var a=group()||''; skip(); var b=group()||'';
+            out+='<span class="frac"><i>'+render(a)+'</i><b>'+render(b)+'</b></span>';
+          }else if(cmd==='text'||cmd==='mathrm'||cmd==='boxed'||cmd==='operatorname'){
+            skip(); var g=group(); out+= (g===null?'':esc(g));
+          }else if(cmd==='sqrt'){
+            skip(); var r=group(); out+='√'+(r===null?'':render(r));
+          }else if(G['\\'+cmd]!==undefined){ out+=G['\\'+cmd]; }
+          else if(/^[a-zA-Z]+$/.test(cmd)){ out+=cmd; }
+          continue;
+        }
+        if(c==='^'||c==='_'){
+          i++; var tag=(c==='^'?'sup':'sub'); skip();
+          var g2=group(); var body=(g2===null?(src[i++]||''):g2);
+          out+='<'+tag+'>'+render(body)+'</'+tag+'>';
+          continue;
+        }
+        if(c==='{'){ var g3=group(); out+=(g3===null?'':render(g3)); continue; }
+        if(c==='}'||c==='$'){ i++; continue; }
+        out+=esc(c); i++;
+      }
+      return out;
+    }
+    return parse();
+  }
+  document.querySelectorAll('.math').forEach(function(el){
+    el.innerHTML=render(el.getAttribute('data-tex')||el.textContent);
+  });
+})();
+</script>
+</body></html>

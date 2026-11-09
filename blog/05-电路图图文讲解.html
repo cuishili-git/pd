@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>电路图逐块图文讲解 · 局放信号源 V0 · 新人教程</title>
+<meta name="description" content="照图施工 · 接线">
+<style>
+:root{--ink:#1F2933;--muted:#5B6770;--line:#E1E7EC;--bg:#FFFFFF;--soft:#F7F9FB;
+--accent:#2C5F7C;--accent-soft:#EAF2F7;--code:#F2F5F7;--red:#B03030;--green:#1D7A5F}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);
+ font-family:"Microsoft YaHei","PingFang SC","Segoe UI",Arial,sans-serif;
+ font-size:16px;line-height:1.85;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+header.top{border-bottom:1px solid var(--line);background:var(--bg)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:20px}
+.brand{font-size:17px;font-weight:700;color:var(--ink);letter-spacing:.2px}
+.brand span{color:var(--accent)}
+nav.top a{margin-left:22px;font-size:14px;color:var(--muted)}
+nav.top a:hover{color:var(--accent)}
+.hero{padding:52px 0 34px;border-bottom:1px solid var(--line);background:var(--soft)}
+.hero h1{font-size:32px;line-height:1.4;margin:0 0 12px;font-weight:700}
+.hero p{margin:0;color:var(--muted);font-size:15px;max-width:760px}
+.hero .meta{margin-top:18px;font-size:13px;color:var(--muted)}
+.hero .meta b{color:var(--accent);font-weight:600}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px;padding:38px 0 60px}
+.card{border:1px solid var(--line);border-radius:10px;padding:22px 22px 20px;background:var(--bg);
+ transition:border-color .15s}
+.card:hover{border-color:var(--accent);text-decoration:none}
+.card .no{font-size:12px;color:var(--muted);letter-spacing:1px}
+.card h2{font-size:19px;margin:8px 0 4px;line-height:1.45;color:var(--ink)}
+.card .sub{font-size:13px;color:var(--accent);margin:0 0 12px}
+.card p{font-size:14px;color:var(--muted);line-height:1.75;margin:0}
+.card .foot{margin-top:16px;padding-top:12px;border-top:1px solid var(--line);
+ font-size:12px;color:var(--muted);display:flex;justify-content:space-between}
+.tag{display:inline-block;background:var(--accent-soft);color:var(--accent);
+ border-radius:4px;padding:1px 8px;font-size:12px}
+/* 文章页 */
+.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:44px;padding:34px 0 70px}
+aside.toc{position:sticky;top:24px;align-self:start;font-size:13px;max-height:calc(100vh - 48px);overflow:auto}
+aside.toc .t{font-weight:700;color:var(--muted);letter-spacing:1px;font-size:12px;
+ padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:10px}
+aside.toc a{display:block;color:var(--muted);padding:4px 0;line-height:1.55}
+aside.toc a:hover{color:var(--accent)}
+aside.toc a.lv3{padding-left:14px;font-size:12px}
+article{min-width:0}
+article > h1{font-size:29px;line-height:1.45;margin:0 0 6px}
+.article-sub{color:var(--muted);font-size:14px;margin:0 0 26px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+article h2{font-size:22px;margin:42px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line);scroll-margin-top:20px}
+article h3{font-size:18px;margin:30px 0 10px;scroll-margin-top:20px}
+article h4{font-size:16px;margin:22px 0 8px;color:var(--muted)}
+article p{margin:0 0 14px}
+article ul,article ol{padding-left:24px;margin:0 0 16px}
+article li{margin:4px 0}
+article blockquote{margin:16px 0;padding:10px 16px;background:var(--soft);
+ border-left:3px solid var(--accent);color:var(--muted)}
+article blockquote p{margin:0}
+article table{border-collapse:collapse;width:100%;margin:16px 0 22px;font-size:14px;display:block;overflow-x:auto}
+article th,article td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+article th{background:var(--soft);font-weight:600;white-space:nowrap}
+article tr:nth-child(even) td{background:#FCFDFE}
+article code{background:var(--code);border-radius:3px;padding:2px 5px;font-size:13px;
+ font-family:Consolas,"Cascadia Mono",monospace}
+article pre{background:#F4F7F9;border:1px solid var(--line);border-radius:8px;
+ padding:16px 18px;overflow-x:auto;margin:16px 0 22px;line-height:1.6}
+article pre code{background:none;padding:0;font-size:13px}
+article img{max-width:100%;height:auto;display:block;margin:18px auto;border:1px solid var(--line);border-radius:8px}
+article hr{border:0;border-top:1px solid var(--line);margin:34px 0}
+.math{background:var(--soft);border:1px solid var(--line);border-radius:6px;
+ padding:12px 16px;margin:16px 0;overflow-x:auto;text-align:center;
+ font-family:"Cambria Math",Georgia,serif;font-size:16px;color:var(--ink)}
+.math span.im{font-style:italic}
+.math .frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 3px}
+.math .frac i{font-style:normal;border-bottom:1px solid currentColor;padding:0 4px 2px}
+.math .frac b{font-weight:400;padding:2px 4px 0}
+.pager{display:flex;justify-content:space-between;gap:16px;margin-top:52px;
+ padding-top:22px;border-top:1px solid var(--line);font-size:14px}
+.pager a{display:block;max-width:46%}
+.pager .dir{font-size:12px;color:var(--muted);display:block;margin-bottom:3px}
+footer{border-top:1px solid var(--line);padding:22px 0 40px;color:var(--muted);font-size:13px}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+@media(max-width:900px){.layout{grid-template-columns:1fr;gap:0}aside.toc{position:static;max-height:none;
+ margin-bottom:24px;padding:14px;background:var(--soft);border-radius:8px}.wrap{padding:0 18px}}
+</style></head><body>
+<header class="top"><div class="wrap">
+  <div class="brand"><a href="../index.html">局放信号源 V0 · 新人教程</a></div>
+  <nav class="top"><a href="../blog/00-新人教程.html">开始阅读</a>
+  <a href="https://github.com/cuishili-git/pd">GitHub 源码</a></nav>
+</div></header>
+<div class="wrap layout"><aside class="toc"><div class="t">本页目录</div><a class="" href="#0-先看总图建立全局印象">0. 先看总图，建立全局印象</a><a class="lv3" href="#读图四条规则">读图四条规则</a><a class="lv3" href="#整条链路一句话">整条链路一句话</a><a class="" href="#1-模块---低压--触发链12-v可插面包板">1. 模块 ① · 低压 / 触发链（12 V，可插面包板）</a><a class="lv3" href="#11-这块在干什么">1.1 这块在干什么</a><a class="lv3" href="#12-逐根线讲">1.2 逐根线讲</a><a class="lv3" href="#13-关键参数详见-04-手册第-34-节">1.3 关键参数（详见 04 手册第 3、4 节）</a><a class="lv3" href="#14-实物与错接">1.4 实物与错接</a><a class="" href="#2-模块---高压充电级200250-v洞洞板焊接">2. 模块 ② · 高压充电级（200–250 V，洞洞板焊接）</a><a class="lv3" href="#21-这块在干什么">2.1 这块在干什么</a><a class="lv3" href="#22-逐根线讲">2.2 逐根线讲</a><a class="lv3" href="#23-三条通路别再混">2.3 三条通路，别再混</a><a class="lv3" href="#24-参数与选型详见-04-手册第-26-节">2.4 参数与选型（详见 04 手册第 2、6 节）</a><a class="lv3" href="#25-实物与安全">2.5 实物与安全</a><a class="" href="#3-模块---雪崩级--输出">3. 模块 ③ · 雪崩级 / 输出</a><a class="lv3" href="#31-这块在干什么">3.1 这块在干什么</a><a class="lv3" href="#32-三个引脚各接什么">3.2 三个引脚各接什么</a><a class="lv3" href="#33-关断是与条件">3.3 关断是「与」条件</a><a class="lv3" href="#34-输出与验源">3.4 输出与验源</a><a class="" href="#4-按图施工四步各点亮哪一块">4. 按图施工：四步各点亮哪一块</a><a class="" href="#5-看图最容易误读的-6-处">5. 看图最容易误读的 6 处</a><a class="" href="#6-图文件与重新生成">6. 图文件与重新生成</a></aside><article>
+    <h1>电路图逐块图文讲解</h1><div class="article-sub">照图施工 · 接线</div>
+    <blockquote>
+<p>主图一张看全，但新手容易「盯着一整张图不知道从哪根线开始」。这篇把整机图<strong>拆成三块</strong>，每块一张局部图，逐根线讲：从哪来、到哪去、为什么这么接、参数怎么算、实物怎么焊、接错会怎样。
+参数公式在 <a href="04-元件参数计算手册.html"><code>04-元件参数计算手册.md</code></a>，动手判据在 <a href="01-上电验收卡.html"><code>01-上电验收卡.md</code></a>。</p>
+</blockquote>
+<hr>
+<h2 id="0-先看总图建立全局印象">0. 先看总图，建立全局印象</h2>
+<p><img src="../docs/figures/雪崩源_完整接线图_100Hz.png" alt="整机总图"></p>
+<p><a href="../docs/figures/雪崩源_完整接线图_预览.html">网页版可无损缩放</a> · <a href="../docs/figures/ZTX415_雪崩级接线图_单张版.png">ZTX415 雪崩级特写</a> · <a href="../docs/figures/ZTX415_引脚与接线专图.png">脚位专图</a></p>
+<h3 id="读图四条规则">读图四条规则</h3>
+<table>
+<thead>
+<tr>
+<th>规则</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>颜色</strong></td>
+<td>红 = 200 V 高压 · 橙 = 12 V 低压 · 紫 = 触发 · 绿 = 雪崩输出 · 灰 = GND</td>
+</tr>
+<tr>
+<td><strong>实心圆点 = 相连</strong></td>
+<td>没圆点的交叉不相连。主图做了<strong>零交叉</strong>设计，实际不用担心这条</td>
+</tr>
+<tr>
+<td><strong>接地符号</strong></td>
+<td>图上散落的 ⏚ 不是各自独立，实物必须<strong>星形汇到一点：12 V 适配器负极</strong></td>
+</tr>
+<tr>
+<td><strong>三个虚线框</strong></td>
+<td>①②③ 是<strong>物理分区</strong>，不只是画着好看：① 可插面包板，②③ 必须洞洞板焊接</td>
+</tr>
+</tbody></table>
+<h3 id="整条链路一句话">整条链路一句话</h3>
+<pre><code>12V ─┬─→ NE555(100Hz 方波) ──100pF 微分──→ ZTX415 的 B   ←「什么时候发」
+     └─→ 升压模块(200V) ─47kΩ─→ T 节点 ─→ ZTX415 的 C   ←「能量从哪来」
+                                  │
+                              10nF 储能 + 10MΩ 泄放
+                                  │
+                    ZTX415 的 E ─50Ω─→ GND ＋ 10cm 天线   ←「往哪发」
+</code></pre>
+<p><strong>三区之间有 4 根跨区线</strong>，局部图里它们会被切断，先记住去向：</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>颜色</th>
+<th>从</th>
+<th>到</th>
+<th>传什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>①</td>
+<td>橙</td>
+<td>① 区 12 V 适配器</td>
+<td>② 区升压模块 VIN</td>
+<td>12 V 供电</td>
+</tr>
+<tr>
+<td>②</td>
+<td>红</td>
+<td>② 区 T 节点</td>
+<td>③ 区 ZTX415 <strong>C</strong></td>
+<td>190 V 高压</td>
+</tr>
+<tr>
+<td>③</td>
+<td>紫</td>
+<td>① 区 NE555 3 脚（经 100 pF）</td>
+<td>③ 区 ZTX415 <strong>B</strong></td>
+<td>12 V、1 µs 点火尖峰</td>
+</tr>
+<tr>
+<td>④</td>
+<td>灰</td>
+<td>全部 ⏚</td>
+<td>适配器负极</td>
+<td>公共地</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>局部图是从总图<strong>按坐标裁剪</strong>出来的，接线与主图 100% 一致（生成脚本 <a href="../tools/make_figures.py"><code>tools/make_figures.py</code></a> 不改任何连线）。所以图边缘出现的「断头线」不是画错，是这根线去了另一个分区——<strong>照上表接过去即可</strong>。</p>
+</blockquote>
+<hr>
+<h2 id="1-模块---低压--触发链12-v可插面包板">1. 模块 ① · 低压 / 触发链（12 V，可插面包板）</h2>
+<p><img src="../docs/figures/模块1_低压触发链.png" alt="模块1 低压触发链"></p>
+<h3 id="11-这块在干什么">1.1 这块在干什么</h3>
+<p>把 12 V 直流变成<strong>每 9.75 ms 一个的 12 V 方波</strong>，再把方波的上升沿削成 <strong>1 µs 的窄尖峰</strong>送给雪崩管基极。它只负责「什么时候发」，不提供任何发射能量。</p>
+<h3 id="12-逐根线讲">1.2 逐根线讲</h3>
+<table>
+<thead>
+<tr>
+<th>图上元素</th>
+<th>从 → 到</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>12 V 适配器框</td>
+<td>出两路：一路去 ② 区升压模块，一路留在本区</td>
+<td>本轮直供，XL6009 不接</td>
+</tr>
+<tr>
+<td>橙色 12 V 母线</td>
+<td>接 R1 上端、NE555 的 <strong>8 VCC / 4 RST</strong></td>
+<td>4 脚悬空必停振，是新手第一大坑</td>
+</tr>
+<tr>
+<td>R1 4.7 kΩ → R2 68 kΩ → Ct 104</td>
+<td>串联到 GND，构成定时链</td>
+<td>三个值一起决定 100 Hz</td>
+</tr>
+<tr>
+<td><strong>7 DIS</strong></td>
+<td>接 R1/R2 中点</td>
+<td>放电管在 Ct 放到 1/3 VCC 时导通</td>
+</tr>
+<tr>
+<td><strong>2 TRG + 6 THR 短接</strong></td>
+<td>接 R2/Ct 中点</td>
+<td>两脚必须短接，漏了就停振；这个中点是最容易插错的</td>
+</tr>
+<tr>
+<td><strong>5 CTRL</strong></td>
+<td>10 nF 到 GND（可省）</td>
+<td>内部 3×5 kΩ 分压点，加了抗高频干扰</td>
+</tr>
+<tr>
+<td><strong>1 GND</strong></td>
+<td>公共地</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>3 OUT</strong></td>
+<td>→ 100 pF → B 节点</td>
+<td>方波出口</td>
+</tr>
+<tr>
+<td>100 pF 串 + 10 kΩ 下拉</td>
+<td>一阶高通微分器</td>
+<td>把 12 V 方波削成 1 µs 尖峰</td>
+</tr>
+<tr>
+<td>紫色低位走线</td>
+<td>绕到图底再向右出图</td>
+<td><strong>刻意绕开高压区</strong>，实物也别和 200 V 线平行贴着走</td>
+</tr>
+</tbody></table>
+<h3 id="13-关键参数详见-04-手册第-34-节">1.3 关键参数（详见 <a href="04-元件参数计算手册.html">04 手册第 3、4 节</a>）</h3>
+<div class="math" data-tex="f = \frac{1.44}{(R_1 + 2R_2)C_t} = \frac{1.44}{(4.7\text{k} + 2\times68\text{k})\times100\text{nF}} \approx 102.5\ \text{Hz}">f = \frac{1.44}{(R_1 + 2R_2)C_t} = \frac{1.44}{(4.7\text{k} + 2\times68\text{k})\times100\text{nF}} \approx 102.5\ \text{Hz}</div>
+<table>
+<thead>
+<tr>
+<th>量</th>
+<th>值</th>
+<th>图上怎么验</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>占空比</td>
+<td>51.7%</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>3 脚直流档</strong></td>
+<td><strong>≈6.20 V</strong></td>
+<td><strong>Step 1 判据</strong>：读到 6 V 就是起振了</td>
+</tr>
+<tr>
+<td>触发尖峰 τ</td>
+<td>10 kΩ × 100 pF = <strong>1 µs</strong></td>
+<td>万用表量不到（占空比 0.03%），别误判没信号</td>
+</tr>
+<tr>
+<td>注入电荷</td>
+<td>100 pF × 12 V = <strong>1.2 nC</strong></td>
+<td>点不着火时换 470 pF，电荷涨到 5.64 nC</td>
+</tr>
+</tbody></table>
+<p><img src="../docs/figures/参数曲线_微分尖峰.png" alt="微分尖峰曲线"></p>
+<p><strong>看图要点</strong>：三条曲线<strong>峰值都是 12 V</strong>，只有尾巴长度不同——这就是为什么「下拉电阻会不会把尖峰拉低」是个伪问题。电容只改宽度，不改峰值。100 pF 是经验起点，470 pF 是点火失败时的加强档，10 pF 太窄点不着火。</p>
+<h3 id="14-实物与错接">1.4 实物与错接</h3>
+<table>
+<thead>
+<tr>
+<th>项</th>
+<th>做法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>放哪</td>
+<td>面包板即可，全是 12 V 侧</td>
+</tr>
+<tr>
+<td>Ct 丝印</td>
+<td><strong>必须是 104（100 nF）</strong>；拿成 103 会跑回 ≈1 kHz，充电来不及</td>
+</tr>
+<tr>
+<td>R1/R2 别颠倒</td>
+<td>4.7 k 在上、68 k 在下；颠倒占空比会极端化</td>
+</tr>
+<tr>
+<td>4 脚忘接 VCC</td>
+<td>3 脚恒 0 V，停振</td>
+</tr>
+<tr>
+<td>2/6 忘短接</td>
+<td>3 脚恒 12 V 或恒 0 V，停振</td>
+</tr>
+<tr>
+<td>10 kΩ 画成串联</td>
+<td>必须从<strong>基极节点下拉到 GND</strong>，串在 100 pF 与基极之间会让基极悬空、随机自触发</td>
+</tr>
+</tbody></table>
+<p><strong>图边缘两根断头线</strong>：右上橙线 → ② 区升压模块 VIN；右侧紫线 → ③ 区 ZTX415 的 <strong>B</strong>。</p>
+<hr>
+<h2 id="2-模块---高压充电级200250-v洞洞板焊接">2. 模块 ② · 高压充电级（200–250 V，洞洞板焊接）</h2>
+<p><img src="../docs/figures/模块2_高压充电级.png" alt="模块2 高压充电级"></p>
+<h3 id="21-这块在干什么">2.1 这块在干什么</h3>
+<p>把 200 V 高压<strong>掐成 4.3 mA 的细流</strong>，慢慢给 10 nF 充满，等 ③ 区一声令下把电放掉。它是「弹药库 + 限速器」，本身不产生脉冲。</p>
+<h3 id="22-逐根线讲">2.2 逐根线讲</h3>
+<table>
+<thead>
+<tr>
+<th>图上元素</th>
+<th>从 → 到</th>
+<th>为什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>45–390 V 升压模块</td>
+<td>12 V 输入 → 200 V 输出</td>
+<td>空载先调到 200 V，<strong>250 V 封顶</strong></td>
+</tr>
+<tr>
+<td><strong>47 kΩ / 3 W</strong></td>
+<td>模块 HV+ → T 节点</td>
+<td>限流充电 + <strong>淬灭</strong>（后详）</td>
+</tr>
+<tr>
+<td><strong>T 节点</strong></td>
+<td>三条支路汇合点，也是验源测量点</td>
+<td>稳态 ≈190 V</td>
+</tr>
+<tr>
+<td>10 nF / 1 kV <strong>(103)</strong></td>
+<td>T 节点 → GND</td>
+<td>储能：雪崩瞬间要 3.8 A，47 kΩ 只给得出 4.3 mA</td>
+</tr>
+<tr>
+<td>10 MΩ / 1 W</td>
+<td>T 节点 → GND，<strong>全程常接</strong></td>
+<td>断电后 0.5 s 放净残压，安全件</td>
+</tr>
+<tr>
+<td>右侧红线</td>
+<td>T 节点 → ③ 区 C</td>
+<td>把 190 V 送到雪崩管集电极</td>
+</tr>
+</tbody></table>
+<h3 id="23-三条通路别再混">2.3 三条通路，别再混</h3>
+<p>这是整台设备最容易记串的地方：</p>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>电流走哪</th>
+<th>量级</th>
+<th>T 节点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>充电</td>
+<td>200 V → <strong>47 kΩ</strong> → 10 nF → GND</td>
+<td>4.3 mA 递减到 20 µA</td>
+<td>0 → 190 V</td>
+</tr>
+<tr>
+<td>脉冲放电</td>
+<td>10 nF → <strong>③ 区 ZTX415 → 50 Ω</strong> → GND</td>
+<td>峰值 3.8 A</td>
+<td>190 V → <strong>0.21 V</strong></td>
+</tr>
+<tr>
+<td>雪崩末期</td>
+<td>200 V → 47 kΩ → ZTX415 → 50 Ω → GND</td>
+<td>仅 4.3 mA</td>
+<td>&lt; 维持电流 → 关断</td>
+</tr>
+<tr>
+<td>断电残压</td>
+<td>10 nF → <strong>10 MΩ</strong> → GND</td>
+<td>20 µA，τ=0.1 s</td>
+<td>190 V → &lt; 5 V</td>
+</tr>
+</tbody></table>
+<p><strong>47 kΩ 上游接着电源，它不泄放、也不放电</strong>。它的作用是把「硬电压源」变成「软电流源」：雪崩导通时 </p>
+<span class="math" data-tex="V_T = 200 \times 50/(47\,000+50) \approx 0.21\ \text{V}" style="display:inline;padding:1px 6px">V_T = 200 \times 50/(47\,000+50) \approx 0.21\ \text{V}</span>
+<p>，电源还挂着，但补给只有 4.3 mA，远低于维持电流 </p>
+<span class="math" data-tex="I_H" style="display:inline;padding:1px 6px">I_H</span>
+<p>（几十 mA），管子于是自动关断。术语叫<strong>限流淬灭</strong>。</p>
+<p><img src="../docs/figures/参数曲线_充电与放电.png" alt="充电与放电波形"></p>
+<p><strong>看图要点</strong>：指数充电 2.35 ms 到 99.3%（5τ），然后稳在 190 V 等到 9.75 ms，雪崩瞬间垂直掉到 0.21 V。周期 10 ms = <strong>20.8τ</strong>，所以每次都充满；旧版 1 kHz 只有 2.1τ，T 节点塌到 ≈135 V——这是把频率降下来的真正原因。</p>
+<h3 id="24-参数与选型详见-04-手册第-26-节">2.4 参数与选型（详见 <a href="04-元件参数计算手册.html">04 手册第 2、6 节</a>）</h3>
+<table>
+<thead>
+<tr>
+<th>量</th>
+<th>公式</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>充电 τ</td>
+<td>47 kΩ × 10 nF</td>
+<td>470 µs</td>
+</tr>
+<tr>
+<td>充满 5τ</td>
+<td>5 × 470 µs</td>
+<td>2.35 ms</td>
+</tr>
+<tr>
+<td>单脉冲能量</td>
+<td>½ × 10 nF × 190²</td>
+<td>0.18 mJ</td>
+</tr>
+<tr>
+<td>放电 τ</td>
+<td>50 Ω × 10 nF</td>
+<td>500 ns</td>
+</tr>
+<tr>
+<td><strong>验源判据</strong></td>
+<td>47 kΩ 压降</td>
+<td><strong>静态 0.94 V → 雪崩 10.05 V</strong></td>
+</tr>
+</tbody></table>
+<p><strong>储能位三个硬要求</strong>：容值 10 nF（丝印 103）、耐压 ≥630 V 推荐 1 kV、材质 C0G/NP0 首选。X7R 在 200 V 直流偏压下容量会掉 20~40%，Y5V/Z5U 掉 80%；普通 50 V 瓷片焊上去会直接击穿。<strong>绝不能把定时位的 104 换过来</strong>——τ 变 4.7 ms，100 Hz 只有 2.1τ，脉冲反而更弱。</p>
+<p><strong>47 kΩ / 3W 里的「3 W」是耐压需求，不是功率需求</strong>：正常工作只有 2 mW，最坏（T 节点短路）0.85 W；但 1/4 W 色环电阻额定工作电压只有 200~250 V，搭在 190 V 上长期会漂移爬电。手上全是 1/4 W 时，用 <strong>4×12 kΩ 串联</strong>、<strong>2×5.1 MΩ 串联</strong>，零采购解决。</p>
+<h3 id="25-实物与安全">2.5 实物与安全</h3>
+<table>
+<thead>
+<tr>
+<th>项</th>
+<th>做法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>放哪</td>
+<td><strong>洞洞板焊接或引脚架空</strong>，普通面包板额定约 250 V、爬电不够</td>
+</tr>
+<tr>
+<td>间距</td>
+<td>相邻高压节点 ≥3 mm，高低压区物理隔开 ≥10 mm</td>
+</tr>
+<tr>
+<td>所有裸露点</td>
+<td>套热缩管</td>
+</tr>
+<tr>
+<td>断电后</td>
+<td>万用表确认 HV &lt; 5 V 才允许装 / 拆 ZTX415；模块内部 µF 级电容要等 ≥60 s</td>
+</tr>
+<tr>
+<td>表笔</td>
+<td>黑 → COM、红 → <strong>VΩ</strong>；红表笔插 A 孔量 200 V 等于直接短路</td>
+</tr>
+<tr>
+<td>禁止</td>
+<td>用螺丝刀 / 镊子短路放电</td>
+</tr>
+</tbody></table>
+<p><strong>图边缘两根断头线</strong>：左侧橙线 ← ① 区 12 V；右侧红线 → ③ 区 ZTX415 的 <strong>C</strong>。</p>
+<hr>
+<h2 id="3-模块---雪崩级--输出">3. 模块 ③ · 雪崩级 / 输出</h2>
+<p><img src="../docs/figures/模块3_雪崩输出级.png" alt="模块3 雪崩输出级"></p>
+<h3 id="31-这块在干什么">3.1 这块在干什么</h3>
+<p>ZTX415 平时截止；基极收到 ① 区的 1 µs 尖峰后<strong>雪崩导通</strong>，把 ② 区存好的 10 nF 在几十 ns 内经 50 Ω 放空，形成亚 ns 前沿的宽带脉冲，由 10 cm 导线辐射出去。</p>
+<h3 id="32-三个引脚各接什么">3.2 三个引脚各接什么</h3>
+<table>
+<thead>
+<tr>
+<th>脚</th>
+<th>线色</th>
+<th>来自</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>C</strong>（左，1 脚）</td>
+<td>红</td>
+<td>② 区 T 节点</td>
+<td>190 V 高压输入端</td>
+</tr>
+<tr>
+<td><strong>B</strong>（中，2 脚）</td>
+<td>紫</td>
+<td>① 区 100 pF 微分 + 10 kΩ 下拉</td>
+<td>点火端，只认边沿</td>
+</tr>
+<tr>
+<td><strong>E</strong>（右，3 脚）</td>
+<td>绿</td>
+<td>50 Ω → GND，同一点分出 10 cm 天线</td>
+<td>放电回路 + 辐射</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>⚠️ <strong>ZTX415 是 E-Line 封装，印字面朝自己、引脚朝下：左 C · 中 B · 右 E</strong>。常见 TO-92 多是 E-B-C，正好相反。依据：立创 C5245685 引脚图 <code>C1B2E3</code>、Diodes datasheet 封装图 <code>C B E</code>。散装货一律实测：万用表二极管档，红表笔固定一脚、黑表笔碰另两脚，<strong>两次都读 0.60–0.70 V 的就是 B</strong>，且应在中间。C/B/E 焊反是「点不着火」的头号原因。</p>
+</blockquote>
+<h3 id="33-关断是与条件">3.3 关断是「与」条件</h3>
+<table>
+<thead>
+<tr>
+<th>端口</th>
+<th>谁负责</th>
+<th>条件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>基极侧</td>
+<td><strong>10 kΩ 下拉</strong>（① 区）</td>
+<td>撤掉点火尖峰，τ=1 µs 把节点放回 0 V</td>
+</tr>
+<tr>
+<td>集电极侧</td>
+<td><strong>47 kΩ 限流</strong>（② 区）</td>
+<td>10 nF 放空后补给只剩 4.3 mA &lt;</td>
+</tr>
+</tbody></table>
+<span class="math" data-tex="I_H" style="display:inline;padding:1px 6px">I_H</span>
+<p>，防自持 |</p>
+<p>只撤基极而让高压直连 T 节点 → 持续电弧烧管；只有限流而基极悬空 → 随机自触发。<strong>10 MΩ 不参与脉冲关断</strong>（τ=0.1 s，比 ns 级慢 6 个数量级），它只在断电后工作。</p>
+<h3 id="34-输出与验源">3.4 输出与验源</h3>
+<p>50 Ω 是惯用阻抗，把峰值电流定在 ≈3.8 A；10 cm 硬导线是临时天线，够 V0 用。</p>
+<p>图右下的白框是<strong>零射频验源判据</strong>——不买任何接收设备，只量 ② 区 47 kΩ 两端直流压降：</p>
+<table>
+<thead>
+<tr>
+<th>读数</th>
+<th>结论</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>≈1 V，NE555 开关都一样</td>
+<td>没点着火：脚位 / 触发 / 电压</td>
+</tr>
+<tr>
+<td><strong>从 ≈1 V 跳到 ≈10 V</strong></td>
+<td><strong>雪崩在反复放电 ✅ 本级通过</strong></td>
+</tr>
+<tr>
+<td>NE555 关着就很大</td>
+<td>自激，电压过高</td>
+</tr>
+</tbody></table>
+<p>两表笔共模都在 ≈190 V、彼此差压只有 1~10 V，所以<strong>先用 DCV 1000 V 档确认差压 &lt; 20 V，再切 DCV 20 V 档读准</strong>。完整推导见 <a href="04-元件参数计算手册.html">04 手册第 8 节</a>。</p>
+<p><strong>图边缘两根断头线</strong>：左侧红线 ← ② 区 T 节点（C）；左侧紫线 ← ① 区 100 pF 微分输出（B），它在低位绕行后从这里竖上来。</p>
+<hr>
+<h2 id="4-按图施工四步各点亮哪一块">4. 按图施工：四步各点亮哪一块</h2>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>图上涉及</th>
+<th>通电范围</th>
+<th>过关判据</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>1</strong></td>
+<td><strong>只有 ① 区</strong>（NE555 + R1/R2/Ct）</td>
+<td>12 V，<strong>② 区升压模块不接 12 V</strong></td>
+<td>适配器 12.0 V、4 脚 12.0 V、3 脚直流 <strong>≈6 V</strong></td>
+</tr>
+<tr>
+<td>2</td>
+<td>② 区升压模块（输出悬空）</td>
+<td>只模块</td>
+<td>空载调到 <strong>200 V</strong>，记下电位器位置</td>
+</tr>
+<tr>
+<td>3</td>
+<td>② 区 47 kΩ + 10 nF + 10 MΩ（<strong>仍不装管子</strong>）</td>
+<td>② 区</td>
+<td>10 nF 上端 ≈200 V；断电后电压缓慢归零（证明泄放接上了）</td>
+</tr>
+<tr>
+<td>4</td>
+<td>全图（装 ZTX415）</td>
+<td>全部</td>
+<td>47 kΩ 压降从 1 V 跳到 ≈10 V</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>③ 区在 Step 1–3 全程保持空着</strong>，先不要插 ZTX415。这样前三次上电时，即使接错也不会烧管。</p>
+</blockquote>
+<hr>
+<h2 id="5-看图最容易误读的-6-处">5. 看图最容易误读的 6 处</h2>
+<table>
+<thead>
+<tr>
+<th>误读</th>
+<th>实际</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>「交叉的线应该相连吧」</td>
+<td>主图零交叉；<strong>有实心圆点才相连</strong></td>
+</tr>
+<tr>
+<td>「⏚ 符号各自接地就行」</td>
+<td>必须星形汇到<strong>适配器负极一个点</strong>，别拿面包板长条地轨当高压脉冲回路</td>
+</tr>
+<tr>
+<td>「C/B/E 按 TO-92 习惯插」</td>
+<td>ZTX415 是 <strong>C-B-E</strong>，与常见 E-B-C 相反</td>
+</tr>
+<tr>
+<td>「47 kΩ 是放电电阻」</td>
+<td>它上游接着电源，只限流；放电走 ZTX415+50 Ω，泄放走 10 MΩ</td>
+</tr>
+<tr>
+<td>「10 nF 和 10 MΩ 是一对，都在放电」</td>
+<td>10 nF 存能量，10 MΩ 只在<strong>断电后</strong>放净残压</td>
+</tr>
+<tr>
+<td>「局部图边缘的断头线是画漏了」</td>
+<td>是跨区线，按第 0 节那张 4 行表接过去</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="6-图文件与重新生成">6. 图文件与重新生成</h2>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>雪崩源_完整接线图_100Hz.png</code> / <code>.svg</code> / <code>_预览.html</code></td>
+<td><strong>整机主图</strong>，照着焊</td>
+</tr>
+<tr>
+<td><code>模块1_低压触发链.png</code> / <code>.svg</code></td>
+<td>本文第 1 节配图</td>
+</tr>
+<tr>
+<td><code>模块2_高压充电级.png</code> / <code>.svg</code></td>
+<td>本文第 2 节配图</td>
+</tr>
+<tr>
+<td><code>模块3_雪崩输出级.png</code> / <code>.svg</code></td>
+<td>本文第 3 节配图</td>
+</tr>
+<tr>
+<td><code>参数曲线_充电与放电.png</code> / <code>.svg</code></td>
+<td>T 节点波形，讲 τ 与淬灭</td>
+</tr>
+<tr>
+<td><code>参数曲线_微分尖峰.png</code> / <code>.svg</code></td>
+<td>三档微分电容对比</td>
+</tr>
+<tr>
+<td><code>ZTX415_雪崩级接线图_单张版.png</code></td>
+<td>雪崩级特写</td>
+</tr>
+<tr>
+<td><code>ZTX415_引脚与接线专图.png</code></td>
+<td>脚位 + 万用表验脚 + 参数表</td>
+</tr>
+</tbody></table>
+<p>改了总图或参数后，一键重生成全部局部图和曲线：</p>
+<pre><code class="language-bash">cd D:/workbuddy/docs/pd
+python tools/make_figures.py --png     # 生成 3 张分区图 + 2 张曲线，并渲染 PNG
+python tools/calc_params.py --compare # 核对曲线用到的数值
+</code></pre>
+<p><code>make_figures.py</code> 的裁剪只改 <code>viewBox</code>，<strong>不改总图任何一根线</strong>；曲线图按 <code>calc_params.py</code> 的同一套公式画，所以图和文字不会各说各话。</p>
+<hr>
+<blockquote>
+<p><strong>今天只做 Step 1</strong>：高压模块别接 12 V，只插 ① 区 NE555，量适配器 12.0 V、4 脚 12.0 V、3 脚直流档 ≈6 V，三个数报回来再往下走。</p>
+</blockquote>
+<div class="pager">
+    <a href="04-元件参数计算手册.html"><span class="dir">← 上一篇</span>元件参数计算手册</a>
+    <span></span>
+  </div></article></div>
+<footer><div class="wrap"><span>局放信号模拟源 V0 · 200–250V / 100Hz · 纯单机 DIY 记录</span>
+<span>静态博客 · 由 <code>tools/make_blog.js</code> 从 Markdown 生成</span></div></footer>
+<script>
+(function(){
+  var G={'\\times':'×','\\cdot':'·','\\approx':'≈','\\le':'≤','\\geq':'≥','\\ge':'≥',
+    '\\neq':'≠','\\tau':'τ','\\mu':'μ','\\Omega':'Ω','\\pi':'π','\\parallel':'∥',
+    '\\qquad':'　','\\quad':'　','\\,':' ','\;':' ','\!':'','\\ ':' ',
+    '\\cdots':'…','\\infty':'∞','\\Rightarrow':'⇒','\\pm':'±','\\left':'','\\right':'',
+    '\\%':'%','\\$':'$'};
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function render(src){
+    var i=0;
+    function group(){
+      if(src[i]!=='{') return null;
+      var d=0,out='';
+      for(;i<src.length;i++){
+        var c=src[i];
+        if(c==='{'){d++; if(d>1) out+=c; continue;}
+        if(c==='}'){d--; if(d===0){i++; return out;} out+=c; continue;}
+        out+=c;
+      }
+      return out;
+    }
+    function skip(){while(src[i]===' ')i++;}
+    function parse(){
+      var out='';
+      while(i<src.length){
+        var c=src[i];
+        if(c==='\\'){
+          var m=/^\\([a-zA-Z]+|.)/.exec(src.slice(i));
+          var tok=m?m[0]:'\\', cmd=m?m[1]:'';
+          i+=tok.length;
+          if(cmd==='frac'||cmd==='dfrac'||cmd==='tfrac'){
+            skip(); var a=group()||''; skip(); var b=group()||'';
+            out+='<span class="frac"><i>'+render(a)+'</i><b>'+render(b)+'</b></span>';
+          }else if(cmd==='text'||cmd==='mathrm'||cmd==='boxed'||cmd==='operatorname'){
+            skip(); var g=group(); out+= (g===null?'':esc(g));
+          }else if(cmd==='sqrt'){
+            skip(); var r=group(); out+='√'+(r===null?'':render(r));
+          }else if(G['\\'+cmd]!==undefined){ out+=G['\\'+cmd]; }
+          else if(/^[a-zA-Z]+$/.test(cmd)){ out+=cmd; }
+          continue;
+        }
+        if(c==='^'||c==='_'){
+          i++; var tag=(c==='^'?'sup':'sub'); skip();
+          var g2=group(); var body=(g2===null?(src[i++]||''):g2);
+          out+='<'+tag+'>'+render(body)+'</'+tag+'>';
+          continue;
+        }
+        if(c==='{'){ var g3=group(); out+=(g3===null?'':render(g3)); continue; }
+        if(c==='}'||c==='$'){ i++; continue; }
+        out+=esc(c); i++;
+      }
+      return out;
+    }
+    return parse();
+  }
+  document.querySelectorAll('.math').forEach(function(el){
+    el.innerHTML=render(el.getAttribute('data-tex')||el.textContent);
+  });
+})();
+</script>
+</body></html>

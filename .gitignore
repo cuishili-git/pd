@@ -21,3 +21,7 @@ desktop.ini
 # 本地草稿（不进仓库）
 _draft/
 scratch/
+
+# 本地渲染验收快照（不进仓库）
+_shot_*.png
+_dom.html

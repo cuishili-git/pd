@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>模拟源子项目 V0–V3 方案 · 局放信号源 V0 · 新人教程</title>
+<meta name="description" content="完整设计 · 背景">
+<style>
+:root{--ink:#1F2933;--muted:#5B6770;--line:#E1E7EC;--bg:#FFFFFF;--soft:#F7F9FB;
+--accent:#2C5F7C;--accent-soft:#EAF2F7;--code:#F2F5F7;--red:#B03030;--green:#1D7A5F}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);
+ font-family:"Microsoft YaHei","PingFang SC","Segoe UI",Arial,sans-serif;
+ font-size:16px;line-height:1.85;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+header.top{border-bottom:1px solid var(--line);background:var(--bg)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:20px}
+.brand{font-size:17px;font-weight:700;color:var(--ink);letter-spacing:.2px}
+.brand span{color:var(--accent)}
+nav.top a{margin-left:22px;font-size:14px;color:var(--muted)}
+nav.top a:hover{color:var(--accent)}
+.hero{padding:52px 0 34px;border-bottom:1px solid var(--line);background:var(--soft)}
+.hero h1{font-size:32px;line-height:1.4;margin:0 0 12px;font-weight:700}
+.hero p{margin:0;color:var(--muted);font-size:15px;max-width:760px}
+.hero .meta{margin-top:18px;font-size:13px;color:var(--muted)}
+.hero .meta b{color:var(--accent);font-weight:600}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px;padding:38px 0 60px}
+.card{border:1px solid var(--line);border-radius:10px;padding:22px 22px 20px;background:var(--bg);
+ transition:border-color .15s}
+.card:hover{border-color:var(--accent);text-decoration:none}
+.card .no{font-size:12px;color:var(--muted);letter-spacing:1px}
+.card h2{font-size:19px;margin:8px 0 4px;line-height:1.45;color:var(--ink)}
+.card .sub{font-size:13px;color:var(--accent);margin:0 0 12px}
+.card p{font-size:14px;color:var(--muted);line-height:1.75;margin:0}
+.card .foot{margin-top:16px;padding-top:12px;border-top:1px solid var(--line);
+ font-size:12px;color:var(--muted);display:flex;justify-content:space-between}
+.tag{display:inline-block;background:var(--accent-soft);color:var(--accent);
+ border-radius:4px;padding:1px 8px;font-size:12px}
+/* 文章页 */
+.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:44px;padding:34px 0 70px}
+aside.toc{position:sticky;top:24px;align-self:start;font-size:13px;max-height:calc(100vh - 48px);overflow:auto}
+aside.toc .t{font-weight:700;color:var(--muted);letter-spacing:1px;font-size:12px;
+ padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:10px}
+aside.toc a{display:block;color:var(--muted);padding:4px 0;line-height:1.55}
+aside.toc a:hover{color:var(--accent)}
+aside.toc a.lv3{padding-left:14px;font-size:12px}
+article{min-width:0}
+article > h1{font-size:29px;line-height:1.45;margin:0 0 6px}
+.article-sub{color:var(--muted);font-size:14px;margin:0 0 26px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+article h2{font-size:22px;margin:42px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line);scroll-margin-top:20px}
+article h3{font-size:18px;margin:30px 0 10px;scroll-margin-top:20px}
+article h4{font-size:16px;margin:22px 0 8px;color:var(--muted)}
+article p{margin:0 0 14px}
+article ul,article ol{padding-left:24px;margin:0 0 16px}
+article li{margin:4px 0}
+article blockquote{margin:16px 0;padding:10px 16px;background:var(--soft);
+ border-left:3px solid var(--accent);color:var(--muted)}
+article blockquote p{margin:0}
+article table{border-collapse:collapse;width:100%;margin:16px 0 22px;font-size:14px;display:block;overflow-x:auto}
+article th,article td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+article th{background:var(--soft);font-weight:600;white-space:nowrap}
+article tr:nth-child(even) td{background:#FCFDFE}
+article code{background:var(--code);border-radius:3px;padding:2px 5px;font-size:13px;
+ font-family:Consolas,"Cascadia Mono",monospace}
+article pre{background:#F4F7F9;border:1px solid var(--line);border-radius:8px;
+ padding:16px 18px;overflow-x:auto;margin:16px 0 22px;line-height:1.6}
+article pre code{background:none;padding:0;font-size:13px}
+article img{max-width:100%;height:auto;display:block;margin:18px auto;border:1px solid var(--line);border-radius:8px}
+article hr{border:0;border-top:1px solid var(--line);margin:34px 0}
+.math{background:var(--soft);border:1px solid var(--line);border-radius:6px;
+ padding:12px 16px;margin:16px 0;overflow-x:auto;text-align:center;
+ font-family:"Cambria Math",Georgia,serif;font-size:16px;color:var(--ink)}
+.math span.im{font-style:italic}
+.math .frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 3px}
+.math .frac i{font-style:normal;border-bottom:1px solid currentColor;padding:0 4px 2px}
+.math .frac b{font-weight:400;padding:2px 4px 0}
+.pager{display:flex;justify-content:space-between;gap:16px;margin-top:52px;
+ padding-top:22px;border-top:1px solid var(--line);font-size:14px}
+.pager a{display:block;max-width:46%}
+.pager .dir{font-size:12px;color:var(--muted);display:block;margin-bottom:3px}
+footer{border-top:1px solid var(--line);padding:22px 0 40px;color:var(--muted);font-size:13px}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+@media(max-width:900px){.layout{grid-template-columns:1fr;gap:0}aside.toc{position:static;max-height:none;
+ margin-bottom:24px;padding:14px;background:var(--soft);border-radius:8px}.wrap{padding:0 18px}}
+</style></head><body>
+<header class="top"><div class="wrap">
+  <div class="brand"><a href="../index.html">局放信号源 V0 · 新人教程</a></div>
+  <nav class="top"><a href="../blog/00-新人教程.html">开始阅读</a>
+  <a href="https://github.com/cuishili-git/pd">GitHub 源码</a></nav>
+</div></header>
+<div class="wrap layout"><aside class="toc"><div class="t">本页目录</div><a class="" href="#一为什么必须有这个子项目">一、为什么必须有这个子项目</a><a class="" href="#二四个版本v0--v3">二、四个版本（V0 → V3）</a><a class="" href="#三v0纯软件仿真已在固件规划内">三、V0：纯软件仿真（已在固件规划内）</a><a class="" href="#四v1相位定位电脉冲源工频链路的考卷">四、V1：相位定位电脉冲源（工频链路的考卷）</a><a class="lv3" href="#原理">原理</a><a class="lv3" href="#相位模式发生器软件">相位模式发生器（软件）</a><a class="lv3" href="#器件清单50-元">器件清单（~50 元）</a><a class="lv3" href="#验收标准">验收标准</a><a class="" href="#五v2空间辐射-uhf-模拟源300m15ghz幅值可调">五、V2：空间辐射 UHF 模拟源（300M–1.5GHz，幅值可调）</a><a class="lv3" href="#51-频谱覆盖的硬指标脉冲边沿时间">5.1 频谱覆盖的硬指标：脉冲边沿时间</a><a class="lv3" href="#52-幅度调节粗调--细调两级">5.2 幅度调节：粗调 + 细调两级</a><a class="lv3" href="#53-天线从quot短导线quot升级为可复现宽带天线">5.3 天线：从&amp;quot;短导线&amp;quot;升级为可复现宽带天线</a><a class="lv3" href="#54-整机结构v1-的相位控制直接复用">5.4 整机结构（V1 的相位控制直接复用）</a><a class="lv3" href="#55-器件清单200-元">5.5 器件清单（~200 元）</a><a class="lv3" href="#56-验收标准">5.6 验收标准</a><a class="" href="#六v3幅值标定pc-出处的考卷">六、V3：幅值标定（pC 出处的考卷）</a><a class="lv3" href="#验收标准-2">验收标准</a><a class="" href="#七里程碑与依赖关系">七、里程碑与依赖关系</a><a class="" href="#八与主项目任务包的对应">八、与主项目任务包的对应</a><a class="" href="#九完整硬件采购表模拟源子项目-v1v2v3">九、完整硬件采购表（模拟源子项目 V1+V2+V3）</a><a class="lv3" href="#91-需要新买的">9.1 需要新买的</a><a class="lv3" href="#94-最简版清单第一周就能做出来55">9.4 最简版清单（第一周就能做出来，≈¥55）</a><a class="lv3" href="#92-已购复用核对库存即可">9.2 已购/复用（核对库存即可）</a><a class="lv3" href="#93-采购与安全要点">9.3 采购与安全要点</a></aside><article>
+    <h1>模拟源子项目 V0–V3 方案</h1><div class="article-sub">完整设计 · 背景</div>
+    <blockquote>
+<p>目标：做一个&quot;标准考卷&quot;信号源——在没有任何真实 GIS 的条件下，输出<strong>相位可控、模式可复现、幅值可标定</strong>的局放模拟信号，用于验收工频同步、PRPD 判型、UHF 射频链路和 APP 显示。
+日期：2026-11-04</p>
+</blockquote>
+<hr>
+<h2 id="一为什么必须有这个子项目">一、为什么必须有这个子项目</h2>
+<table>
+<thead>
+<tr>
+<th>没有模拟源</th>
+<th>有模拟源</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>链路对不对只能等现场</td>
+<td>实验桌上就能验收每一级</td>
+</tr>
+<tr>
+<td>PRPD 图谱好坏没有对照</td>
+<td>四类缺陷图谱有&quot;标准答案&quot;可对</td>
+</tr>
+<tr>
+<td>幅值灵敏度无法测量</td>
+<td>可复现的脉冲幅度 → 可测最低可检幅值</td>
+</tr>
+<tr>
+<td>APP 显示逻辑无法回归测试</td>
+<td>固定输入 → 输出永远一致</td>
+</tr>
+</tbody></table>
+<p><strong>核心设计思想：一个&quot;模拟源&quot;不是一台仪器，而是四个逐级变难的版本。每一级只服务一类验收，做到哪级用哪级。</strong></p>
+<hr>
+<h2 id="二四个版本v0--v3">二、四个版本（V0 → V3）</h2>
+<table>
+<thead>
+<tr>
+<th>版本</th>
+<th>形态</th>
+<th>考什么</th>
+<th>成本</th>
+<th>依赖</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>V0 纯软件仿真</strong></td>
+<td>固件内置 SIM 模式</td>
+<td>直方图/打包/APP 渲染逻辑</td>
+<td>0 元</td>
+<td>无</td>
+</tr>
+<tr>
+<td><strong>V1 相位定位电脉冲</strong></td>
+<td>ESP32 + 市电过零 + 窄脉冲电路</td>
+<td>工频同步、峰值保持、PRPD 相位正确性</td>
+<td>~50 元</td>
+<td>板 A</td>
+</tr>
+<tr>
+<td><strong>V2 空间辐射 UHF 源</strong></td>
+<td>雪崩管 ZTX415 + PE4302 幅值调节 + 蝶形天线</td>
+<td>板 B 射频链路、频段覆盖 300–1500M、幅值线性、频谱扫描</td>
+<td>~200 元</td>
+<td>板 B</td>
+</tr>
+<tr>
+<td><strong>V3 幅值标定注入</strong></td>
+<td>已知电容 + 已知电压阶跃</td>
+<td>灵敏度、pC 标定、与商用仪对比</td>
+<td>~30 元</td>
+<td>V2</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="三v0纯软件仿真已在固件规划内">三、V0：纯软件仿真（已在固件规划内）</h2>
+<p>pda-fw 的 <code>SIM_MODE = 1</code>：固件内部按&quot;缺陷模式库&quot;合成每窗峰值，再走真实打包 → USB → APP 全链路。</p>
+<p><strong>模式库（四类缺陷的相位指纹，软件和硬件模拟源共用同一份数据）：</strong></p>
+<table>
+<thead>
+<tr>
+<th>缺陷类型</th>
+<th>放电相位分布</th>
+<th>正负半周对称性</th>
+<th>PRPD 目视特征</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>内部气隙</td>
+<td>30°<del>90° 和 210°</del>270° 两簇</td>
+<td>对称</td>
+<td>&quot;兔子耳朵&quot;双峰</td>
+</tr>
+<tr>
+<td>电晕（尖对板）</td>
+<td>单半周 90° 附近（或 270°）集中</td>
+<td>极不对称</td>
+<td>单峰</td>
+</tr>
+<tr>
+<td>沿面放电</td>
+<td>相位跨度宽（0°~180°）</td>
+<td>弱不对称</td>
+<td>宽散带</td>
+</tr>
+<tr>
+<td>自由颗粒</td>
+<td>相位随机、幅值随机漂移</td>
+<td>无规律</td>
+<td>满屏散点、缓慢移动</td>
+</tr>
+</tbody></table>
+<p><strong>验收标准：APP 渲染的仿真图谱与上表描述一致；把模式从&quot;气隙&quot;切到&quot;电晕&quot;，图谱 1 秒内变化。</strong></p>
+<hr>
+<h2 id="四v1相位定位电脉冲源工频链路的考卷">四、V1：相位定位电脉冲源（工频链路的考卷）</h2>
+<h3 id="原理">原理</h3>
+<p>用一块独立的小电路，在<strong>指定的工频相位角</strong>上发出宽度几十 ns 的电脉冲，注入（或辐射进）被测链路。因为脉冲出现的相位角精确可控，PRPD 上就应该在对应角度出现点簇——这就是&quot;考卷答案&quot;。</p>
+<pre><code>市电 220V → 阻容降压 → 光耦过零检测 → 同步方波
+                                  ↓
+模拟源 MCU（可用另一块 ESP32-C3，¥15）→ 定时器在设定相位角触发
+                                  ↓
+GPIO 上升沿（~10ns）→ RC 微分 + 比较器整形 → 几十 ns 窄脉冲
+                                  ↓
+输出：导线耦合 / 直接接到被测板输入
+</code></pre>
+<h3 id="相位模式发生器软件">相位模式发生器（软件）</h3>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>范围</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>相位角</td>
+<td>0~360°，步进 1°</td>
+<td>每个脉冲出现的相位</td>
+</tr>
+<tr>
+<td>分布模式</td>
+<td>单角 / 高斯簇 / 均匀随机</td>
+<td>对应电晕/气隙/颗粒</td>
+</tr>
+<tr>
+<td>重复率</td>
+<td>10 ~ 10000 脉冲/秒</td>
+<td>可调</td>
+</tr>
+<tr>
+<td>相位抖动</td>
+<td>0 ~ ±10°</td>
+<td>模拟真实放电分散性</td>
+</tr>
+<tr>
+<td>幅值分布</td>
+<td>固定 / 对数正态</td>
+<td>模拟幅值分散</td>
+</tr>
+</tbody></table>
+<h3 id="器件清单50-元">器件清单（~50 元）</h3>
+<table>
+<thead>
+<tr>
+<th>器件</th>
+<th>用途</th>
+<th>单价</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ESP32-C3 SuperMini</td>
+<td>模拟源主控</td>
+<td>¥15</td>
+</tr>
+<tr>
+<td>光耦 PC817 + 电阻电容</td>
+<td>市电过零检测</td>
+<td>¥3</td>
+</tr>
+<tr>
+<td>比较器 TLV3201（与主项目同型号）</td>
+<td>脉冲整形</td>
+<td>¥3</td>
+</tr>
+<tr>
+<td>面包板 + 阻容</td>
+<td>搭建</td>
+<td>¥20</td>
+</tr>
+</tbody></table>
+<p>⚠️ <strong>安全提示</strong>：市电过零检测有 220V 直连部分，必须用光耦隔离，降压电容选 X2 安规电容；不熟悉市电操作就改用&quot;第二块电极板&quot;从空间取过零（零风险，方案与主项目工频同步完全相同）。</p>
+<h3 id="验收标准">验收标准</h3>
+<ol>
+<li>模拟源设&quot;单角 90°&quot;→ 主设备 PRPD 在 90°±2° 出现点簇</li>
+<li>设&quot;气隙模式&quot;→ 出现对称双峰，与 V0 仿真图谱形态一致</li>
+<li>相位从 90° 改到 120°，图谱跟着移动 30°±2°（这就是当年板 A 联调的验收项）</li>
+<li>幅值扫描 → 测出主设备<strong>最低可检幅值</strong>（灵敏度数字的出处）</li>
+</ol>
+<hr>
+<h2 id="五v2空间辐射-uhf-模拟源300m15ghz幅值可调">五、V2：空间辐射 UHF 模拟源（300M–1.5GHz，幅值可调）</h2>
+<blockquote>
+<p>需求（2026-11-04 定稿）：<strong>空间辐射</strong>（不经导线连接，模拟真实局放的电磁辐射路径）、<strong>频段 300–1500 MHz</strong>（与主设备 UHF 前端完全对齐）、<strong>幅度可调整</strong>（考板 B 动态范围和衰减补偿逻辑）。</p>
+</blockquote>
+<h3 id="51-频谱覆盖的硬指标脉冲边沿时间">5.1 频谱覆盖的硬指标：脉冲边沿时间</h3>
+<p>窄脉冲的频谱能量大致平坦地延伸到 <code>f_max ≈ 0.35 / tr</code>（tr = 上升沿）。要覆盖 1.5 GHz：</p>
+<table>
+<thead>
+<tr>
+<th>目标频率上限</th>
+<th>所需边沿 tr</th>
+<th>对应器件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1.0 GHz</td>
+<td>≤ 0.35 ns</td>
+<td>雪崩管 2N2377（tr≈0.5ns，勉强）</td>
+</tr>
+<tr>
+<td><strong>1.5 GHz</strong></td>
+<td><strong>≤ 0.23 ns</strong></td>
+<td><strong>ZTX415 雪崩管（tr≈0.2–0.3ns）</strong> 或雪崩+SRD 整形</td>
+</tr>
+</tbody></table>
+<p><strong>结论：原方案 2N2377 只能考到 1 GHz，考不满 300–1500M，换 ZTX415（约 ¥5/只，专门按雪崩工况设计的型号）。</strong> 若实测 1.4G 处能量不够，再加一级阶跃恢复二极管（SRD，如 MP4023 类）二次整形，边沿可压到 0.15ns。</p>
+<h3 id="52-幅度调节粗调--细调两级">5.2 幅度调节：粗调 + 细调两级</h3>
+<table>
+<thead>
+<tr>
+<th>手段</th>
+<th>范围</th>
+<th>精度</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>充电电压粗调</strong></td>
+<td>30–300 V（升压模块电位器）</td>
+<td>连续但粗</td>
+<td>雪崩脉冲幅值近似正比于充电电压</td>
+</tr>
+<tr>
+<td><strong>PE4302 步进衰减细调</strong></td>
+<td>0–31.5 dB，0.5 dB 步进</td>
+<td>精确已知</td>
+<td>DC–4 GHz，ESP32-C3 走 SPI 控制；<strong>与主项目 R1 是同一颗器件，买一次两处用</strong></td>
+</tr>
+<tr>
+<td>拉距离（兜底）</td>
+<td>0.5–3 m</td>
+<td>不精确</td>
+<td>自由空间损耗 20·lg(d)，只做定性验证</td>
+</tr>
+</tbody></table>
+<p>组合起来：电压做量程档（大台阶），PE4302 做精确刻度（每步 0.5dB 且<strong>衰减量软件可查</strong>），可以精确复现任意幅值——回归测试时&quot;同一设定 → 同一读数&quot;就是靠它保证。</p>
+<p>⚠️ <strong>一个必须提前接受的边界</strong>：辐射幅值<strong>无法绝对标定</strong>（天线增益、空间耦合、极化都进系数），所以&quot;幅度可调&quot;是<strong>相对量</strong>——用主设备自己的读数建立相对刻度即可（这正好也是考衰减补偿逻辑的方式）。绝对 pC 标定仍由 V3 注入法承担，两条通道各司其职。</p>
+<h3 id="53-天线从quot短导线quot升级为可复现宽带天线">5.3 天线：从&quot;短导线&quot;升级为可复现宽带天线</h3>
+<p>短导线辐射方向图和频谱都不可复现，每次摆的角度不同读数就不同，回归测试没法做。替代：</p>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>成本</th>
+<th>300–1500M 覆盖</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>PCB 蝶形/平面单极天线（立创打样）</strong></td>
+<td>~¥30/5 片</td>
+<td>✅ 平缓</td>
+<td>一次打样多片，发射/参考各留几片，<strong>首选</strong></td>
+</tr>
+<tr>
+<td>市售 UWB 蝶形天线（3.1–10.6G）</td>
+<td>¥20–40</td>
+<td>⚠️ 高段好、300–500M 偏弱</td>
+<td>应急可用</td>
+</tr>
+<tr>
+<td>盘锥天线</td>
+<td>¥50+</td>
+<td>✅ 全段最平</td>
+<td>体积大，桌面不便</td>
+</tr>
+</tbody></table>
+<h3 id="54-整机结构v1-的相位控制直接复用">5.4 整机结构（V1 的相位控制直接复用）</h3>
+<pre><code>市电过零（光耦）或电极板空间取过零 → ESP32-C3 相位模式发生器
+        ↓ 设定相位角触发
+雪崩级（ZTX415，充电 30–300V）→ &lt;0.3ns 电流阶跃
+        ↓
+PE4302 步进衰减（0–31.5dB）→ PCB 蝶形天线 → 空间辐射
+</code></pre>
+<p>V1 的模式发生器固件（单角/高斯簇/随机、重复率、抖动）一行不改，只是把&quot;输出到导线&quot;换成&quot;输出到雪崩级&quot;。</p>
+<h3 id="55-器件清单200-元">5.5 器件清单（~200 元）</h3>
+<table>
+<thead>
+<tr>
+<th>器件</th>
+<th>用途</th>
+<th>单价</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ZTX415</strong>（Zetex/Diodes）</td>
+<td>雪崩管，tr≈0.2ns</td>
+<td>¥5×5（易损坏，多备）</td>
+</tr>
+<tr>
+<td>倍压整流阻容件 + 升压模块</td>
+<td>充电 30–300V，电位器可调</td>
+<td>¥30</td>
+</tr>
+<tr>
+<td><strong>PE4302 模块</strong>（淘宝现成板）</td>
+<td>步进衰减 0–31.5dB</td>
+<td>¥40</td>
+</tr>
+<tr>
+<td>PCB 蝶形天线打样（立创）</td>
+<td>发射天线</td>
+<td>¥30</td>
+</tr>
+<tr>
+<td>ESP32-C3 SuperMini</td>
+<td>主控（与 V1 共用）</td>
+<td>¥15</td>
+</tr>
+<tr>
+<td>SMA 座、同轴线、洞洞板</td>
+<td>连接</td>
+<td>¥20</td>
+</tr>
+</tbody></table>
+<h3 id="56-验收标准">5.6 验收标准</h3>
+<ol>
+<li><strong>频段覆盖</strong>：主设备频谱扫描在 500 MHz、900 MHz、<strong>1.4 GHz</strong> 三个频点均能捕获脉冲峰（1.4G 这一点是&quot;覆盖到 1500M&quot;的直接证据）</li>
+<li><strong>幅值细调线性</strong>：PE4302 每步进 6 dB，主设备读数下降 6±1 dB（衰减补偿逻辑的考题）</li>
+<li><strong>动态范围</strong>：充电电压 30→300V + 衰减 31.5dB 全程，主设备读数单调变化 ≥40 dB</li>
+<li><strong>相位正确性</strong>：PRPD 相位簇与设定模式一致（V1 相位控制经<strong>辐射通道</strong>仍成立——这才是&quot;空间辐射&quot;需求的价值：把天线→前端→超外差→检波→相位整条真实路径全考进去）</li>
+</ol>
+<hr>
+<h2 id="六v3幅值标定pc-出处的考卷">六、V3：幅值标定（pC 出处的考卷）</h2>
+<p>按 IEC 60270 的注入法反推：把模拟源脉冲经一个**已知小电容 Cq（如 1pF、10pF）**注入已知回路，视在电荷 <code>q = Cq × ΔU</code>。</p>
+<table>
+<thead>
+<tr>
+<th>注入电容</th>
+<th>阶跃 30V</th>
+<th>阶跃 300V</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1 pF</td>
+<td>30 pC</td>
+<td>300 pC</td>
+</tr>
+<tr>
+<td>0.1 pF（自制小板）</td>
+<td>3 pC</td>
+<td>30 pC</td>
+</tr>
+</tbody></table>
+<h3 id="验收标准-2">验收标准</h3>
+<ol>
+<li>注入已知 q，主设备读出的相对幅值与 q 成正比（线性度）</li>
+<li>得到&quot;最低可检测 pC&quot;数字——与商用仪器同条件对比</li>
+<li>换衰减档位后读数经档位补偿后一致（验证衰减补偿逻辑）</li>
+</ol>
+<p>⚠️ V3 的绝对精度只能到&quot;数量级正确&quot;（手持机不做严格 IEC 标定腔），它的价值是<strong>相对线性</strong>和<strong>灵敏度下限</strong>，不是绝对 pC 值。</p>
+<hr>
+<h2 id="七里程碑与依赖关系">七、里程碑与依赖关系</h2>
+<pre><code>V0（0 元，立即做，随固件 M1）─┐
+V1（50 元，板 A 联调时做）    ├→ 板 A 验收 → 固件 PRPD 验收
+V2（100 元，板 B 联调时做）──→ 板 B 验收 → 频谱/超外差验收
+V3（30 元，整机标定时做）────→ 灵敏度数字 → 商用仪对比
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>里程碑</th>
+<th>时机</th>
+<th>验收物</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>S0</td>
+<td>现在（随固件 V1.0）</td>
+<td>V0 仿真模式进固件</td>
+</tr>
+<tr>
+<td>S1</td>
+<td>板 A 到手后</td>
+<td>V1 相位定位脉冲源，PRPD 相位验收通过</td>
+</tr>
+<tr>
+<td>S2</td>
+<td>板 B 到手后</td>
+<td>V2 空间辐射源：300–1500M 三点捕获 + 幅值 6dB 步进线性 + ≥40dB 动态范围</td>
+</tr>
+<tr>
+<td>S3</td>
+<td>整机集成后</td>
+<td>V3 线性度 + 灵敏度报告</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="八与主项目任务包的对应">八、与主项目任务包的对应</h2>
+<table>
+<thead>
+<tr>
+<th>主项目任务包</th>
+<th>用哪个模拟源</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>D2 直方图/快照</td>
+<td>V0</td>
+</tr>
+<tr>
+<td>S2 固件相位</td>
+<td>V1（相位验收的金标准）</td>
+</tr>
+<tr>
+<td>R1~R4 射频链路</td>
+<td>V2</td>
+</tr>
+<tr>
+<td>C2~C4 标定与对比</td>
+<td>V3</td>
+</tr>
+<tr>
+<td>P2 APP PRPD 渲染</td>
+<td>V0 + V1</td>
+</tr>
+</tbody></table>
+<p><strong>结论：模拟源不是&quot;额外的东西&quot;，它是每个任务包的验收工具本身。没有它，任务包的验收标准就变成一句空话。</strong></p>
+<hr>
+<h2 id="九完整硬件采购表模拟源子项目-v1v2v3">九、完整硬件采购表（模拟源子项目 V1+V2+V3）</h2>
+<blockquote>
+<p>整理日期：2026-11-04。V0 纯软件无硬件。
+渠道缩写：立=立创商城，淘=淘宝，打=嘉立创打样。
+价格为 2026-11 常规零售价，±30% 正常波动。</p>
+</blockquote>
+<h3 id="91-需要新买的">9.1 需要新买的</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>器件/物料</th>
+<th>型号/规格</th>
+<th>数量</th>
+<th>单价</th>
+<th>小计</th>
+<th>渠道</th>
+<th>用于</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>ESP32-C3 主控</td>
+<td>ESP32-C3 SuperMini</td>
+<td>2</td>
+<td>¥15</td>
+<td>¥30</td>
+<td>淘</td>
+<td>V1/V2</td>
+<td>1 块用 1 块备份；也可拆 V1/V2 各一块</td>
+</tr>
+<tr>
+<td>2</td>
+<td>光耦</td>
+<td>PC817 DIP-4</td>
+<td>5</td>
+<td>¥0.5</td>
+<td>¥2.5</td>
+<td>淘/立</td>
+<td>V1</td>
+<td>市电过零隔离</td>
+</tr>
+<tr>
+<td>3</td>
+<td>X2 安规电容</td>
+<td>0.68µF / 275VAC</td>
+<td>2</td>
+<td>¥3</td>
+<td>¥6</td>
+<td>淘</td>
+<td>V1</td>
+<td>阻容降压，<strong>必须安规型号</strong></td>
+</tr>
+<tr>
+<td>4</td>
+<td>降压配套电阻</td>
+<td>470kΩ 1W + 100Ω + 1N4007 等</td>
+<td>1 套</td>
+<td>¥3</td>
+<td>¥3</td>
+<td>淘</td>
+<td>V1</td>
+<td>阻容降压整流稳压</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>雪崩晶体管</strong></td>
+<td><strong>ZTX415</strong>（Diodes/Zetex）</td>
+<td>5</td>
+<td>¥5</td>
+<td>¥25</td>
+<td>立</td>
+<td>V2</td>
+<td>tr≈0.2–0.3ns，覆盖 1.5GHz；易损多备</td>
+</tr>
+<tr>
+<td>5b</td>
+<td><del>雪崩管（低压起步档）</del></td>
+<td><del>2N2377</del></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>V2</td>
+<td><strong>已取消</strong>（2026-11-04）：2N2377 停产难买，改为一步到位 ZTX415@270V，见 9.4</td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>高压升压模块</td>
+<td><strong>3.7V 电池输入 → 30–300V 可调输出</strong>（搜&quot;高压包升压模块 3.7V 300V 可调&quot;）</td>
+<td>1</td>
+<td>¥15</td>
+<td>¥15</td>
+<td>淘</td>
+<td>V2</td>
+<td>手持版幅值粗调；开关噪声按 5.4 间歇充电+屏蔽处理</td>
+</tr>
+<tr>
+<td>7</td>
+<td>高压快恢复二极管</td>
+<td>UF4007</td>
+<td>10</td>
+<td>¥0.3</td>
+<td>¥3</td>
+<td>淘/立</td>
+<td>V2</td>
+<td>倍压/整流</td>
+</tr>
+<tr>
+<td>8</td>
+<td>高压瓷片电容</td>
+<td>10nF / 1kV</td>
+<td>10</td>
+<td>¥0.5</td>
+<td>¥5</td>
+<td>淘</td>
+<td>V2</td>
+<td>倍压储能</td>
+</tr>
+<tr>
+<td>9</td>
+<td>充电限流电阻</td>
+<td>47kΩ / 2W</td>
+<td>5</td>
+<td>¥0.5</td>
+<td>¥2.5</td>
+<td>淘</td>
+<td>V2</td>
+<td>雪崩级充电回路</td>
+</tr>
+<tr>
+<td>10</td>
+<td>泄放电阻</td>
+<td>10MΩ / 1W</td>
+<td>3</td>
+<td>¥0.5</td>
+<td>¥1.5</td>
+<td>淘</td>
+<td>V2</td>
+<td><strong>断电后给高压电容放电，安全件</strong></td>
+</tr>
+<tr>
+<td>11</td>
+<td><strong>步进衰减模块</strong></td>
+<td>PE4302（0–31.5dB / 0.5dB 步进，DC–4GHz）</td>
+<td>1</td>
+<td>¥40</td>
+<td>¥40</td>
+<td>淘</td>
+<td>V2</td>
+<td>幅值细调核心；假货风险中等，稳妥走立创买芯片（~¥25）自制/等模块</td>
+</tr>
+<tr>
+<td>12</td>
+<td><strong>蝶形天线</strong></td>
+<td>PCB 平面蝶形/单极，300M–1.5G</td>
+<td>5</td>
+<td>¥6</td>
+<td>¥30</td>
+<td>打</td>
+<td>V2</td>
+<td>立创打样 5 片；发射/参考各留几片</td>
+</tr>
+<tr>
+<td>13</td>
+<td>SMA 母座</td>
+<td>板端直插/弯脚</td>
+<td>5</td>
+<td>¥2</td>
+<td>¥10</td>
+<td>淘</td>
+<td>V2</td>
+<td>天线板和衰减模块引出</td>
+</tr>
+<tr>
+<td>14</td>
+<td>SMA 转接</td>
+<td>SMA 公-公转接柱</td>
+<td>1</td>
+<td>¥8</td>
+<td>¥8</td>
+<td>淘</td>
+<td>V2</td>
+<td>模块↔天线连接</td>
+</tr>
+<tr>
+<td>15</td>
+<td>供电</td>
+<td><strong>1S 锂电池 2000mAh + TP4056 充电保护模块</strong></td>
+<td>1 套</td>
+<td>¥20</td>
+<td>¥20</td>
+<td>淘</td>
+<td>V2</td>
+<td>手持供电；整机 1–1.5W 续航 4–5h</td>
+</tr>
+<tr>
+<td>16</td>
+<td>万能板（洞洞板）</td>
+<td>7×9cm</td>
+<td>2</td>
+<td>¥3</td>
+<td>¥6</td>
+<td>淘</td>
+<td>V2</td>
+<td>雪崩级搭建</td>
+</tr>
+<tr>
+<td>17</td>
+<td>拨码开关</td>
+<td>4 位</td>
+<td>1</td>
+<td>¥3</td>
+<td>¥3</td>
+<td>淘</td>
+<td>V2</td>
+<td>模式/相位选择</td>
+</tr>
+<tr>
+<td>18</td>
+<td>状态指示</td>
+<td>LED + 1kΩ 电阻</td>
+<td>1 套</td>
+<td>¥1</td>
+<td>¥1</td>
+<td>淘</td>
+<td>V1/V2</td>
+<td></td>
+</tr>
+<tr>
+<td>19</td>
+<td>热缩管/高压绝缘</td>
+<td>热缩管 Φ3/Φ6 各 1m</td>
+<td>1 套</td>
+<td>¥5</td>
+<td>¥5</td>
+<td>淘</td>
+<td>V2</td>
+<td><strong>300V 裸露点必须套</strong></td>
+</tr>
+<tr>
+<td>19b</td>
+<td>缓冲电容</td>
+<td>1µF / 450V 电解</td>
+<td>2</td>
+<td>¥1</td>
+<td>¥2</td>
+<td>淘</td>
+<td>V2</td>
+<td>300V 轨储能；脉冲跌落仅 3V（1%），是间歇充电的底气</td>
+</tr>
+<tr>
+<td>19c</td>
+<td>EN 控制管</td>
+<td>2N7002 MOSFET</td>
+<td>5</td>
+<td>¥0.2</td>
+<td>¥1</td>
+<td>淘/立</td>
+<td>V2</td>
+<td>ESP32 GPIO 控制升压模块使能，实现间歇充电</td>
+</tr>
+<tr>
+<td>19d</td>
+<td>输出 LC 滤波</td>
+<td>10µH 功率电感 + 1µF 电容</td>
+<td>各 2</td>
+<td>¥1</td>
+<td>¥2</td>
+<td>淘</td>
+<td>V2</td>
+<td>压制升压模块传导噪声</td>
+</tr>
+<tr>
+<td>19e</td>
+<td>压电点火器</td>
+<td>煤气灶/打火机配件型</td>
+<td>2</td>
+<td>¥2</td>
+<td>¥4</td>
+<td>淘</td>
+<td>V2</td>
+<td>现场快速自检源（&quot;有没有响应&quot;级），与雪崩源互补</td>
+</tr>
+<tr>
+<td>20</td>
+<td>注入电容</td>
+<td>C0G/NP0 1pF ×5、10pF ×5</td>
+<td>10</td>
+<td>¥0.6</td>
+<td>¥6</td>
+<td>立</td>
+<td>V3</td>
+<td>q=Cq×ΔU 的 Cq；<strong>0.1pF 买不到就自制</strong>（两块铜箔+垫片）</td>
+</tr>
+<tr>
+<td>21</td>
+<td>BNC 假负载</td>
+<td>50Ω / 2W 终端负载</td>
+<td>1</td>
+<td>¥5</td>
+<td>¥5</td>
+<td>淘</td>
+<td>V3</td>
+<td>标定回路</td>
+</tr>
+<tr>
+<td>22</td>
+<td>同轴转接</td>
+<td>BNC-母转 SMA-公</td>
+<td>2</td>
+<td>¥3</td>
+<td>¥6</td>
+<td>淘</td>
+<td>V3</td>
+<td>与 RG174 对接</td>
+</tr>
+</tbody></table>
+<p><strong>完整版合计 ≈ ¥230（不含运费）</strong>（手持电池、低压起步档、压电自检源共新增 ~¥25）。<strong>第一次只买 9.4 节的最简版（≈¥45）</strong>，跑通了再补其余——不要一次买齐。</p>
+<h3 id="94-最简版清单第一周就能做出来55">9.4 最简版清单（第一周就能做出来，≈¥55）</h3>
+<blockquote>
+<p>2026-11-04 定稿：<strong>一步到位用 ZTX415</strong>（原&quot;2N2377 低压练手→再换 ZTX415&quot;两步走取消——2N2377 已停产难买）。目标：一个能出 UHF 窄脉冲的最小雪崩源。<strong>暂不做</strong>：相位模式、PE4302 细调、蝶形天线、间歇充电、锂电池——这些全部等最简版出波形之后再补。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>器件</th>
+<th>规格</th>
+<th>数量</th>
+<th>小计</th>
+<th>渠道</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>ESP32-C3 主控</td>
+<td>SuperMini</td>
+<td>1</td>
+<td>¥15</td>
+<td>淘</td>
+</tr>
+<tr>
+<td>2</td>
+<td>高压升压模块</td>
+<td><strong>45–390V 连续可调、带稳压、非隔离</strong>（2026-11-04 实购定稿）；注意输入需 8–32V，跳线选 8–16V 或 10–32V</td>
+<td>1</td>
+<td>¥25</td>
+<td>淘</td>
+</tr>
+<tr>
+<td>2b</td>
+<td>12V 电源适配器</td>
+<td>12V/1A，5.5×2.1 圆头（模块输入 ≥8V，USB 5V 喂不动）</td>
+<td>1</td>
+<td>¥10</td>
+<td>淘</td>
+</tr>
+<tr>
+<td>3</td>
+<td>雪崩管</td>
+<td><strong>ZTX415</strong>（击穿 ~260–300V，tr≈0.2–0.3ns，频谱平坦到 ~1.4GHz）</td>
+<td>5</td>
+<td>¥25</td>
+<td><strong>立创</strong></td>
+</tr>
+<tr>
+<td>4</td>
+<td>储能电容</td>
+<td><strong>10nF/1kV，介质优先 C0G/NP0</strong>（编码 <strong>103</strong>，不是 104）；Y5V 类在 200V 偏压下容量可能缩到 20–30%</td>
+<td>10</td>
+<td>¥5</td>
+<td>淘</td>
+</tr>
+<tr>
+<td>5</td>
+<td>高压二极管</td>
+<td>UF4007</td>
+<td>10</td>
+<td>¥3</td>
+<td>淘</td>
+</tr>
+<tr>
+<td>6</td>
+<td>限流电阻</td>
+<td><strong>47kΩ/3W</strong>（200V 下静态 ≈0.85W，3W 余量足）</td>
+<td>2</td>
+<td>¥2</td>
+<td>淘</td>
+</tr>
+<tr>
+<td>7</td>
+<td>泄放电阻</td>
+<td>10MΩ/1W</td>
+<td>2</td>
+<td>¥1</td>
+<td>淘</td>
+</tr>
+<tr>
+<td>8</td>
+<td>触发源</td>
+<td>NE555 DIP-8（第一步）+ R1 4.7kΩ + R2 68kΩ + <strong>Ct 100nF (104)</strong></td>
+<td>1 套</td>
+<td>¥2</td>
+<td>淘</td>
+</tr>
+<tr>
+<td>—</td>
+<td>面包板、杜邦线、RG174、覆铜板、100pF/10kΩ/50Ω</td>
+<td>—</td>
+<td>—</td>
+<td>0</td>
+<td><strong>已有</strong></td>
+</tr>
+</tbody></table>
+<p><strong>四步搭出来</strong>：① 升压模块<strong>空载先调到 200V</strong>（上限 250V，见下方修订），万用表确认；② 洞洞板搭&quot;47kΩ→10nF→ZTX415&quot;，泄放电阻常接；③ NE555（≈100Hz 无稳态，3 脚 OUT → 100pF → 基极节点，10kΩ 下拉）触发雪崩管基极——之后换 ESP32-C3 GPIO 只换信号源一段，雪崩级不动；④ 输出端接一段 10cm 导线当天线。</p>
+<p><strong>引脚</strong>：ZTX415 是 E-Line（TO-92 兼容），<strong>平面（印字面）朝自己、引脚朝下，左 C / 中 B / 右 E</strong>（引脚 1/2/3 = C/B/E），与常见 TO-92 的 E-B-C 相反。依据立创 C5245685 引脚图 <code>C1B2E3</code> 与 Diodes datasheet 封装图 <code>C B E</code>；散装货仍建议二极管档复验，见 <code>D:\workbuddy\docs\ZTX415_引脚与接线专图.png</code>。</p>
+<p><strong>最简版的验收就一条：主设备频谱扫描在 300M–1.4GHz 段看到脉冲峰，挪动导线位置读数变化。</strong> 出了这个波形，说明雪崩级活着，再逐个补相位→细调→好天线→电池；没出波形，问题也只可能在 8 个元件里。</p>
+<blockquote>
+<p><strong>2026-11-09 开工补充（V0 阶段）</strong>：用户决定先做模拟源、暂不做锁相/PRPD，且主设备板 B 尚未完成，所以上面的&quot;主设备频谱扫描&quot;验收<strong>本轮用不了</strong>，改为「源在发脉冲 + 临时检波探头能数到脉冲」。完整分步上电、高压安全规程、零射频验源判据（量 47kΩ 两端压降是否从 ≈1V 跳到 ≈10V）、接收侧最小链路见 <strong><code>D:\workbuddy\docs\雪崩源_上电验收卡_V0.md</code></strong>。第一次上电改用 12V 适配器直供（NE555 也用 12V），<strong>XL6009 与 UF4007 本轮不用</strong>；高压部分不得插面包板。</p>
+<p><strong>2026-11-09 频率修订</strong>：重复率由 ≈1kHz 改为 <strong>≈100Hz</strong>，只需把 NE555 定时电容 Ct 换成 <strong>100nF(104)</strong>，R1/R2 不动 ⇒ <code>f ≈ 102Hz</code>、占空比仍 51.7%。50Hz 档 = 两颗 104 并联(200nF) ⇒ ≈51Hz。降频后 τ=470µs、周期 10ms=21τ，电容能真正充满（1kHz 时只有 2.1τ，T 节点被拉到 ≈136V）；平均功耗 200mW→20mW；验源压降判据由「几十~100V+」改为 <strong>≈1V → ≈10V</strong>。详见 <code>雪崩源_上电验收卡_V0.md</code> 开头修订框。</p>
+<p><strong>2026-11-09 高压数值修订（重要，覆盖本节及下文所有 270V / 280–290V / 300V 表述）</strong>：查到 Zetex 官方应用笔记 <strong>AN8</strong>（<code>diodes.com/assets/App-Note-Files/zetex/an8.pdf</code>）后确认——<code>V_CBO = 260V</code> 是<strong>绝对最大额定值</strong>，不是&quot;必须超过才能击穿的工作点&quot;；雪崩靠基极触发点火，AN8 图 6 给出 10nF 电容下起始电压约 <strong>120–175V</strong>（随基极驱动强弱变化），图 11a 官方单电容脉冲电路标注 <strong>+170–260V</strong>，拓扑与本方案几乎相同。因此原定 ≈270V 已越线且无必要。<strong>统一改为：200V 起步 → 不出脉冲小幅上调 → 250V 封顶</strong>；不出脉冲优先加强触发（100pF→470pF、10kΩ→1kΩ），而不是继续加电压。我们的基极驱动（≈1.2mA）远弱于 AN8 测试条件（50–200mA），所以实际点火电压会偏高，这正是&quot;先加强触发&quot;的原因。详见 <code>ZTX415_引脚与接线专图.png</code> 第 ④ 块。</p>
+</blockquote>
+<h3 id="92-已购复用核对库存即可">9.2 已购/复用（核对库存即可）</h3>
+<table>
+<thead>
+<tr>
+<th>物料</th>
+<th>用于</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TLV3201AIDBVR ×4 + SOT23-5 转接板 ×5</td>
+<td>V1 脉冲整形、V2 触发整形</td>
+<td>✅ 已购</td>
+</tr>
+<tr>
+<td>面包板 + 杜邦线</td>
+<td>V1/V2 搭建</td>
+<td>✅ 已购/待到货</td>
+</tr>
+<tr>
+<td>RG174 同轴线 ×2m</td>
+<td>V1 注入线、V2 内部连接</td>
+<td>✅ 已购</td>
+</tr>
+<tr>
+<td>电阻电容包（10k/100k 等）</td>
+<td>偏置/滤波</td>
+<td>✅ 建议随主项目一并购</td>
+</tr>
+<tr>
+<td>单面覆铜板 10×15cm</td>
+<td>V1 电极板取过零（不用市电时的替代方案）、V3 自制 0.1pF</td>
+<td>✅ 已购</td>
+</tr>
+<tr>
+<td>LMP7721 ×2</td>
+<td>不用于模拟源（属主项目）</td>
+<td>✅ 已购</td>
+</tr>
+</tbody></table>
+<h3 id="93-采购与安全要点">9.3 采购与安全要点</h3>
+<ol>
+<li><strong>ZTX415 只在立创买</strong>（Diodes 原装，现货稳定）；淘宝的&quot;雪崩管 2N2377&quot;多是打磨翻新，边沿时间不保证，考不了 1.5GHz。</li>
+<li><strong>PE4302 与主项目 R1 同一颗器件</strong>——如果主项目第一批已计划购买，直接多买一颗/一块模块，模拟源侧就不用再下单。</li>
+<li><strong>300V 安全三件套</strong>：升压模块输出先接泄放电阻再断电（#10）、所有高压裸点套热缩管（#19）、调试时只用一只手接触电路。雪崩级电容虽小（10nF），300V 惊吓照旧。</li>
+<li>市电过零那条路（#2–4）<strong>如果不确定能安全操作，直接放弃</strong>，改用第二块电极板空间取过零（覆铜板已在手，零风险，固件不变）——省 ¥11 且更安全，<strong>推荐</strong>。</li>
+</ol>
+<div class="pager">
+    <a href="01-上电验收卡.html"><span class="dir">← 上一篇</span>上电验收卡（照着打勾）</a>
+    <a href="03-参数推导与踩坑FAQ.html" style="text-align:right"><span class="dir">下一篇 →</span>12 个「为什么」FAQ</a>
+  </div></article></div>
+<footer><div class="wrap"><span>局放信号模拟源 V0 · 200–250V / 100Hz · 纯单机 DIY 记录</span>
+<span>静态博客 · 由 <code>tools/make_blog.js</code> 从 Markdown 生成</span></div></footer>
+<script>
+(function(){
+  var G={'\\times':'×','\\cdot':'·','\\approx':'≈','\\le':'≤','\\geq':'≥','\\ge':'≥',
+    '\\neq':'≠','\\tau':'τ','\\mu':'μ','\\Omega':'Ω','\\pi':'π','\\parallel':'∥',
+    '\\qquad':'　','\\quad':'　','\\,':' ','\;':' ','\!':'','\\ ':' ',
+    '\\cdots':'…','\\infty':'∞','\\Rightarrow':'⇒','\\pm':'±','\\left':'','\\right':'',
+    '\\%':'%','\\$':'$'};
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function render(src){
+    var i=0;
+    function group(){
+      if(src[i]!=='{') return null;
+      var d=0,out='';
+      for(;i<src.length;i++){
+        var c=src[i];
+        if(c==='{'){d++; if(d>1) out+=c; continue;}
+        if(c==='}'){d--; if(d===0){i++; return out;} out+=c; continue;}
+        out+=c;
+      }
+      return out;
+    }
+    function skip(){while(src[i]===' ')i++;}
+    function parse(){
+      var out='';
+      while(i<src.length){
+        var c=src[i];
+        if(c==='\\'){
+          var m=/^\\([a-zA-Z]+|.)/.exec(src.slice(i));
+          var tok=m?m[0]:'\\', cmd=m?m[1]:'';
+          i+=tok.length;
+          if(cmd==='frac'||cmd==='dfrac'||cmd==='tfrac'){
+            skip(); var a=group()||''; skip(); var b=group()||'';
+            out+='<span class="frac"><i>'+render(a)+'</i><b>'+render(b)+'</b></span>';
+          }else if(cmd==='text'||cmd==='mathrm'||cmd==='boxed'||cmd==='operatorname'){
+            skip(); var g=group(); out+= (g===null?'':esc(g));
+          }else if(cmd==='sqrt'){
+            skip(); var r=group(); out+='√'+(r===null?'':render(r));
+          }else if(G['\\'+cmd]!==undefined){ out+=G['\\'+cmd]; }
+          else if(/^[a-zA-Z]+$/.test(cmd)){ out+=cmd; }
+          continue;
+        }
+        if(c==='^'||c==='_'){
+          i++; var tag=(c==='^'?'sup':'sub'); skip();
+          var g2=group(); var body=(g2===null?(src[i++]||''):g2);
+          out+='<'+tag+'>'+render(body)+'</'+tag+'>';
+          continue;
+        }
+        if(c==='{'){ var g3=group(); out+=(g3===null?'':render(g3)); continue; }
+        if(c==='}'||c==='$'){ i++; continue; }
+        out+=esc(c); i++;
+      }
+      return out;
+    }
+    return parse();
+  }
+  document.querySelectorAll('.math').forEach(function(el){
+    el.innerHTML=render(el.getAttribute('data-tex')||el.textContent);
+  });
+})();
+</script>
+</body></html>
