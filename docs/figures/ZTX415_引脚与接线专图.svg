@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 960" width="1280" height="960">
+<rect x="0" y="0" width="1280" height="960" fill="#FFFFFF"/>
+
+<text x="640" y="46" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="26" font-weight="700" fill="#1F2933">ZTX415 · 引脚识别与接线专图</text>
+<text x="640" y="74" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" fill="#5B6770">E-Line（TO-92 兼容）｜依据 Diodes datasheet ＋ Zetex AN8 ＋ 立创 C5245685 引脚图｜2026-11-09</text>
+
+<!-- ================= ① 封装与脚位 ================= -->
+<rect x="40" y="100" width="560" height="380" rx="12" fill="#FFF9F2" stroke="#F0D6B4" stroke-width="1.5"/>
+<text x="60" y="128" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16" font-weight="700" fill="#B4650A">① E-Line 封装与脚位（正面看）</text>
+<text x="60" y="178" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" font-weight="700" fill="#1F2933">正面视图</text>
+<text x="60" y="198" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">有字的平面朝向自己</text>
+<text x="60" y="216" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">引脚朝下</text>
+
+<!-- 封装本体 -->
+<rect x="180" y="150" width="200" height="120" rx="14" fill="#2F3A45" stroke="#1F2933" stroke-width="2"/>
+<circle cx="196" cy="166" r="5" fill="#6B7884"/>
+<text x="280" y="212" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="19" font-weight="700" fill="#FFFFFF">ZTX415</text>
+<text x="280" y="236" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#B9C2CA">DIODES</text>
+<text x="280" y="256" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="10" fill="#8A98A3">flat face / 印字面</text>
+
+<!-- 三根引脚 -->
+<line x1="220" y1="270" x2="220" y2="345" stroke="#B9C2CA" stroke-width="8" stroke-linecap="round"/>
+<line x1="280" y1="270" x2="280" y2="345" stroke="#B9C2CA" stroke-width="8" stroke-linecap="round"/>
+<line x1="340" y1="270" x2="340" y2="345" stroke="#B9C2CA" stroke-width="8" stroke-linecap="round"/>
+<text x="220" y="368" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#5B6770">1</text>
+<text x="280" y="368" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#5B6770">2</text>
+<text x="340" y="368" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#5B6770">3</text>
+<text x="220" y="398" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="22" font-weight="700" fill="#D64545">C</text>
+<text x="280" y="398" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="22" font-weight="700" fill="#7B5BD6">B</text>
+<text x="340" y="398" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="22" font-weight="700" fill="#1E9E6A">E</text>
+<text x="220" y="418" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">集电极</text>
+<text x="280" y="418" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">基极</text>
+<text x="340" y="418" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">发射极</text>
+
+<rect x="60" y="432" width="520" height="36" rx="7" fill="#FFFFFF" stroke="#E8871A" stroke-width="1.5"/>
+<text x="320" y="456" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" font-weight="700" fill="#1F2933">左 C · 中 B · 右 E　（引脚 1 / 2 / 3）</text>
+
+<text x="400" y="180" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" font-weight="700" fill="#B03030">⚠ 与常见 TO-92 相反</text>
+<text x="400" y="206" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#1F2933">多数 TO-92 是 E-B-C，</text>
+<text x="400" y="224" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#1F2933">ZTX415 是 C-B-E。</text>
+<text x="400" y="252" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="700" fill="#B03030">别凭习惯插，先按 ③ 验。</text>
+<text x="400" y="286" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">立创 C5245685：C1B2E3；</text>
+<text x="400" y="304" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">datasheet 封装图：C B E。</text>
+<text x="400" y="332" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">丝印模糊 / 散装货以实测为准。</text>
+
+<!-- ================= ② 电路符号与三脚接线 ================= -->
+<rect x="620" y="100" width="620" height="380" rx="12" fill="#F4F9FF" stroke="#C9DCF0" stroke-width="1.5"/>
+<text x="640" y="128" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16" font-weight="700" fill="#1D5FA8">② 三脚各接什么（颜色与终版接线图一致）</text>
+
+<!-- 三条彩色引线 -->
+<line x1="660" y1="230" x2="900" y2="230" stroke="#D64545" stroke-width="2.5"/>
+<line x1="660" y1="320" x2="900" y2="320" stroke="#7B5BD6" stroke-width="2.5"/>
+<line x1="1060" y1="275" x2="1220" y2="275" stroke="#1E9E6A" stroke-width="2.5"/>
+<circle cx="1060" cy="275" r="0" fill="#1E9E6A"/>
+
+<text x="660" y="218" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" font-weight="700" fill="#B03030">C ← T 节点 200–250V</text>
+<text x="660" y="252" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">10nF/1kV · 10MΩ · 47kΩ</text>
+<text x="660" y="308" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" font-weight="700" fill="#6A48C0">B ← 100pF ＋ 10kΩ 下拉</text>
+<text x="660" y="340" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">10kΩ 静态把节点拉到 0</text>
+<text x="1220" y="263" text-anchor="end" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" font-weight="700" fill="#1E9E6A">50Ω ＋ 10cm 天线</text>
+<text x="1220" y="295" text-anchor="end" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">50Ω 另一端接 GND</text>
+
+<!-- ZTX415 方框 -->
+<rect x="900" y="200" width="160" height="150" rx="8" fill="#FFFFFF" stroke="#1D5FA8" stroke-width="2"/>
+<text x="980" y="265" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="18" font-weight="700" fill="#1F2933">ZTX415</text>
+<text x="980" y="292" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#5B6770">NPN 雪崩管</text>
+<text x="980" y="316" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#B03030">E-Line</text>
+<text x="892" y="225" text-anchor="end" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" font-weight="700" fill="#D64545">C</text>
+<text x="892" y="325" text-anchor="end" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" font-weight="700" fill="#7B5BD6">B</text>
+<text x="1068" y="280" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="14" font-weight="700" fill="#1E9E6A">E</text>
+
+<!-- 小型 NPN 符号 -->
+<text x="640" y="392" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">电路符号（NPN，E 箭头朝外）：</text>
+<line x1="830" y1="385" x2="830" y2="455" stroke="#1F2933" stroke-width="3"/>
+<line x1="830" y1="405" x2="872" y2="382" stroke="#1F2933" stroke-width="2.5"/>
+<line x1="872" y1="382" x2="872" y2="370" stroke="#1F2933" stroke-width="2.5"/>
+<line x1="830" y1="435" x2="872" y2="458" stroke="#1F2933" stroke-width="2.5"/>
+<line x1="872" y1="458" x2="872" y2="470" stroke="#1F2933" stroke-width="2.5"/>
+<polygon points="852,447 866,452 858,441" fill="#1F2933"/>
+<line x1="800" y1="420" x2="830" y2="420" stroke="#1F2933" stroke-width="2.5"/>
+<text x="880" y="372" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" font-weight="700" fill="#1F2933">C</text>
+<text x="792" y="424" text-anchor="end" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" font-weight="700" fill="#1F2933">B</text>
+<text x="880" y="472" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" font-weight="700" fill="#1F2933">E</text>
+<text x="920" y="424" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">注意：符号里的 C 在上、E 在下，</text>
+<text x="920" y="442" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">与实物「左 C 右 E」不是同一套方位，</text>
+<text x="920" y="460" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">接线只看字母，不看左右。</text>
+
+<!-- ================= ③ 万用表验脚位 ================= -->
+<rect x="40" y="500" width="560" height="330" rx="12" fill="#F8F6FC" stroke="#DDD3F0" stroke-width="1.5"/>
+<text x="60" y="528" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16" font-weight="700" fill="#6A48C0">③ 上电前必做：万用表确认脚位（防画反）</text>
+<text x="60" y="560" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#1F2933">① 拨二极管档。<tspan font-weight="700">红表笔固定某一脚</tspan>，黑表笔依次碰另外两脚。</text>
+<text x="60" y="588" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#1F2933">② 两次都读 ≈0.60–0.70V ⇒ 红表笔那脚就是 <tspan font-weight="700" fill="#7B5BD6">B</tspan>（NPN 两个 PN 结正向）。</text>
+<text x="60" y="616" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#1F2933">③ B 应在<tspan font-weight="700">中间脚</tspan>。确认后左 = C、右 = E，方向锁死。</text>
+<text x="60" y="644" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#1F2933">④ 红黑表笔对调，B 对 C / E 都应超量程（反向不导通）。</text>
+<text x="60" y="672" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" font-weight="700" fill="#B03030">⑤ 若 B 不在中间 ⇒ 以实测为准，别照图硬焊。</text>
+
+<rect x="60" y="688" width="520" height="122" rx="8" fill="#FFFFFF" stroke="#DDD3F0"/>
+<text x="76" y="712" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" font-weight="700" fill="#6A48C0">可选：hFE 档复核 C / E</text>
+<text x="76" y="734" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#1F2933">按猜测插进 hFE 插座读一次，C / E 对调再读一次；</text>
+<text x="76" y="754" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#1F2933">读数明显大（几十）的那次是对的，反接通常 &lt;5。</text>
+<text x="76" y="778" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">没有 hFE 档也不影响：第 ③ 步 + 印字面方向已经足够。</text>
+<text x="76" y="798" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#B03030">C / E 焊反：雪崩不起或管子发热；B / C 焊反：高压直灌基极，管子报废。</text>
+
+<!-- ================= ④ 参数与高压纠正 ================= -->
+<rect x="620" y="500" width="620" height="330" rx="12" fill="#FFF4F4" stroke="#F0CACA" stroke-width="1.5"/>
+<text x="640" y="528" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="16" font-weight="700" fill="#B03030">④ 关键参数 与 高压设置纠正</text>
+
+<line x1="640" y1="542" x2="1220" y2="542" stroke="#E8C9C9" stroke-width="1"/>
+<text x="646" y="560" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="700" fill="#5B6770">参数</text>
+<text x="770" y="560" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="700" fill="#5B6770">数值</text>
+<text x="880" y="560" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="700" fill="#5B6770">对本电路的意义</text>
+<line x1="640" y1="568" x2="1220" y2="568" stroke="#E8C9C9" stroke-width="1"/>
+<text x="646" y="588" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#1F2933">V_CBO</text>
+<text x="770" y="588" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" font-weight="700" fill="#B03030">260 V</text>
+<text x="880" y="588" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#1F2933">绝对最大值 / 击穿最小值，高压别超 250V</text>
+<text x="646" y="610" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#1F2933">V_CEO</text>
+<text x="770" y="610" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#1F2933">100 V</text>
+<text x="880" y="610" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#1F2933">基极开路维持电压，雪崩模式不适用</text>
+<text x="646" y="632" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#1F2933">V_EBO</text>
+<text x="770" y="632" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#1F2933">6 V</text>
+<text x="880" y="632" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#1F2933">负触发尖峰反向打 B-E，能量极小</text>
+<text x="646" y="654" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#1F2933">I_CM</text>
+<text x="770" y="654" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#1F2933">60 A @20ns</text>
+<text x="880" y="654" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#1F2933">脉冲能力，不是直流额定；P_D 680mW</text>
+<text x="646" y="676" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#1F2933">V_MIN (10nF)</text>
+<text x="770" y="676" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" font-weight="700" fill="#B03030">≈120–175 V</text>
+<text x="880" y="676" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#1F2933">AN8 图 6 / 图 7，随基极驱动强弱变化</text>
+<text x="646" y="698" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" fill="#1F2933">官方单电容电路</text>
+<text x="770" y="698" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" font-weight="700" fill="#B03030">+170–260 V</text>
+<text x="880" y="698" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#1F2933">AN8 图 11a，拓扑与我们几乎一样</text>
+
+<rect x="640" y="712" width="580" height="104" rx="8" fill="#FFFFFF" stroke="#D64545" stroke-width="1.5"/>
+<text x="656" y="736" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="13" font-weight="700" fill="#B03030">⚠ 高压设置纠正（重要）</text>
+<text x="656" y="758" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#1F2933">之前定的 ≈270V 已越过 V_CBO 260V 绝对最大值；弱基极驱动下点火电压会偏高，但正解是加强触发。</text>
+<text x="656" y="780" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="700" fill="#B03030">改成：200V 起步 → 不出脉冲小幅上调 → 250V 封顶。</text>
+<text x="656" y="802" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#1F2933">不出脉冲优先加强触发（100pF→470pF、10k→1k），别一味加电压。</text>
+
+<!-- ================= 底部 ================= -->
+<rect x="40" y="850" width="1200" height="90" rx="10" fill="#F7F9FB" stroke="#D6DEE5" stroke-width="1.5"/>
+<text x="60" y="876" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#1F2933">依据：Diodes ZTX415 datasheet（V_CBO 260V / I_CM 60A）、Zetex AN8《The ZTX415 Avalanche Mode Transistor》图 6 / 7 / 11a、立创 C5245685 引脚图 C1B2E3。</text>
+<text x="60" y="900" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" font-weight="700" fill="#B03030">安装顺序：断电 → 万用表确认 HV &lt; 5V → 才装 ZTX415。高压区用洞洞板焊接，不插面包板。</text>
+<text x="60" y="924" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="11" fill="#5B6770">颜色与 雪崩脉冲源接线图_V0终版.png 一致：红 = 高压、紫 = 触发、绿 = 输出。这张是局部放大，完整接线仍看终版图。</text>
+</svg>

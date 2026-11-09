@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# 编辑器 / 系统
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
+~$*
+
+# 临时与日志
+*.log
+*.tmp
+*.bak
+*.orig
+
+# 本地草稿（不进仓库）
+_draft/
+scratch/
