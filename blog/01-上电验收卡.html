@@ -89,7 +89,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
   <nav class="top"><a href="../blog/00-新人教程.html">开始阅读</a>
   <a href="https://github.com/cuishili-git/pd">GitHub 源码</a></nav>
 </div></header>
-<div class="wrap layout"><aside class="toc"><div class="t">本页目录</div><a class="" href="#0-安全规程每次上电前默读一遍">0. 安全规程（每次上电前默读一遍）</a><a class="" href="#1-到货清点">1. 到货清点</a><a class="lv3" href="#电容选型补充2026-11-09">电容选型补充（2026-11-09）</a><a class="" href="#2-供电按这个改第一次上电的最简接法">2. 供电按这个改（第一次上电的最简接法）</a><a class="" href="#3-搭建分三块">3. 搭建：分三块</a><a class="" href="#4-分步上电每步断电--验--才进下一步">4. 分步上电（每步：断电 → 验 → 才进下一步）</a><a class="lv3" href="#step-1--只上-12v高压模块输出悬空">Step 1 · 只上 12V，高压模块输出悬空</a><a class="lv3" href="#step-2--高压模块空载调到-200v上限-250v">Step 2 · 高压模块空载调到 200V（上限 250V）</a><a class="lv3" href="#step-3--接充电网络仍不装-ztx415">Step 3 · 接充电网络（仍不装 ZTX415）</a><a class="lv3" href="#step-4--装-ztx415整机上电">Step 4 · 装 ZTX415，整机上电</a><a class="" href="#5-零射频验源不买接收机也能确认雪崩在放电">5. 零射频验源：不买接收机也能确认雪崩在放电</a><a class="" href="#6-接收侧最小链路本轮还缺的东西">6. 接收侧最小链路（本轮还缺的东西）</a><a class="" href="#7-故障对照">7. 故障对照</a><a class="" href="#8-本轮明确不做">8. 本轮明确不做</a></aside><article>
+<div class="wrap layout"><aside class="toc"><div class="t">本页目录</div><a class="" href="#0-安全规程每次上电前默读一遍">0. 安全规程（每次上电前默读一遍）</a><a class="" href="#1-到货清点">1. 到货清点</a><a class="lv3" href="#ne555-芯片-datasheet-核对2026-11-17来源-ti-zhcsms9j-中文版">NE555 芯片 datasheet 核对（2026-11-17，来源 TI ZHCSMS9J 中文版）</a><a class="lv3" href="#电容选型补充2026-11-09">电容选型补充（2026-11-09）</a><a class="" href="#2-供电按这个改第一次上电的最简接法">2. 供电按这个改（第一次上电的最简接法）</a><a class="" href="#3-搭建分三块">3. 搭建：分三块</a><a class="" href="#4-分步上电每步断电--验--才进下一步">4. 分步上电（每步：断电 → 验 → 才进下一步）</a><a class="lv3" href="#step-1--只上-12v高压模块输出悬空">Step 1 · 只上 12V，高压模块输出悬空</a><a class="lv3" href="#step-2--高压模块空载调到-200v上限-250v">Step 2 · 高压模块空载调到 200V（上限 250V）</a><a class="lv3" href="#step-3--接充电网络仍不装-ztx415">Step 3 · 接充电网络（仍不装 ZTX415）</a><a class="lv3" href="#step-4--装-ztx415整机上电">Step 4 · 装 ZTX415，整机上电</a><a class="" href="#5-零射频验源不买接收机也能确认雪崩在放电">5. 零射频验源：不买接收机也能确认雪崩在放电</a><a class="" href="#6-接收侧最小链路本轮还缺的东西">6. 接收侧最小链路（本轮还缺的东西）</a><a class="" href="#7-故障对照">7. 故障对照</a><a class="" href="#8-本轮明确不做">8. 本轮明确不做</a></aside><article>
     <h1>上电验收卡（照着打勾）</h1><div class="article-sub">现场操作卡 · 动手时翻</div>
     <blockquote>
 <p>本轮目标（2026-11-09 定）：<strong>只验两件事——源在发脉冲、接收侧能数到脉冲</strong>。相位 / 锁相 / PRPD、PE4302 细调、蝶形天线、锂电池、间歇充电，本轮一概不碰。
@@ -253,6 +253,64 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 </tbody></table>
 <p><strong>零采购方案</strong>：47k 位串 <strong>4 颗 12kΩ = 48k</strong>（+2%），最坏每颗分压 50V / 0.21W，全在 1/4W 额定内；10M 位串 <strong>2 颗 5.1MΩ = 10.2M</strong>（+2%），每颗分压 95V。τ 变 480µs、5τ≈2.4ms，验源判据（47k 压降 ≈10V）几乎不变。串联件<strong>架空焊在洞洞板上、逐颗套热缩管</strong>，串得长反而拉大爬电距离。其余四只 1/4W 直接照用。<strong>Step 1（只插 NE555）用到的全是低压侧电阻，1/4W 完全够，不受影响。</strong></p>
 </blockquote>
+<h3 id="ne555-芯片-datasheet-核对2026-11-17来源-ti-zhcsms9j-中文版">NE555 芯片 datasheet 核对（2026-11-17，来源 TI ZHCSMS9J 中文版）</h3>
+<p>随货 PDF 是<strong>芯片</strong>规格书（NA555/NE555/SA555/SE555），不是模块电路图——<strong>它回答不了「模块有没有内置 7805 稳压」</strong>，那要量模块实物。</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>datasheet 值</th>
+<th>对本电路的意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>供电 VCC</td>
+<td><strong>4.5 ~ 16 V</strong>（SE555 到 18V）</td>
+<td>12V 在规格内</td>
+</tr>
+<tr>
+<td>输出驱动</td>
+<td>拉 / 灌 <strong>200 mA</strong></td>
+<td>我们负载仅 1.2 mA，压力为零</td>
+</tr>
+<tr>
+<td>输出高电平 V_OH</td>
+<td>VCC=15V 时 min 12.75V，空载 typ 13V</td>
+<td>12V 供电时高电平 ≈11.7~12V</td>
+</tr>
+<tr>
+<td>输出低电平 V_OL</td>
+<td>I_OL=10mA 时 max 0.25V，空载 ≈0.1V</td>
+<td>低电平贴近 0</td>
+</tr>
+<tr>
+<td><strong>上升/下降时间 tr/tf</strong></td>
+<td>typ <strong>100 ns</strong>，max 300 ns</td>
+<td>边沿比 1µs 微分时间常数快 10 倍 → <strong>尖峰能上全幅 12V</strong>（&quot;峰值恒为 12V、只改宽度&quot;由此坐实）</td>
+</tr>
+<tr>
+<td>阈值 / 触发</td>
+<td>2/3 VCC 与 1/3 VCC</td>
+<td>astable 逻辑确认</td>
+</tr>
+<tr>
+<td>供电电流</td>
+<td>输出低、空载、VCC=15V 时 typ 10 mA</td>
+<td>12V 适配器 1A 绰绰有余</td>
+</tr>
+<tr>
+<td>定时精度</td>
+<td>astable 温漂 150 ppm/°C，供电敏感 0.3%/V</td>
+<td>只做粗调，够用</td>
+</tr>
+</tbody></table>
+<p><strong>由 datasheet 修正的三条</strong>：</p>
+<ol>
+<li><strong>4 脚 RESET 必须接 VCC</strong> —— 6.4 节原文：&quot;if the RESET functionality is not used, short the RESET pin directly to VCC&quot;。但「悬空必停振」这个说法过于绝对：实际表现是<strong>随机复位、丢脉冲</strong>（偶尔停一下又起来），比干脆停振更难查。</li>
+<li><strong>5 脚接 10nF 到地：建议加</strong> —— CONT 脚就是 2/3 VCC，官方允许接旁路电容。</li>
+<li><strong>12V 去耦 104：必加</strong> —— 7.3 节原文：&quot;A bypass capacitor is highly recommended from VCC to the ground pin; a ceramic 0.1µF…&quot;。</li>
+</ol>
+<p><strong>用集成模块时</strong>：模块已自带定时网络，R1/R2/Ct 与占空比都不可控，<strong>但这不影响我们的电路</strong>——微分器只看边沿，占空比与频率都不影响尖峰峰值。唯一需要知道的是<strong>频率</strong>（决定 47kΩ 验源压降读数），而 3 脚（模块 OUT）直流档读 6V 只跟占空比有关，<strong>与频率无关</strong>，所以 Step 1 不需要先测频率。</p>
 <h3 id="电容选型补充2026-11-09">电容选型补充（2026-11-09）</h3>
 <table>
 <thead>
@@ -298,12 +356,12 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 <td><strong>建议补买</strong>，点火失败第一招</td>
 </tr>
 <tr>
-<td>NE555 5 脚抗扰</td>
+<td>NE555 5 脚抗扰（CONT）</td>
 <td>10nF / 103</td>
 <td>≥16V</td>
 <td>普通瓷片</td>
 <td>1</td>
-<td>可省</td>
+<td><strong>建议加</strong>（CONT 脚 = 2/3 VCC，官方允许接旁路电容）</td>
 </tr>
 <tr>
 <td>12V 去耦</td>
@@ -311,7 +369,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 <td>≥16V</td>
 <td>普通</td>
 <td>各 1</td>
-<td>推荐加</td>
+<td><strong>必加</strong>（datasheet 7.3 强烈推荐 VCC→GND 0.1µF 陶瓷旁路）</td>
 </tr>
 <tr>
 <td>接收侧检波（档 1）</td>
@@ -419,7 +477,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 <li><input disabled="" type="checkbox"> 高压模块<strong>先不接 12V</strong>（或断开其 VIN），只给 NE555 上 12V。</li>
 <li><input disabled="" type="checkbox"> 万用表量适配器输出：≈12.0V。</li>
 <li><input disabled="" type="checkbox"> 量 NE555 的 3 脚：直流档约 6V（方波平均值），有频率档应读 ≈100 Hz。</li>
-<li><input disabled="" type="checkbox"> 量 NE555 的 4 脚（RST）：必须 ≈12V，悬空会停振。</li>
+<li><input disabled="" type="checkbox"> 量 NE555 的 4 脚（RST）：必须 ≈12V。datasheet 6.4 节原文——不使用复位功能时<strong>把 RESET 脚直接短到 VCC</strong>；悬空不会干脆停振，而是<strong>随机复位、丢脉冲</strong>，表现为「偶尔停一下又起来」，更难查。</li>
 <li><strong>过不了就别往下走</strong>，先修触发链。</li>
 </ul>
 <h3 id="step-2--高压模块空载调到-200v上限-250v">Step 2 · 高压模块空载调到 200V（上限 250V）</h3>
@@ -533,7 +591,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 </tr>
 <tr>
 <td>NE555 没方波（或读成 ≈1kHz）</td>
-<td>4 脚 RST 没接 VCC / <strong>Ct 又拿成 103</strong>（104 才是本版正确的） / 68k 与 4.7k 位置颠倒</td>
+<td>4 脚 RESET 没接 VCC（datasheet 6.4：<strong>不用复位功能时必须直接短到 VCC</strong>；悬空表现为随机复位丢脉冲，不是干脆停振）/ <strong>Ct 又拿成 103</strong>（104 才是本版正确的） / 68k 与 4.7k 位置颠倒</td>
 </tr>
 <tr>
 <td>万用表量基极 0V 以为没触发</td>
