@@ -559,14 +559,14 @@ T     = 9.75 ms   →   f = 102.5 Hz
 <span class="math" data-tex="200/R \ll I_H" style="display:inline;padding:1px 6px">200/R \ll I_H</span>
 <p>（几十 mA）→ </p>
 <span class="math" data-tex="R \gg 4\ \text{k}\Omega" style="display:inline;padding:1px 6px">R \gg 4\ \text{k}\Omega</span>
-<p> | 2.1 mW | <strong>0.85 W</strong>（T 节点对地短路） | ❌ 1/4 W 耐压顶格 |
+<p> | <strong>2.1 mW</strong>（持续跨压仅 ≈10 V） | <strong>0.85 W</strong>（T 节点对地短路） | ✅ 1/4W 单颗可上 |
 | <strong>10 MΩ</strong> 泄放 | </p>
 <span class="math" data-tex="\tau = RC = 0.1\ \text{s}" style="display:inline;padding:1px 6px">\tau = RC = 0.1\ \text{s}</span>
 <p>，</p>
 <span class="math" data-tex="5\tau = 0.5\ \text{s}" style="display:inline;padding:1px 6px">5\tau = 0.5\ \text{s}</span>
 <p> 放净；同时静态漏电 </p>
 <span class="math" data-tex="200/10\text{M} = 20\ \mu\text{A}" style="display:inline;padding:1px 6px">200/10\text{M} = 20\ \mu\text{A}</span>
-<p> 要远小于充电电流 | 3.6 mW | 4 mW | ⚠️ 长期 190 V 耐压卡边 |
+<p> 要远小于充电电流 | 3.6 mW，但<strong>长期跨 190 V</strong> | 4 mW | ❌ 1/4W 工作电压顶格，必须串联 |
 | <strong>10 kΩ</strong> 下拉 | </p>
 <span class="math" data-tex="\tau = R C_{trig} = 1\ \mu\text{s}" style="display:inline;padding:1px 6px">\tau = R C_{trig} = 1\ \mu\text{s}</span>
 <p>，与 100 pF 配对 | 4.4 µW | 14.4 mW（尖峰瞬间） | ✅ 12 V 侧 |
@@ -580,30 +580,74 @@ T     = 9.75 ms   →   f = 102.5 Hz
 <p>，47 kΩ 正好卡在上界内侧；单看淬灭约束要求 $200/R$ 远小于维持电流，R 越大越好。两头夹出来就是 47 kΩ 这个标称值。换成 4.7 kΩ → 末期补给 42 mA &gt; </p>
 <span class="math" data-tex="I_H" style="display:inline;padding:1px 6px">I_H</span>
 <p>，电弧自持烧管；换成 470 kΩ → τ=4.7 ms 充不满。</p>
-<p><strong>1/4 W 到底能不能用</strong>：能，问题<strong>不在瓦数在耐压</strong>。常见 1/4 W 色环电阻额定工作电压只有 200~250 V，而 T 节点长期 190 V，会缓慢膜层劣化、阻值漂移、引脚爬电。零采购方案是<strong>串联分压</strong>：</p>
+<p><strong>1/4 W 到底能不能用（2026-11-17 修正）</strong>：<strong>能，但要把两个量分开看</strong>——</p>
+<table>
+<thead>
+<tr>
+<th>量</th>
+<th>含义</th>
+<th>谁决定</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>持续跨压</strong></td>
+<td>长期加在电阻两端的电压</td>
+<td>电阻的<strong>额定工作电压</strong>（1/4 W 色环件通常 200~250 V）</td>
+</tr>
+<tr>
+<td><strong>峰值功耗</strong></td>
+<td>瞬时功率</td>
+<td>电阻的<strong>脉冲耐受</strong>（几十 µs<del>ms 级脉冲一般有 5</del>20 倍余量）</td>
+</tr>
+</tbody></table>
+<p>47 kΩ 充电限流位<strong>长期只跨 ≈10 V</strong>（上游 HV+ 200 V、下游 T 节点 190 V，差值就是 10 V）——190 V 是 <strong>T 节点对地</strong>的电位，不是加在 47 kΩ 上的电压。<strong>所以单颗 1/4 W 的 47 kΩ 完全够用</strong>。</p>
+<p>真正长期吃 190 V 的是 <strong>10 MΩ 泄放位</strong>（它直接并在 T 节点对地），那一颗 1/4 W 的工作电压顶格，<strong>必须串联</strong>。</p>
 <table>
 <thead>
 <tr>
 <th>位置</th>
 <th>串联方案</th>
-<th>每颗最坏分压</th>
-<th>每颗功耗</th>
+<th>每颗持续跨压</th>
+<th>每颗故障功率</th>
+<th>判定</th>
 </tr>
 </thead>
 <tbody><tr>
 <td>47 kΩ</td>
-<td><strong>4 × 12 kΩ = 48 kΩ</strong>（+2%）</td>
-<td>50 V</td>
+<td><strong>4 × 12 kΩ = 48 kΩ</strong>（+2.1%）</td>
+<td>2.56 V</td>
 <td>0.21 W</td>
+<td>✅ 抗故障</td>
+</tr>
+<tr>
+<td>47 kΩ</td>
+<td>3 × 15 kΩ = 45 kΩ（−4.3%）</td>
+<td>3.21 V</td>
+<td>0.30 W</td>
+<td>⚠ 略超 1/4 W</td>
+</tr>
+<tr>
+<td>47 kΩ</td>
+<td>2 × 22 kΩ = 44 kΩ（−6.4%）</td>
+<td>4.71 V</td>
+<td>0.45 W</td>
+<td>❌ 明显超</td>
 </tr>
 <tr>
 <td>10 MΩ</td>
 <td><strong>2 × 5.1 MΩ = 10.2 MΩ</strong>（+2%）</td>
 <td>95 V</td>
 <td>2 mW</td>
+<td>✅ 必须</td>
 </tr>
 </tbody></table>
-<p>τ 变 480 µs、5τ 变 2.4 ms，验源判据几乎不动。串得长反而拉大爬电距离，是好事。<strong>「47 kΩ / 3 W」这个规格里的 3 W 是耐压需求，不是功率需求</strong>——3 W 水泥/金属氧化膜件耐压通常 ≥350~500 V，顺带解决了问题。</p>
+<p><strong>为什么是 4 颗</strong>：等值 N 颗串联时，故障工况（T 对地短路）下每颗功率 = </p>
+<span class="math" data-tex="851\ \text{mW} / N" style="display:inline;padding:1px 6px">851\ \text{mW} / N</span>
+<p>，所以 <strong>N ≥ 4 才压得住</strong>。</p>
+<p>τ 变 480 µs、5τ 变 2.4 ms、周期/τ = 20.4τ 仍充得满，验源判据从 10.05 V 变 <strong>10.25 V</strong>（基本不变）。串得长反而拉大爬电距离，是好事。</p>
+<blockquote>
+<p><strong>「47 kΩ / 3 W」这个规格里的 3 W 是故障余量，不是功率需求</strong>：正常功耗只有 2.1 mW；3 W 水泥/金属氧化膜件的真正价值是<strong>故障态不烧断</strong>（T 短路或管子自持时，0.85 W 持续灌进一颗 1/4 W 电阻，它会发热、漂移、最终烧开路——把「信号弱」变成「彻底不工作」）。4 颗 1/4 W 串联同样能兜住这个工况，且每颗故障功率 0.21 W 在额定内。</p>
+</blockquote>
 <hr>
 <h2 id="7-高压-200-v-是怎么定的">7. 高压 200 V 是怎么定的</h2>
 <p>早期把「ZTX415 击穿 260–300 V」当成击穿下限，推出要顶到 270 V，<strong>这是错的</strong>：</p>

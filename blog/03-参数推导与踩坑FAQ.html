@@ -528,55 +528,70 @@ for _ in range(10000):
 <hr>
 <h2 id="q8-14-w-电阻到底能不能用">Q8. 1/4 W 电阻到底能不能用？</h2>
 <p><strong>能，但要具体算：这个电路里 1/4 W 的麻烦基本不是「瓦数不够」，而是「耐压不够」。</strong></p>
-<p>所有电阻都在高阻回路里，电流 µA<del>mA 级，功耗天然小；但常见 1/4 W 电阻额定工作电压只有 200</del>250 V，而 T 节点正好 200 V，长期会膜层劣化、阻值漂移、引脚间爬电——这种故障不上电看不出来，几天后才变成「信号忽大忽小」。</p>
+<p>所有电阻都在高阻回路里，电流 µA~mA 级，功耗天然小。<strong>但「190 V 加在谁身上」要分清楚</strong>——这是 2026-11-17 修正的一处判断错误：</p>
+<ul>
+<li><strong>47 kΩ 充电限流位</strong>：上游是 HV+（200 V），下游是 T 节点（190 V），<strong>差值只有 10 V</strong>。它长期只跨 10 V，工作电压毫无压力 → <strong>单颗 1/4 W 够用</strong>。</li>
+<li><strong>10 MΩ 泄放位</strong>：直接并在 T 节点对地，<strong>长期吃满 190 V</strong>，1/4 W 件的额定工作电压（200~250 V）顶格 → <strong>这一颗必须串联</strong>。</li>
+</ul>
 <table>
 <thead>
 <tr>
 <th>位置</th>
-<th>实际功耗</th>
-<th>跨压</th>
+<th>持续跨压</th>
+<th>正常功耗</th>
+<th>峰值功耗</th>
 <th>判定</th>
 </tr>
 </thead>
 <tbody><tr>
 <td>47 kΩ 充电限流</td>
-<td>正常 ≈2 mW；T 节点短路时 0.85 W@200 V</td>
-<td>雪崩瞬间 ≈200 V</td>
-<td>❌ 必须换 / 串联</td>
+<td><strong>≈10 V</strong></td>
+<td>≈2 mW</td>
+<td>851 mW（仅 T 对地短路时持续）</td>
+<td>✅ 单颗可上；串联更抗故障</td>
 </tr>
 <tr>
 <td>10 MΩ 泄放</td>
-<td>4 mW</td>
 <td><strong>长期 190 V</strong></td>
-<td>⚠️ 功耗够、耐压卡边</td>
+<td>3.6 mW</td>
+<td>4 mW</td>
+<td>❌ 必须串 2×5.1 MΩ</td>
 </tr>
 <tr>
 <td>10 kΩ 基极下拉</td>
-<td>峰值 14 mW</td>
 <td>12 V</td>
+<td>4.4 µW</td>
+<td>14 mW</td>
 <td>✅</td>
 </tr>
 <tr>
 <td>R1 4.7 kΩ</td>
-<td>≤31 mW</td>
 <td>12 V</td>
+<td>3.4 mW</td>
+<td>31 mW</td>
 <td>✅</td>
 </tr>
 <tr>
 <td>R2 68 kΩ</td>
-<td>≤2 mW</td>
 <td>12 V</td>
+<td>235 µW</td>
+<td>2.1 mW</td>
 <td>✅</td>
 </tr>
 <tr>
 <td>50 Ω 负载</td>
-<td>平均 20 mW，µs 级约 400 W 脉冲</td>
-<td>190 V 脉冲</td>
-<td>⚠️ 凑合，1 W 无感更好</td>
+<td>0 V（管子截止）</td>
+<td>18.5 mW</td>
+<td>722 W（仅 ns~µs）</td>
+<td>✅ 凑合，1 W 无感更好</td>
 </tr>
 </tbody></table>
-<p>零采购方案：<strong>47 kΩ 位串 4×12 kΩ = 48 kΩ</strong>（最坏每颗 50 V / 0.21 W）、<strong>10 MΩ 位串 2×5.1 MΩ = 10.2 MΩ</strong>（每颗 95 V）。τ 变 480 µs、5τ ≈ 2.4 ms，验源判据几乎不动。串联件架空焊、逐颗套热缩管，串得长反而拉大爬电距离。</p>
-<p>顺带解释「47 kΩ / 3 W」这个规格：<strong>3 W 不是功率需求，是耐压需求</strong>。正常功耗只有几 mW，最坏（T 节点对地短路）也就 0.85 W；3 W 的水泥 / 金属氧化膜件耐压通常 ≥350~500 V，顺带把「200 V 顶在 1/4 W 极限」这个问题解决了。</p>
+<p>零采购方案：<strong>47 kΩ 位串 4×12 kΩ = 48 kΩ</strong>（正常每颗跨 2.56 V，故障时每颗 50 V / 0.21 W）、<strong>10 MΩ 位串 2×5.1 MΩ = 10.2 MΩ</strong>（每颗 95 V / 2 mW）。τ 变 480 µs、周期/τ = 20.4τ 仍充得满，验源判据从 10.05 V 变 10.25 V 基本不动。串联件架空焊、逐颗套热缩管，串得长反而拉大爬电距离。</p>
+<p><strong>为什么是 4 颗</strong>：等值 N 颗串联，故障工况每颗功率 = 851 mW / N → <strong>N ≥ 4 才压得住</strong>（3×15 kΩ 每颗 296 mW 略超，2×22 kΩ 每颗 455 mW 明显超）。</p>
+<p>顺带解释「47 kΩ / 3 W」这个规格：<strong>3 W 不是功率需求，是故障余量</strong>。正常功耗只有 2.1 mW；3 W 水泥 / 金属氧化膜件的价值在于 T 节点短路或管子自持时，0.85 W 持续灌进去它不烧断（1/4 W 件会发热、漂移、最终烧开路，把「信号弱」变成「彻底不工作」）。4 颗 1/4 W 串联同样兜得住这个工况。</p>
+<blockquote>
+<p>换组合随时验算：<code>python tools/calc_params.py --set R_chg=48000</code>。</p>
+</blockquote>
 <hr>
 <h2 id="q9-为什么-200-v-起步而不是击穿电压-270-v">Q9. 为什么 200 V 起步，而不是「击穿电压 270 V」？</h2>
 <p>早期把「ZTX415 击穿 260–300 V」当成下限，推出要 270 V 才点得燃，<strong>这是错的</strong>。查 Diodes datasheet 与 Zetex AN8 后纠正：</p>

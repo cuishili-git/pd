@@ -167,12 +167,12 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 </tr>
 <tr>
 <td>47kΩ 充电限流</td>
-<td>优先 47kΩ/<strong>2W</strong> 金属氧化膜或水泥件；只有 1/4W 时串联 <strong>4×12kΩ = 48k</strong>（见下方零采购方案），<strong>不要单颗 1/4W 直接上</strong></td>
+<td><strong>单颗 1/4W 就能跑</strong>（持续仅 ≈2mW、跨压仅 ≈10V）；但为扛住「管子自持不关」这种故障，串联 <strong>4×12kΩ = 48k</strong> 更稳（见下方）</td>
 <td>☐</td>
 </tr>
 <tr>
 <td>10MΩ 泄放</td>
-<td><strong>全程常接</strong>在 T 节点对地，是安全件，不是可选项。1/4W 功耗够但长期跨 190V，建议串 <strong>2×5.1MΩ = 10.2M</strong>；有 1W 件就单颗</td>
+<td><strong>全程常接</strong>在 T 节点对地，是安全件，不是可选项。这一颗<strong>真的长期跨 190V</strong>，1/4W 顶格，<strong>必须串 2×5.1MΩ = 10.2M</strong>（有 1W 件就单颗）</td>
 <td>☐</td>
 </tr>
 <tr>
@@ -197,61 +197,100 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 </tr>
 </tbody></table>
 <blockquote>
-<p><strong>1/4W 电阻逐个判定（用户手上全是 1/4W，2026-11-09）</strong>：本电路所有电阻都串在高阻回路里，电流 µA<del>mA 级，<strong>功耗天然很小，瓦数几乎不是瓶颈</strong>；真正卡人的是「额定工作电压」——常见 1/4W 电阻额定工作电压只有 200</del>250V，而 T 节点是 200V，正好顶在极限，长期会膜层劣化、阻值漂移、引脚爬电。</p>
+<p><strong>1/4W 电阻逐个判定（用户手上全是 1/4W，2026-11-09 复核 / 2026-11-17 修正）</strong>：本电路所有电阻都串在高阻回路里，电流 µA~mA 级，<strong>功耗天然很小</strong>。真正要分清的是两个量：<strong>「持续跨压」</strong>（长期加在电阻两端，决定额定工作电压顶不顶格）和**「峰值功耗」**（瞬时值，决定脉冲耐受）。</p>
+<p><strong>上一版把这两件事搞混了，修正如下</strong>：47kΩ 充电限流位<strong>长期只跨 ≈10V</strong>（不是 190V——190V 是 T 节点对地的电位，47kΩ 上游是 HV+、下游是 T，差值只有 10V），所以<strong>单颗 1/4W 完全够用</strong>。真正长期吃 190V 的是<strong>10MΩ 泄放位</strong>（它直接并在 T 节点对地），那一颗才必须串联。</p>
 <table>
 <thead>
 <tr>
 <th>位置</th>
 <th>阻值</th>
-<th>实际功耗</th>
-<th>跨压</th>
+<th>持续跨压</th>
+<th>正常功耗</th>
+<th>峰值功耗</th>
 <th>1/4W 判定</th>
 </tr>
 </thead>
 <tbody><tr>
 <td>充电限流</td>
 <td>47kΩ</td>
-<td>正常 ≈2mW；T 节点短路时 0.85W@200V</td>
-<td>雪崩瞬间 ≈200V</td>
-<td>❌ 必须换 / 串联</td>
+<td><strong>≈10 V</strong></td>
+<td>≈2 mW</td>
+<td>851 mW（仅 T 对地短路时持续）</td>
+<td>✅ 单颗可上；串联更抗故障</td>
 </tr>
 <tr>
 <td>断电泄放</td>
 <td>10MΩ</td>
-<td>4mW</td>
-<td><strong>长期 190V</strong></td>
-<td>⚠️ 功耗够、耐压卡边，建议串联</td>
+<td><strong>长期 190 V</strong></td>
+<td>3.6 mW</td>
+<td>4 mW</td>
+<td>❌ 必须串 2×5.1MΩ</td>
 </tr>
 <tr>
 <td>基极下拉</td>
 <td>10kΩ</td>
-<td>峰值 14mW（占空比 0.1%）</td>
-<td>12V</td>
+<td>12 V</td>
+<td>4.4 µW</td>
+<td>14 mW（占空比 0.1%）</td>
 <td>✅ 直接用</td>
 </tr>
 <tr>
 <td>NE555 R1</td>
 <td>4.7kΩ</td>
-<td>≤31mW</td>
-<td>12V</td>
+<td>12 V</td>
+<td>3.4 mW</td>
+<td>31 mW</td>
 <td>✅ 直接用</td>
 </tr>
 <tr>
 <td>NE555 R2</td>
 <td>68kΩ</td>
-<td>≤2mW</td>
-<td>12V</td>
+<td>12 V</td>
+<td>235 µW</td>
+<td>2.1 mW</td>
 <td>✅ 直接用</td>
 </tr>
 <tr>
 <td>E 极负载</td>
 <td>50Ω</td>
-<td>平均 20mW，但 µs 级约 400W 脉冲</td>
-<td>190V 脉冲</td>
-<td>⚠️ 能凑合，升 1W 无感 / 金属氧化膜更好</td>
+<td>0 V（管子截止）</td>
+<td>18.5 mW</td>
+<td>722 W（仅 ns~µs）</td>
+<td>✅ 1/4W 能凑合；1W 无感/金属氧化膜更好</td>
 </tr>
 </tbody></table>
-<p><strong>零采购方案</strong>：47k 位串 <strong>4 颗 12kΩ = 48k</strong>（+2%），最坏每颗分压 50V / 0.21W，全在 1/4W 额定内；10M 位串 <strong>2 颗 5.1MΩ = 10.2M</strong>（+2%），每颗分压 95V。τ 变 480µs、5τ≈2.4ms，验源判据（47k 压降 ≈10V）几乎不变。串联件<strong>架空焊在洞洞板上、逐颗套热缩管</strong>，串得长反而拉大爬电距离。其余四只 1/4W 直接照用。<strong>Step 1（只插 NE555）用到的全是低压侧电阻，1/4W 完全够，不受影响。</strong></p>
+<p><strong>47k 位三种工况的实测口径</strong>（<code>python tools/calc_params.py</code> 实算）：</p>
+<table>
+<thead>
+<tr>
+<th>工况</th>
+<th>电阻跨压</th>
+<th>电流</th>
+<th>功率</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>① 静态（没点着火）</td>
+<td>0.94 V</td>
+<td>19.9 µA</td>
+<td>19 µW</td>
+</tr>
+<tr>
+<td>② 正常雪崩（稳态平均）</td>
+<td><strong>10.03 V</strong></td>
+<td>213 µA</td>
+<td><strong>2.14 mW</strong></td>
+</tr>
+<tr>
+<td>③ 故障：T 对地短路（持续）</td>
+<td>200 V</td>
+<td>4.26 mA</td>
+<td><strong>851 mW</strong> ← 唯一顶格工况</td>
+</tr>
+</tbody></table>
+<p><strong>零采购方案（推荐）</strong>：47k 位串 <strong>4 颗 12kΩ = 48k</strong>（+2.1%），τ 变 480µs、周期/τ = 20.4τ 仍充得满，验源判据从 10.05V 变 10.25V（基本不变）；故障时每颗分压 50V / <strong>0.21W</strong>，全在 1/4W 额定内。10M 位串 <strong>2 颗 5.1MΩ = 10.2M</strong>（+2%），每颗 95V / 2mW，τ=0.102s、5τ=0.51s，断电规程不变。串联件<strong>架空焊在洞洞板上、逐颗套热缩管</strong>，串得长反而拉大爬电距离。</p>
+<p><strong>为什么是 4 颗</strong>：等值 N 颗串联时，故障工况每颗功率 = 851mW / N，所以 <strong>N≥4 才压得住</strong>——3×15kΩ 每颗 296mW（略超）、2×22kΩ 每颗 455mW（明显超）。想省一颗只能用 1W 件。</p>
+<p><strong>故障态自查</strong>：如果源跑着跑着突然不脉冲了，同时 47k 那一串摸上去发烫 → 说明 ZTX415 自持没有关断（电弧持续），此时<strong>要去修触发电路</strong>（100pF 换 470pF、确认 10kΩ 下拉没虚焊），而不是换更大的电阻顶过去。其余四只 1/4W 直接照用。<strong>Step 1（只插 NE555）用到的全是低压侧电阻，1/4W 完全够，不受影响。</strong></p>
 </blockquote>
 <h3 id="ne555-芯片-datasheet-核对2026-11-17来源-ti-zhcsms9j-中文版">NE555 芯片 datasheet 核对（2026-11-17，来源 TI ZHCSMS9J 中文版）</h3>
 <p>随货 PDF 是<strong>芯片</strong>规格书（NA555/NE555/SA555/SE555），不是模块电路图——<strong>它回答不了「模块有没有内置 7805 稳压」</strong>，那要量模块实物。</p>

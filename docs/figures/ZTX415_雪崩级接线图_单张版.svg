@@ -24,7 +24,7 @@
 <line x1="510" y1="174" x2="545" y2="174" stroke="#D64545" stroke-width="2.5"/>
 
 <rect x="545" y="160" width="70" height="28" fill="#FFFFFF" stroke="#D64545" stroke-width="2"/>
-<text x="580" y="212" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" font-weight="700" fill="#1F2933">47kΩ / 3W 限流</text>
+<text x="580" y="212" text-anchor="middle" font-family="Microsoft YaHei, PingFang SC, Arial, sans-serif" font-size="12" font-weight="700" fill="#1F2933">47kΩ 限流（1/4W 单颗可）</text>
 <line x1="615" y1="174" x2="660" y2="174" stroke="#D64545" stroke-width="2.5"/>
 <circle cx="660" cy="174" r="4.5" fill="#D64545"/>
 <line x1="660" y1="174" x2="960" y2="174" stroke="#D64545" stroke-width="2.5"/>

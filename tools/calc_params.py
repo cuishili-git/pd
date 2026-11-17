@@ -45,6 +45,8 @@ class Params:
 def si(v, unit=""):
     """把数值格式化成工程记数（自动选 µ/n/m/k/M 前缀）。"""
     a = abs(v)
+    if a < 1e-15:
+        return f"0 {unit}"
     for p, s in ((1e9, "G"), (1e6, "M"), (1e3, "k"), (1, ""),
                  (1e-3, "m"), (1e-6, "µ"), (1e-9, "n"), (1e-12, "p")):
         if a >= p or p == 1e-12:
@@ -181,23 +183,33 @@ def calc(p: Params):
              E_ct_swing=E_ct_swing, tau_det=tau_det)
 
     # ---------- 7. 电阻应力校核 ----------
-    section("7 · 电阻应力校核（判断 1/4W 能不能用）")
+    section("7 · 电阻应力校核（持续跨压 vs 峰值跨压，别混）")
+    print("  ※ 「持续跨压」= 长期加在电阻两端的电压 → 决定工作电压/耐压是否顶格")
+    print("    「峰值跨压」= 充电起始 / 雪崩瞬间的瞬时电压 → 决定脉冲耐受，通常不是问题")
+    print()
     rows = [
-        ("47k 充电/淬灭", I_total ** 2 * p.R_chg, p.V_hv ** 2 / p.R_chg, V_T, "耐压顶格 → 串联或换 2W"),
-        ("10M 泄放", V_T ** 2 / p.R_bleed, p.V_hv ** 2 / p.R_bleed, V_T, "功耗够、长期耐压卡边 → 串联"),
-        ("10k 基极下拉", (p.V_cc ** 2 / p.R_pd) * (three_tau / T_555), p.V_cc ** 2 / p.R_pd, p.V_cc, "12V 侧，直接用"),
-        ("R1 4.7k", (p.V_cc / 3) ** 2 / p.R1, p.V_cc ** 2 / p.R1, p.V_cc, "12V 侧，直接用"),
-        ("R2 68k", (p.V_cc / 3) ** 2 / p.R2, p.V_cc ** 2 / p.R2, p.V_cc, "12V 侧，直接用"),
-        ("50Ω 负载", P_avg, V_T ** 2 / p.R_load, V_T, "平均功率极小，但需脉冲耐受"),
+        ("47k 充电/淬灭", V_drop, I_total ** 2 * p.R_chg, p.V_hv ** 2 / p.R_chg, p.V_hv,
+         "跨压只有 ~10V，1/4W 单颗没问题；只有「T 对地短路」才持续 0.85W"),
+        ("10M 泄放", V_T, V_T ** 2 / p.R_bleed, p.V_hv ** 2 / p.R_bleed, p.V_hv,
+         "⚠ 长期 190V 顶在 1/4W 额定工作电压上 → 必须 2×5.1M 串联"),
+        ("10k 基极下拉", p.V_cc, (p.V_cc ** 2 / p.R_pd) * (three_tau / T_555),
+         p.V_cc ** 2 / p.R_pd, p.V_cc, "12V 侧，直接用"),
+        ("R1 4.7k", p.V_cc, (p.V_cc / 3) ** 2 / p.R1, p.V_cc ** 2 / p.R1, p.V_cc, "12V 侧，直接用"),
+        ("R2 68k", p.V_cc, (p.V_cc / 3) ** 2 / p.R2, p.V_cc ** 2 / p.R2, p.V_cc, "12V 侧，直接用"),
+        ("50Ω 负载", 0.0, P_avg, V_T ** 2 / p.R_load, V_T,
+         "管子截止时 E≈0V；脉冲期间 190V/3.8A 仅 ns~µs，平均 18.5mW"),
     ]
-    print(f"  {'位置':<16}{'正常/平均':>14}{'最坏/峰值':>14}{'跨压':>10}   判定")
-    for name, normal, worst, voltage, note in rows:
-        print(f"  {name:<16}{si(normal, 'W'):>14}{si(worst, 'W'):>14}{si(voltage, 'V'):>10}   {note}")
-    print("  ※ 1/4W 色环电阻额定工作电压通常 200~250V；T 节点长期 190V，")
-    print("    问题在「耐压」不在「瓦数」。零采购方案：47k→4×12k 串联、10M→2×5.1M 串联。")
+    print(f"  {'位置':<16}{'持续跨压':>10}{'正常/平均':>12}{'峰值功耗':>12}{'峰值跨压':>10}   判定")
+    for name, v_cont, normal, worst, v_peak, note in rows:
+        print(f"  {name:<16}{si(v_cont, 'V'):>10}{si(normal, 'W'):>12}"
+              f"{si(worst, 'W'):>12}{si(v_peak, 'V'):>10}   {note}")
+    print("  ※ 真正「长期吃 190V」的只有 10MΩ 泄放位；47kΩ 长期只跨 ~10V。")
 
-    # ---------- 8. 电容耐压与储能对照 ----------
-    section("8 · 电容位速查（丝印别拿混）")
+    # ---------- 8. 串联分压速算（1/4W 怎么替 3W） ----------
+    series_check(p)
+
+    # ---------- 9. 电容耐压与储能对照 ----------
+    section("9 · 电容位速查（丝印别拿混）")
     print(f"  {'位置':<20} {'容值':>9}  {'编码':>5}  {'实际跨压':>8}   最低耐压")
     caps = [
         ("储能（T 节点）", p.C_store, "103", V_T, "≥630V，推荐 1kV"),
@@ -214,9 +226,75 @@ def calc(p: Params):
     return r
 
 
+def series_check(p: Params):
+    """47kΩ 充电位：单颗 1/4W / 串联多颗 1/4W 的逐项验算。
+
+    判据有三层，缺一不可：
+      ① 稳态 周期/τ ≥ 20（充得满）
+      ② 稳态验源压降 ≈10 V（判据不变）
+      ③ 故障工况（T 节点对地短路）每颗功率 ≤ 0.25 W
+    """
+    section("8 · 47kΩ 位用 1/4W 怎么办：串联分压速算")
+
+    f = 1.44 / ((p.R1 + 2 * p.R2) * p.Ct)
+    T = 1.0 / f
+    print(f"  先看「单颗 47kΩ / 1/4W」在三种工况下的实际应力（V_hv={p.V_hv:.0f}V）：")
+    print(f"  {'工况':<34}{'电阻跨压':>10}{'电流':>12}{'功率':>12}")
+    # ① 静态：只剩 10MΩ 泄放电流
+    i_static = (p.V_hv / (1 + p.R_chg / p.R_bleed)) / p.R_bleed
+    v_static = i_static * p.R_chg
+    # ② 正常雪崩：稳态自洽
+    denom = 1.0 + p.R_chg * (p.C_store * f + 1.0 / p.R_bleed)
+    v_t = p.V_hv / denom
+    i_avg = p.C_store * v_t * f + v_t / p.R_bleed
+    v_avg = i_avg * p.R_chg
+    # ③ 故障：T 节点被短路到地
+    i_fault = p.V_hv / p.R_chg
+    for name, v_r, i_r in (("① 静态（没点着火）", v_static, i_static),
+                           ("② 正常雪崩（稳态平均）", v_avg, i_avg),
+                           ("③ 故障：T 对地短路（持续）", p.V_hv, i_fault)):
+        print(f"  {name:<34}{si(v_r, 'V'):>10}{si(i_r, 'A'):>12}{si(v_r * i_r, 'W'):>12}")
+    print(f"  ⇒ 结论①：单颗 1/4W 的 47kΩ，**正常工作完全够**（持续 2mW、跨压仅 ~10V）。")
+    print(f"  ⇒ 结论②：真正顶格的只有工况③（0.85W 持续）——那是「管子自持不关」或「管子击穿短路」")
+    print(f"     时的故障态，靠串联把每颗摊到 0.25W 以下来兜底。")
+    print()
+
+    print("  串联方案对照（等值 N 颗串联，每颗分压 1/N、功率 1/N）：")
+    print(f"  {'方案':<16}{'总阻值':>10}{'偏差':>8}{'τ':>10}{'周期/τ':>9}"
+          f"{'每颗持续':>11}{'每颗故障':>11}   判定")
+    cands = [
+        ("单颗 47kΩ", 1, 47e3),
+        ("2 × 22kΩ", 2, 22e3),
+        ("3 × 15kΩ", 3, 15e3),
+        ("4 × 12kΩ", 4, 12e3),
+        ("5 × 10kΩ", 5, 10e3),
+    ]
+    for label, n, r_each in cands:
+        r_tot = n * r_each
+        tau = r_tot * p.C_store
+        ratio = T / tau
+        d = 1.0 + r_tot * (p.C_store * f + 1.0 / p.R_bleed)
+        vt = p.V_hv / d
+        ia = p.C_store * vt * f + vt / p.R_bleed
+        v_norm = ia * r_tot / n                 # 每颗持续跨压
+        p_norm = v_norm * v_norm / r_each        # 每颗持续功率
+        i_f = p.V_hv / r_tot
+        v_f = p.V_hv / n                        # 每颗故障跨压
+        p_f = v_f * i_f                         # 每颗故障功率
+        ok_tau = "✅" if ratio >= 20 else "❌"
+        ok_p = "✅" if p_f <= 0.25 else "❌"
+        verdict = f"{ok_tau}充得满  {ok_p}故障≤0.25W"
+        print(f"  {label:<16}{si(r_tot, 'Ω'):>10}{(r_tot / 47e3 - 1) * 100:>+7.1f}%"
+              f"{si(tau, 's'):>10}{ratio:>8.1f}τ{si(v_norm, 'V'):>10}{si(p_f, 'W'):>10}   {verdict}")
+    print("  规则：**等值 N 颗串联 → 故障时每颗功率 = 0.85W / N，所以 N≥4 才扛得住**")
+    print("        （3×15k 每颗 0.28W 略超；2×22k 每颗 0.42W 明显超）。")
+    print("  10MΩ 泄放位同理，但它顶格的是**持续 190V 工作电压**，不是功率：")
+    print("        2 × 5.1MΩ = 10.2MΩ，每颗 95V / 2mW，τ=0.102s，5τ=0.51s（断电规程不变）。")
+
+
 def compare(p: Params):
     """变参对比：换 Ct / 换储能电容 / 换频率，看哪些量会塌。"""
-    section("9 · 变参对比（为什么定稿是 100Hz + 103 储能 + 104 定时）")
+    section("10 · 变参对比（为什么定稿是 100Hz + 103 储能 + 104 定时）")
 
     print("\n[9.1] 只改定时电容 Ct（决定频率）")
     print(f"  {'Ct':>12}{'f (Hz)':>10}{'周期/τ':>10}{'V_T (V)':>10}{'47k压降':>10}  结论")
@@ -248,13 +326,36 @@ def compare(p: Params):
               f"{si(ctr * p.V_cc, 'C'):>12}{si(0.5 * ctr * p.V_cc ** 2, 'J'):>14}")
 
 
+def apply_overrides(p: Params, assigns):
+    """把 --set KEY=VALUE 覆盖到 Params 上。
+
+    例：python tools/calc_params.py --set R_chg=48000 --set V_hv=250
+    键名用 dataclass 字段名（R_chg / V_hv / C_store / R_bleed / R_load ...）。
+    """
+    import dataclasses
+    fields = {f.name: f.type for f in dataclasses.fields(p)}
+    for item in assigns:
+        if "=" not in item:
+            raise SystemExit(f"--set 需要 KEY=VALUE 形式，收到：{item}")
+        k, v = item.split("=", 1)
+        k = k.strip()
+        if k not in fields:
+            raise SystemExit(f"未知参数 {k}，可选：{', '.join(fields)}")
+        setattr(p, k, float(v))
+    return p
+
+
 def main():
     ap = argparse.ArgumentParser(description="局放信号源 V0 参数计算")
     ap.add_argument("--compare", action="store_true", help="额外打印变参对比")
     ap.add_argument("--json", action="store_true", help="只输出 JSON")
+    ap.add_argument("--set", action="append", default=[], metavar="KEY=VALUE",
+                    help="临时覆盖参数，如 --set R_chg=48000（不改动文件）")
     a = ap.parse_args()
 
-    p = Params()
+    p = apply_overrides(Params(), a.set)
+    if a.set:
+        print("※ 临时覆盖：" + "  ".join(a.set))
     if a.json:
         # 静默计算后输出 JSON
         import contextlib
