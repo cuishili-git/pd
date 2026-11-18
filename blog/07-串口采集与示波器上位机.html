@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>串口采集与示波器上位机开发实录 · 局放信号源 V0 · 新人教程</title>
+<meta name="description" content="代码与坑 · 开发">
+<style>
+:root{--ink:#1F2933;--muted:#5B6770;--line:#E1E7EC;--bg:#FFFFFF;--soft:#F7F9FB;
+--accent:#2C5F7C;--accent-soft:#EAF2F7;--code:#F2F5F7;--red:#B03030;--green:#1D7A5F}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);
+ font-family:"Microsoft YaHei","PingFang SC","Segoe UI",Arial,sans-serif;
+ font-size:16px;line-height:1.85;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+header.top{border-bottom:1px solid var(--line);background:var(--bg)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:20px}
+.brand{font-size:17px;font-weight:700;color:var(--ink);letter-spacing:.2px}
+.brand span{color:var(--accent)}
+nav.top a{margin-left:22px;font-size:14px;color:var(--muted)}
+nav.top a:hover{color:var(--accent)}
+.hero{padding:52px 0 34px;border-bottom:1px solid var(--line);background:var(--soft)}
+.hero h1{font-size:32px;line-height:1.4;margin:0 0 12px;font-weight:700}
+.hero p{margin:0;color:var(--muted);font-size:15px;max-width:760px}
+.hero .meta{margin-top:18px;font-size:13px;color:var(--muted)}
+.hero .meta b{color:var(--accent);font-weight:600}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px;padding:38px 0 60px}
+.card{border:1px solid var(--line);border-radius:10px;padding:22px 22px 20px;background:var(--bg);
+ transition:border-color .15s}
+.card:hover{border-color:var(--accent);text-decoration:none}
+.card .no{font-size:12px;color:var(--muted);letter-spacing:1px}
+.card h2{font-size:19px;margin:8px 0 4px;line-height:1.45;color:var(--ink)}
+.card .sub{font-size:13px;color:var(--accent);margin:0 0 12px}
+.card p{font-size:14px;color:var(--muted);line-height:1.75;margin:0}
+.card .foot{margin-top:16px;padding-top:12px;border-top:1px solid var(--line);
+ font-size:12px;color:var(--muted);display:flex;justify-content:space-between}
+.tag{display:inline-block;background:var(--accent-soft);color:var(--accent);
+ border-radius:4px;padding:1px 8px;font-size:12px}
+/* 文章页 */
+.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:44px;padding:34px 0 70px}
+aside.toc{position:sticky;top:24px;align-self:start;font-size:13px;max-height:calc(100vh - 48px);overflow:auto}
+aside.toc .t{font-weight:700;color:var(--muted);letter-spacing:1px;font-size:12px;
+ padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:10px}
+aside.toc a{display:block;color:var(--muted);padding:4px 0;line-height:1.55}
+aside.toc a:hover{color:var(--accent)}
+aside.toc a.lv3{padding-left:14px;font-size:12px}
+article{min-width:0}
+article > h1{font-size:29px;line-height:1.45;margin:0 0 6px}
+.article-sub{color:var(--muted);font-size:14px;margin:0 0 26px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+article h2{font-size:22px;margin:42px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line);scroll-margin-top:20px}
+article h3{font-size:18px;margin:30px 0 10px;scroll-margin-top:20px}
+article h4{font-size:16px;margin:22px 0 8px;color:var(--muted)}
+article p{margin:0 0 14px}
+article ul,article ol{padding-left:24px;margin:0 0 16px}
+article li{margin:4px 0}
+article blockquote{margin:16px 0;padding:10px 16px;background:var(--soft);
+ border-left:3px solid var(--accent);color:var(--muted)}
+article blockquote p{margin:0}
+article table{border-collapse:collapse;width:100%;margin:16px 0 22px;font-size:14px;display:block;overflow-x:auto}
+article th,article td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+article th{background:var(--soft);font-weight:600;white-space:nowrap}
+article tr:nth-child(even) td{background:#FCFDFE}
+article code{background:var(--code);border-radius:3px;padding:2px 5px;font-size:13px;
+ font-family:Consolas,"Cascadia Mono",monospace}
+article pre{background:#F4F7F9;border:1px solid var(--line);border-radius:8px;
+ padding:16px 18px;overflow-x:auto;margin:16px 0 22px;line-height:1.6}
+article pre code{background:none;padding:0;font-size:13px}
+article img{max-width:100%;height:auto;display:block;margin:18px auto;border:1px solid var(--line);border-radius:8px}
+article hr{border:0;border-top:1px solid var(--line);margin:34px 0}
+.math{background:var(--soft);border:1px solid var(--line);border-radius:6px;
+ padding:12px 16px;margin:16px 0;overflow-x:auto;text-align:center;
+ font-family:"Cambria Math",Georgia,serif;font-size:16px;color:var(--ink)}
+.math span.im{font-style:italic}
+.math .frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 3px}
+.math .frac i{font-style:normal;border-bottom:1px solid currentColor;padding:0 4px 2px}
+.math .frac b{font-weight:400;padding:2px 4px 0}
+.pager{display:flex;justify-content:space-between;gap:16px;margin-top:52px;
+ padding-top:22px;border-top:1px solid var(--line);font-size:14px}
+.pager a{display:block;max-width:46%}
+.pager .dir{font-size:12px;color:var(--muted);display:block;margin-bottom:3px}
+footer{border-top:1px solid var(--line);padding:22px 0 40px;color:var(--muted);font-size:13px}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+@media(max-width:900px){.layout{grid-template-columns:1fr;gap:0}aside.toc{position:static;max-height:none;
+ margin-bottom:24px;padding:14px;background:var(--soft);border-radius:8px}.wrap{padding:0 18px}}
+</style></head><body>
+<header class="top"><div class="wrap">
+  <div class="brand"><a href="../index.html">局放信号源 V0 · 新人教程</a></div>
+  <nav class="top"><a href="../blog/00-新人教程.html">开始阅读</a>
+  <a href="https://github.com/cuishili-git/pd">GitHub 源码</a></nav>
+</div></header>
+<div class="wrap layout"><aside class="toc"><div class="t">本页目录</div><a class="" href="#1-系统架构">1. 系统架构</a><a class="" href="#2-下位机固件esp-idf-552maintest_ne555c-全文">2. 下位机固件（ESP-IDF 5.5.2，main/test_ne555.c 全文）</a><a class="" href="#3-上位机关键代码pyqt6--pyqtgraph单文件-scope_apppy">3. 上位机关键代码（PyQt6 + pyqtgraph，单文件 scope_app.py）</a><a class="lv3" href="#31-串口线程serialworkerqthread">3.1 串口线程：SerialWorker（QThread）</a><a class="lv3" href="#32-边沿测量线性插值过阈检测">3.2 边沿测量：线性插值过阈检测</a><a class="lv3" href="#33-边沿触发提取波形稳定不漂的核心">3.3 边沿触发提取（波形稳定不漂的核心）</a><a class="lv3" href="#34-时基语义示波器惯例">3.4 时基语义（示波器惯例）</a><a class="" href="#4-踩坑全记录当天实战7-个坑">4. 踩坑全记录（当天实战，7 个坑）</a><a class="" href="#5-当天实测结论">5. 当天实测结论</a></aside><article>
+    <h1>串口采集与示波器上位机开发实录</h1><div class="article-sub">代码与坑 · 开发</div>
+    <blockquote>
+<p>2026-11-18 · 用 ESP32-P4 采集 NE555 方波，PyQt6 自研示波器，当天从零到全链路跑通。
+本文是<strong>代码 + 每个坑的根因分析</strong>，不是操作教程（操作见 <a href="06-ESP32P4采集NE555波形_今天就能做.html">06</a>）。</p>
+</blockquote>
+<hr>
+<h2 id="1-系统架构">1. 系统架构</h2>
+<pre><code>NE555 模块(12V) ──OUT──[10kΩ]──┬──[3.3kΩ]──GND     ← 分压：12V→2.98V，保 GPIO
+                               └── GPIO23 (ADC1_CH7)
+ESP32-P4 ── 2000Hz 采样 ── CSV 行 ── UART 921600 ── CH343 ── 电脑
+电脑 ── PyQt6+pyqtgraph 示波器：触发 / 测量 / 游标 / CSV 保存
+</code></pre>
+<p><strong>带宽账本</strong>（为什么必须 921600）：2000 行/s × 每行约 13 字节 ≈ 24 kB/s，
+115200 串口只扛得住 ~11.5 kB/s，会丢数据；921600 ≈ 92 kB/s，余量近 4 倍。</p>
+<hr>
+<h2 id="2-下位机固件esp-idf-552maintest_ne555c-全文">2. 下位机固件（ESP-IDF 5.5.2，<code>main/test_ne555.c</code> 全文）</h2>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &quot;freertos/FreeRTOS.h&quot;
+#include &quot;freertos/task.h&quot;
+#include &quot;esp_adc/adc_oneshot.h&quot;
+#include &quot;esp_timer.h&quot;
+#include &quot;esp_rom_sys.h&quot;
+#include &quot;driver/uart.h&quot;
+
+#define SAMPLE_PERIOD_US  500      /* 2000 Hz */
+#define ADC_UNIT_ID       ADC_UNIT_1
+#define ADC_CHANNEL       ADC_CHANNEL_7   /* GPIO23 */
+#define CONSOLE_BAUD      921600   /* 硬编码：运行时强制改波特率 */
+
+void app_main(void)
+{
+    /* 0. 控制台 UART 波特率强改 921600（详见坑①） */
+    ESP_ERROR_CHECK(uart_set_baudrate(CONFIG_ESP_CONSOLE_UART_NUM, CONSOLE_BAUD));
+
+    /* 1. 打开 ADC1，禁用 ULP */
+    adc_oneshot_unit_handle_t unit;
+    const adc_oneshot_unit_init_cfg_t init_cfg = {
+        .unit_id  = ADC_UNIT_ID,
+        .ulp_mode = ADC_ULP_MODE_DISABLE,
+    };
+    ESP_ERROR_CHECK(adc_oneshot_new_unit(&amp;init_cfg, &amp;unit));
+
+    /* 2. 通道：12 位 + 12dB 衰减（约 0~3.3V） */
+    const adc_oneshot_chan_cfg_t chan_cfg = {
+        .atten    = ADC_ATTEN_DB_12,
+        .bitwidth = ADC_BITWIDTH_12,
+    };
+    ESP_ERROR_CHECK(adc_oneshot_config_channel(unit, ADC_CHANNEL, &amp;chan_cfg));
+
+    printf(&quot;Format: timestamp_us,raw_adc | GPIO23 / ADC1_CH7 | 2000 Hz | baud 921600\n&quot;);
+
+    /* 3. 采集循环：时间节拍保证严格 2000Hz */
+    while (1) {
+        int64_t now  = esp_timer_get_time();
+        int raw      = 0;
+        ESP_ERROR_CHECK(adc_oneshot_read(unit, ADC_CHANNEL, &amp;raw));
+        printf(&quot;%lld,%d\n&quot;, now, raw);
+
+        int64_t remain = (now + SAMPLE_PERIOD_US) - esp_timer_get_time();
+        if (remain &gt; 0) {
+            esp_rom_delay_us((uint32_t)remain);
+        }
+    }
+}
+</code></pre>
+<p><strong>三个设计决策的理由</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>决策</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>adc_oneshot</code> 循环，不用 <code>adc_continuous</code>(DMA)</td>
+<td>只要&quot;看到波形&quot;，15 行代码 vs 一整套回调+解析；2000Hz 单次读取绰绰有余。以后做 MHz 级局放再换 DMA</td>
+</tr>
+<tr>
+<td><code>esp_rom_delay_us</code> 忙等对齐节拍</td>
+<td>不用 vTaskDelay（ms 粒度太粗），保证采样间隔严格 500µs，时间戳真实可信</td>
+</tr>
+<tr>
+<td>波特率代码里硬改硬件</td>
+<td><strong>sdkconfig 是生成物</strong>，<code>set-target</code> 会重新生成并冲掉手工修改；<code>uart_set_baudrate</code> 直接写硬件寄存器，不依赖驱动安装，谁也冲不掉</td>
+</tr>
+</tbody></table>
+<p><strong><code>main/CMakeLists.txt</code>（有陷阱，见坑⑤）</strong>：</p>
+<pre><code class="language-cmake">idf_component_register(SRCS &quot;test_ne555.c&quot;
+                    INCLUDE_DIRS &quot;.&quot;
+                    PRIV_REQUIRES esp_driver_uart esp_adc esp_timer)
+</code></pre>
+<p><strong><code>sdkconfig.defaults</code></strong>（双保险）：</p>
+<pre><code># NE555 采集需要流式输出 CSV，115200 带宽不够（约24kB/s 数据量）
+CONFIG_ESP_CONSOLE_UART_BAUDRATE=921600
+</code></pre>
+<hr>
+<h2 id="3-上位机关键代码pyqt6--pyqtgraph单文件-scope_apppy">3. 上位机关键代码（PyQt6 + pyqtgraph，单文件 <code>scope_app.py</code>）</h2>
+<h3 id="31-串口线程serialworkerqthread">3.1 串口线程：SerialWorker（QThread）</h3>
+<pre><code class="language-python">class SerialWorker(QThread):
+    sample = pyqtSignal(float, int)      # t_us, raw
+    status = pyqtSignal(str)
+    error  = pyqtSignal(str)             # 打开失败 → 界面复位
+
+    def run(self):
+        import serial
+        try:
+            ser = serial.Serial(self.port, self.baud, timeout=0.1)
+        except Exception as e:
+            self.error.emit(f&#39;打开 {self.port} 失败: {e}&#39;)
+            return
+        n_rx = n_ok = n_bytes = 0        # 原始行 / 解析成功 / 字节
+        shown = 0
+        last_stat = time.time()
+        while not self._stop:
+            raw = ser.readline()
+            if raw:
+                n_bytes += len(raw); n_rx += 1
+                if shown &lt; 3:            # 控制台打印前3行原始数据，定位乱码
+                    print(f&#39;[scope] 串口原始第 {shown+1} 行: {raw[:64]!r}&#39;, flush=True)
+                    shown += 1
+            line = raw.decode(&#39;ascii&#39;, errors=&#39;ignore&#39;).strip()
+            if &#39;,&#39; in line:
+                parts = line.split(&#39;,&#39;)
+                try:
+                    t_us, raw_adc = float(parts[0]), int(parts[1])
+                except ValueError:
+                    continue
+                n_ok += 1
+                self.sample.emit(t_us / 1e6, max(0, min(RAW_MAX, raw_adc)))
+            if time.time() - last_stat &gt;= 1.0:   # 每秒刷新接收统计
+                self.status.emit(f&#39;接收统计: {n_bytes} 字节 / {n_rx} 行原始, 解析成功 {n_ok}&#39;)
+                last_stat = time.time()
+        ser.close()
+</code></pre>
+<p><strong>设计要点</strong>：</p>
+<ul>
+<li><strong>收数在 QThread，绘图在主线程</strong>——串口阻塞绝不卡 UI，中间靠 <code>pyqtSignal</code> 跨线程投递（Qt 自动排队，线程安全）。</li>
+<li><strong>接收统计是排障神器</strong>：<code>字节&gt;0 且解析=0</code> → 波特率错（乱码）；<code>字节=0</code> → 固件没跑；<code>解析在涨</code> → 链路通。三行日志把&quot;没数据&quot;这种模糊故障切成三种确定状态。</li>
+<li><strong>失败走 <code>error</code> 信号</strong>：打开串口失败时主线程复位按钮/标签并亮出错误文本，不让界面说谎（曾出现过&quot;标签显示已连接实际打开失败&quot;的误导）。</li>
+</ul>
+<h3 id="32-边沿测量线性插值过阈检测">3.2 边沿测量：线性插值过阈检测</h3>
+<pre><code class="language-python">def edge_crossings(t, v, level, rising=True):
+    &quot;&quot;&quot;返回信号穿越 level 的精确时间点（线性插值）。&quot;&quot;&quot;
+    t, v = np.asarray(t), np.asarray(v)
+    s = v - level
+    idx = np.where((s[:-1] &lt; 0) &amp; (s[1:] &gt;= 0))[0] if rising else \
+          np.where((s[:-1] &gt;= 0) &amp; (s[1:] &lt; 0))[0]
+    if len(idx) == 0:
+        return np.array([])
+    frac = -s[idx] / (s[idx + 1] - s[idx])       # 线性插值出亚采样周期精度
+    return t[idx] + frac * (t[idx + 1] - t[idx])
+
+def measure_wave(t, v):
+    &quot;&quot;&quot;自动测量：频率/周期/占空比/电平（直流幅度&lt;0.05V 判为直流）。&quot;&quot;&quot;
+    ...
+    rising = edge_crossings(t, v, mid, rising=True)
+    if len(rising) &gt;= 3:
+        period = float(np.median(np.diff(rising)))   # 中位数抗单周期抖动
+        out[&#39;freq&#39;] = 1.0 / period
+        falling = edge_crossings(t, v, mid, rising=False)
+        hi = [float(np.min(falling[falling &gt; r] - r))
+              for r in rising[:-1] if np.any(falling &gt; r)]
+        out[&#39;duty&#39;] = float(np.median(hi)) / period
+</code></pre>
+<ul>
+<li>用<strong>上升沿间隔的中位数</strong>求周期——单个异常沿不会污染读数。</li>
+<li>占空比 = 每个上升沿到下一个下降沿的中位时长 ÷ 周期。</li>
+<li>电平用 90/10 百分位而不是 max/min——抗毛刺。</li>
+</ul>
+<h3 id="33-边沿触发提取波形稳定不漂的核心">3.3 边沿触发提取（波形稳定不漂的核心）</h3>
+<pre><code class="language-python">def _extract_window(self, t, v, window, trig_on, level):
+    &quot;&quot;&quot;返回 [(t_rel, v), ...]，t_rel 相对触发点。window=全屏跨度(秒)。&quot;&quot;&quot;
+    pre, post = window * 0.1, window * 0.9
+    if trig_on:
+        lv = vmin + (vmax - vmin) * (self.sld_trig.value() / 100.0)
+        if vmax - vmin &gt; 0.05:
+            cross = edge_crossings(t, v, lv, rising=True)
+            # 最后一个能放下完整窗口的触发点
+            good = cross[(cross - pre &gt;= t[0]) &amp; (cross + post &lt;= t_end)]
+            if len(good):
+                t0 = float(good[-1])
+                sel = (t &gt;= t0 - pre) &amp; (t &lt;= t0 + post)
+                return list(zip(t[sel] - t0, v[sel])), True, t0
+    t0 = t_end - post            # 触发丢失 → 退化为滚动窗口
+    ...
+</code></pre>
+<p>每次刷新都重新搜&quot;最后一个满足窗口约束的上升沿&quot;→ 波形始终以触发沿为 x=0 对齐 → 静止不漂。找不到边沿自动退化为滚动模式。</p>
+<h3 id="34-时基语义示波器惯例">3.4 时基语义（示波器惯例）</h3>
+<pre><code class="language-python">TIMEBASES = [(&#39;10 ms&#39;, 0.010), ..., (&#39;1 s&#39;, 1.000), (&#39;2 s&#39;, 2.000)]  # 值=每格宽度
+window = TIMEBASES[index][1] * 10.0        # 全屏 10 格
+self.plot.setXRange(-pre, post, padding=0) # X 视窗锁定，防自动拉伸出空白
+</code></pre>
+<p>缓冲区 <code>BUF_SEC = 22s</code>，必须 ≥ 最大时基（2s/格×10格）。</p>
+<hr>
+<h2 id="4-踩坑全记录当天实战7-个坑">4. 踩坑全记录（当天实战，7 个坑）</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>现象</th>
+<th>根因</th>
+<th>修法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>①</td>
+<td>反复改波特率不生效</td>
+<td><code>sdkconfig</code> 是<strong>生成物</strong>，<code>set-target</code> 重新生成冲掉手工修改；<code>sdkconfig.defaults</code> 优先级又低于目标默认</td>
+<td><strong>代码里 <code>uart_set_baudrate()</code> 硬改硬件</strong>，绕过整个配置体系</td>
+</tr>
+<tr>
+<td>②</td>
+<td>打开 COM3 没有权限</td>
+<td>Windows 串口<strong>独占</strong>：自己前一个实例 / idf.py monitor 还开着</td>
+<td>找到旧窗口关掉；monitor 用 <code>Ctrl+]</code> 退出</td>
+</tr>
+<tr>
+<td>③</td>
+<td><code>connect_serial</code> AttributeError</td>
+<td><code>__init__</code> 引用了不存在的方法（按钮走的 <code>on_connect</code> 没被复用）</td>
+<td>命令行 <code>--port</code> 也走 <code>on_connect()</code> 统一路径</td>
+</tr>
+<tr>
+<td>④</td>
+<td><code>esp_timer.h: No such file</code></td>
+<td><code>main</code> 组件一旦显式写 <code>PRIV_REQUIRES</code>，就<strong>失去自动依赖全部组件</strong>的特权</td>
+<td><code>esp_driver_uart esp_adc esp_timer</code> 三个都显式列上</td>
+</tr>
+<tr>
+<td>⑤</td>
+<td>波形只有一条竖线</td>
+<td>Y 轴锁死 <code>(-0.25, 3.65)</code>，而换算满量程 4.4V → 高电平 4.17V <strong>被裁在屏幕外</strong></td>
+<td>Y 轴扩到 <code>(-0.3, 4.8)</code>，两处口径必须一致</td>
+</tr>
+<tr>
+<td>⑥</td>
+<td>一屏只有一个周期</td>
+<td>时基值被当成&quot;全屏宽度&quot;，示波器惯例是<strong>每格</strong>宽度（×10 格）</td>
+<td><code>window = 档位值 × 10</code>；缓冲扩到 22s</td>
+</tr>
+<tr>
+<td>⑦</td>
+<td>轴标 18ms 实际是 18 秒</td>
+<td>数据单位是秒，轴标签却写 <code>units=&#39;ms&#39;</code>，pyqtgraph 按标签口径显示</td>
+<td><code>units=&#39;s&#39;</code>（pyqtgraph 会按视窗自动切 ms 前缀）</td>
+</tr>
+</tbody></table>
+<p>另外两个通用陷阱：</p>
+<ul>
+<li><strong><code>np.min(arr, initial=np.nan)</code> NaN 传播</strong>：数组非空也返回 nan，占空比永远算不出来 → 显式判空。</li>
+<li><strong>pyqtgraph 0.14 移除了 <code>enableMenu</code></strong>：升级后旧 API 直接 AttributeError，删掉即可（右键导出菜单反而有用）。</li>
+</ul>
+<hr>
+<h2 id="5-当天实测结论">5. 当天实测结论</h2>
+<table>
+<thead>
+<tr>
+<th>项</th>
+<th>数值</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>采样率</td>
+<td>1973~1997 /s</td>
+<td>目标 2000Hz，printf 开销占用 ~1.3%，达标</td>
+</tr>
+<tr>
+<td>NE555 高电平</td>
+<td>raw ≈ 3877（显示 4.17V，实际引脚 ≈3.0V）</td>
+<td><strong>模块 OUT 直出 12V（无内置 7805）</strong>——高压区验源判据按此定</td>
+</tr>
+<tr>
+<td>NE555 低电平</td>
+<td>raw ≈ 2（0.001V）</td>
+<td>分压链干净</td>
+</tr>
+<tr>
+<td>当前模块频率</td>
+<td>~1.8Hz（电位器在最低频端）</td>
+<td>待拧到 100Hz/50Hz</td>
+</tr>
+</tbody></table>
+<p><strong>遗留</strong>：① 电位器拧到 100Hz/50Hz 后复测记录；② 该模块频率范围下限太低，如果拧到头仍达不到 100Hz，需并电容改定时网络。</p>
+<hr>
+<p><em>文件位置：固件 <code>D:\esp32\p4\my\test_ne555\</code>，上位机 <code>D:\esp32\p4\my\test_ne555\python\scope_app.py</code>（单文件，依赖 PyQt6+pyqtgraph+pyserial）</em></p>
+<div class="pager">
+    <a href="06-ESP32P4采集NE555波形_今天就能做.html"><span class="dir">← 上一篇</span>ESP32-P4 采集 NE555 波形（今天就能做）</a>
+    <span></span>
+  </div></article></div>
+<footer><div class="wrap"><span>局放信号模拟源 V0 · 200–250V / 100Hz · 纯单机 DIY 记录</span>
+<span>静态博客 · 由 <code>tools/make_blog.js</code> 从 Markdown 生成</span></div></footer>
+<script>
+(function(){
+  var G={'\\times':'×','\\cdot':'·','\\approx':'≈','\\le':'≤','\\geq':'≥','\\ge':'≥',
+    '\\neq':'≠','\\tau':'τ','\\mu':'μ','\\Omega':'Ω','\\pi':'π','\\parallel':'∥',
+    '\\qquad':'　','\\quad':'　','\\,':' ','\;':' ','\!':'','\\ ':' ',
+    '\\cdots':'…','\\infty':'∞','\\Rightarrow':'⇒','\\pm':'±','\\left':'','\\right':'',
+    '\\%':'%','\\$':'$'};
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function render(src){
+    var i=0;
+    function group(){
+      if(src[i]!=='{') return null;
+      var d=0,out='';
+      for(;i<src.length;i++){
+        var c=src[i];
+        if(c==='{'){d++; if(d>1) out+=c; continue;}
+        if(c==='}'){d--; if(d===0){i++; return out;} out+=c; continue;}
+        out+=c;
+      }
+      return out;
+    }
+    function skip(){while(src[i]===' ')i++;}
+    function parse(){
+      var out='';
+      while(i<src.length){
+        var c=src[i];
+        if(c==='\\'){
+          var m=/^\\([a-zA-Z]+|.)/.exec(src.slice(i));
+          var tok=m?m[0]:'\\', cmd=m?m[1]:'';
+          i+=tok.length;
+          if(cmd==='frac'||cmd==='dfrac'||cmd==='tfrac'){
+            skip(); var a=group()||''; skip(); var b=group()||'';
+            out+='<span class="frac"><i>'+render(a)+'</i><b>'+render(b)+'</b></span>';
+          }else if(cmd==='text'||cmd==='mathrm'||cmd==='boxed'||cmd==='operatorname'){
+            skip(); var g=group(); out+= (g===null?'':esc(g));
+          }else if(cmd==='sqrt'){
+            skip(); var r=group(); out+='√'+(r===null?'':render(r));
+          }else if(G['\\'+cmd]!==undefined){ out+=G['\\'+cmd]; }
+          else if(/^[a-zA-Z]+$/.test(cmd)){ out+=cmd; }
+          continue;
+        }
+        if(c==='^'||c==='_'){
+          i++; var tag=(c==='^'?'sup':'sub'); skip();
+          var g2=group(); var body=(g2===null?(src[i++]||''):g2);
+          out+='<'+tag+'>'+render(body)+'</'+tag+'>';
+          continue;
+        }
+        if(c==='{'){ var g3=group(); out+=(g3===null?'':render(g3)); continue; }
+        if(c==='}'||c==='$'){ i++; continue; }
+        out+=esc(c); i++;
+      }
+      return out;
+    }
+    return parse();
+  }
+  document.querySelectorAll('.math').forEach(function(el){
+    el.innerHTML=render(el.getAttribute('data-tex')||el.textContent);
+  });
+})();
+</script>
+</body></html>

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ESP32-P4 采集 NE555 波形（今天就能做） · 局放信号源 V0 · 新人教程</title>
+<meta name="description" content="操作卡 · 验收">
+<style>
+:root{--ink:#1F2933;--muted:#5B6770;--line:#E1E7EC;--bg:#FFFFFF;--soft:#F7F9FB;
+--accent:#2C5F7C;--accent-soft:#EAF2F7;--code:#F2F5F7;--red:#B03030;--green:#1D7A5F}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);
+ font-family:"Microsoft YaHei","PingFang SC","Segoe UI",Arial,sans-serif;
+ font-size:16px;line-height:1.85;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+header.top{border-bottom:1px solid var(--line);background:var(--bg)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:20px}
+.brand{font-size:17px;font-weight:700;color:var(--ink);letter-spacing:.2px}
+.brand span{color:var(--accent)}
+nav.top a{margin-left:22px;font-size:14px;color:var(--muted)}
+nav.top a:hover{color:var(--accent)}
+.hero{padding:52px 0 34px;border-bottom:1px solid var(--line);background:var(--soft)}
+.hero h1{font-size:32px;line-height:1.4;margin:0 0 12px;font-weight:700}
+.hero p{margin:0;color:var(--muted);font-size:15px;max-width:760px}
+.hero .meta{margin-top:18px;font-size:13px;color:var(--muted)}
+.hero .meta b{color:var(--accent);font-weight:600}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px;padding:38px 0 60px}
+.card{border:1px solid var(--line);border-radius:10px;padding:22px 22px 20px;background:var(--bg);
+ transition:border-color .15s}
+.card:hover{border-color:var(--accent);text-decoration:none}
+.card .no{font-size:12px;color:var(--muted);letter-spacing:1px}
+.card h2{font-size:19px;margin:8px 0 4px;line-height:1.45;color:var(--ink)}
+.card .sub{font-size:13px;color:var(--accent);margin:0 0 12px}
+.card p{font-size:14px;color:var(--muted);line-height:1.75;margin:0}
+.card .foot{margin-top:16px;padding-top:12px;border-top:1px solid var(--line);
+ font-size:12px;color:var(--muted);display:flex;justify-content:space-between}
+.tag{display:inline-block;background:var(--accent-soft);color:var(--accent);
+ border-radius:4px;padding:1px 8px;font-size:12px}
+/* 文章页 */
+.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:44px;padding:34px 0 70px}
+aside.toc{position:sticky;top:24px;align-self:start;font-size:13px;max-height:calc(100vh - 48px);overflow:auto}
+aside.toc .t{font-weight:700;color:var(--muted);letter-spacing:1px;font-size:12px;
+ padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:10px}
+aside.toc a{display:block;color:var(--muted);padding:4px 0;line-height:1.55}
+aside.toc a:hover{color:var(--accent)}
+aside.toc a.lv3{padding-left:14px;font-size:12px}
+article{min-width:0}
+article > h1{font-size:29px;line-height:1.45;margin:0 0 6px}
+.article-sub{color:var(--muted);font-size:14px;margin:0 0 26px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+article h2{font-size:22px;margin:42px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line);scroll-margin-top:20px}
+article h3{font-size:18px;margin:30px 0 10px;scroll-margin-top:20px}
+article h4{font-size:16px;margin:22px 0 8px;color:var(--muted)}
+article p{margin:0 0 14px}
+article ul,article ol{padding-left:24px;margin:0 0 16px}
+article li{margin:4px 0}
+article blockquote{margin:16px 0;padding:10px 16px;background:var(--soft);
+ border-left:3px solid var(--accent);color:var(--muted)}
+article blockquote p{margin:0}
+article table{border-collapse:collapse;width:100%;margin:16px 0 22px;font-size:14px;display:block;overflow-x:auto}
+article th,article td{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top}
+article th{background:var(--soft);font-weight:600;white-space:nowrap}
+article tr:nth-child(even) td{background:#FCFDFE}
+article code{background:var(--code);border-radius:3px;padding:2px 5px;font-size:13px;
+ font-family:Consolas,"Cascadia Mono",monospace}
+article pre{background:#F4F7F9;border:1px solid var(--line);border-radius:8px;
+ padding:16px 18px;overflow-x:auto;margin:16px 0 22px;line-height:1.6}
+article pre code{background:none;padding:0;font-size:13px}
+article img{max-width:100%;height:auto;display:block;margin:18px auto;border:1px solid var(--line);border-radius:8px}
+article hr{border:0;border-top:1px solid var(--line);margin:34px 0}
+.math{background:var(--soft);border:1px solid var(--line);border-radius:6px;
+ padding:12px 16px;margin:16px 0;overflow-x:auto;text-align:center;
+ font-family:"Cambria Math",Georgia,serif;font-size:16px;color:var(--ink)}
+.math span.im{font-style:italic}
+.math .frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 3px}
+.math .frac i{font-style:normal;border-bottom:1px solid currentColor;padding:0 4px 2px}
+.math .frac b{font-weight:400;padding:2px 4px 0}
+.pager{display:flex;justify-content:space-between;gap:16px;margin-top:52px;
+ padding-top:22px;border-top:1px solid var(--line);font-size:14px}
+.pager a{display:block;max-width:46%}
+.pager .dir{font-size:12px;color:var(--muted);display:block;margin-bottom:3px}
+footer{border-top:1px solid var(--line);padding:22px 0 40px;color:var(--muted);font-size:13px}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+@media(max-width:900px){.layout{grid-template-columns:1fr;gap:0}aside.toc{position:static;max-height:none;
+ margin-bottom:24px;padding:14px;background:var(--soft);border-radius:8px}.wrap{padding:0 18px}}
+</style></head><body>
+<header class="top"><div class="wrap">
+  <div class="brand"><a href="../index.html">局放信号源 V0 · 新人教程</a></div>
+  <nav class="top"><a href="../blog/00-新人教程.html">开始阅读</a>
+  <a href="https://github.com/cuishili-git/pd">GitHub 源码</a></nav>
+</div></header>
+<div class="wrap layout"><aside class="toc"><div class="t">本页目录</div><a class="" href="#0-先记住两句话">0. 先记住两句话</a><a class="" href="#1-接线3-根线--2-个电阻">1. 接线（3 根线 + 2 个电阻）</a><a class="lv3" href="#物料">物料</a><a class="lv3" href="#接法">接法</a><a class="lv3" href="#接完先用万用表验一次30-秒">接完先用万用表验一次（30 秒）</a><a class="" href="#2-电脑端准备一次即可">2. 电脑端准备（一次即可）</a><a class="lv3" href="#21-装-python-库">2.1 装 Python 库</a><a class="lv3" href="#22-找到串口号">2.2 找到串口号</a><a class="" href="#3-编译--烧录固件">3. 编译 + 烧录固件</a><a class="lv3" href="#31-打开-esp-idf-终端">3.1 打开 ESP-IDF 终端</a><a class="lv3" href="#32-进目录编译烧录开监控">3.2 进目录、编译、烧录、开监控</a><a class="" href="#4-电脑上看波形">4. 电脑上看波形</a><a class="lv3" href="#看到什么算成功">看到什么算成功</a><a class="lv3" href="#想存数据">想存数据</a><a class="" href="#5-三个最容易踩的坑">5. 三个最容易踩的坑</a><a class="" href="#6-今天做完之后">6. 今天做完之后</a><a class="" href="#附文件位置">附：文件位置</a></aside><article>
+    <h1>ESP32-P4 采集 NE555 波形（今天就能做）</h1><div class="article-sub">操作卡 · 验收</div>
+    <blockquote>
+<p>目标只有一个：<strong>电脑上看到 12V 方波</strong>。看到波形 = NE555 模块正常起振 = Step 1 通过。
+适用：微雪 ESP32-P4-WIFI6-DEV-KIT（你手上这块）+ 你的 NE555 集成模块。
+今天不碰任何高压。</p>
+</blockquote>
+<hr>
+<h2 id="0-先记住两句话">0. 先记住两句话</h2>
+<ol>
+<li><strong>12V 绝对不能直接进 GPIO</strong> —— 必须经分压降到 3V 左右。</li>
+<li><strong>必须共地</strong> —— NE555 的 GND 和 P4 的 GND 连在一起，否则读数乱跳或全是 0。</li>
+</ol>
+<hr>
+<h2 id="1-接线3-根线--2-个电阻">1. 接线（3 根线 + 2 个电阻）</h2>
+<h3 id="物料">物料</h3>
+<table>
+<thead>
+<tr>
+<th>元件</th>
+<th>值</th>
+<th>你手头</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>电阻 R1</td>
+<td>10 kΩ</td>
+<td>有</td>
+</tr>
+<tr>
+<td>电阻 R2</td>
+<td>3.3 kΩ</td>
+<td>没有就用 4.7 kΩ（降到 3.8V，仍在安全内）或 2×6.8k 并联</td>
+</tr>
+<tr>
+<td>杜邦线</td>
+<td>4 根</td>
+<td>有</td>
+</tr>
+</tbody></table>
+<h3 id="接法">接法</h3>
+<pre><code>NE555 OUT ────[ 10 kΩ ]────┬──── GPIO23 (ADC1_CH7)
+                           │
+                         [ 3.3 kΩ ]
+                           │
+                          GND
+
+NE555 GND ─────────────────┴──── P4 板 GND
+</code></pre>
+<ul>
+<li><strong>GPIO23 在 40pin 排针左列第 4 脚</strong>（从板子边缘数，认丝印 <code>GPIO23</code>）</li>
+<li>GND 任选板上标 <code>GND</code> 的黑脚</li>
+<li>分压节点 = 12V × 3.3 / 13.3 = <strong>2.98V</strong>，安全</li>
+<li>若用 4.7k：12 × 4.7/14.7 = 3.84V —— <strong>超过 3.3V 了，不行</strong>。必须 ≤3.3k。
+没有 3.3k 就用 <strong>3.3k 或 2.2k</strong>（2.2k → 2.16V，也安全），或者 10k 高边换成 15k（15k+4.7k → 2.86V）。</li>
+</ul>
+<blockquote>
+<p><strong>推荐组合（挑一个）</strong></p>
+<ul>
+<li>R1=10k, R2=3.3k → 2.98V ✅ 最佳</li>
+<li>R1=10k, R2=2.2k → 2.16V ✅ 安全，幅度小一点</li>
+<li>R1=15k, R2=4.7k → 2.86V ✅ 手头有 4.7k 时用这个</li>
+</ul>
+</blockquote>
+<h3 id="接完先用万用表验一次30-秒">接完先用万用表验一次（30 秒）</h3>
+<p>万用表 DCV 20V 档，红表笔接<strong>分压节点</strong>（GPIO23 那点），黑表笔接 GND：</p>
+<table>
+<thead>
+<tr>
+<th>读数</th>
+<th>判断</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1.5~3.2V 之间某值</td>
+<td>✅ 安全，可以上电</td>
+</tr>
+<tr>
+<td>&gt; 3.3V</td>
+<td>❌ 停！电阻接反或阻值不对</td>
+</tr>
+<tr>
+<td>0V</td>
+<td>检查 NE555 是否供电、OUT 是否有输出</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="2-电脑端准备一次即可">2. 电脑端准备（一次即可）</h2>
+<h3 id="21-装-python-库">2.1 装 Python 库</h3>
+<p>打开 CMD（Win+R 输入 <code>cmd</code>）：</p>
+<pre><code class="language-cmd">python -m pip install pyserial matplotlib
+</code></pre>
+<p>看到 <code>Successfully installed</code> 即可。</p>
+<h3 id="22-找到串口号">2.2 找到串口号</h3>
+<p>把 P4 板通过 <strong>Type-C UART 口</strong>（标 <code>UART</code> 的那个，CH343P 芯片）插电脑，然后：</p>
+<pre><code class="language-cmd">python D:\workbuddy\docs\pd\tools\serial_plot_ne555.py --list
+</code></pre>
+<p>会列出类似：</p>
+<pre><code>可用串口：
+  COM5    USB-SERIAL CH340 (COM5)
+</code></pre>
+<p>记下 <code>COM5</code> 这个号。<strong>板子上有两个 Type-C 口，一定插 UART 那个</strong>；另一个是 USB OTG，没配 CDC 不会出数据。</p>
+<hr>
+<h2 id="3-编译--烧录固件">3. 编译 + 烧录固件</h2>
+<h3 id="31-打开-esp-idf-终端">3.1 打开 ESP-IDF 终端</h3>
+<p>从开始菜单找 <strong>&quot;ESP-IDF 5.5 PowerShell&quot;</strong> 或 <strong>&quot;ESP-IDF Command Prompt&quot;</strong>，双击打开。
+（不要用普通 CMD，普通 CMD 没有 <code>idf.py</code> 命令。）</p>
+<p>如果开始菜单里找不到，用这个方式：</p>
+<pre><code class="language-cmd">C:\esp\v5.5.2\esp-idf\export.bat
+</code></pre>
+<h3 id="32-进目录编译烧录开监控">3.2 进目录、编译、烧录、开监控</h3>
+<p>在 ESP-IDF 终端里逐行输入：</p>
+<pre><code class="language-cmd">cd /d D:\esp32\p4\esp32-p4-platform-main\examples\esp-idf\20_adc_ne555_capture
+idf.py set-target esp32p4
+idf.py build
+</code></pre>
+<p>编译通过后，插上板子，烧录：</p>
+<pre><code class="language-cmd">idf.py -p COM5 flash monitor
+</code></pre>
+<blockquote>
+<p><code>COM5</code> 换成你在 2.2 步查到的号。
+看到 <code>NE555 ADC capture (ESP32-P4)</code> 和 <code>Format: timestamp_us,raw_adc</code> 就说明固件跑起来了。
+先按 <code>Ctrl+]</code> 退出 monitor（否则串口被占用，Python 打不开）。</p>
+</blockquote>
+<p><strong>如果 <code>idf.py build</code> 报错</strong>，把报错内容发我。代码是按 ESP-IDF 5.5 官方 API 写的，理论上能过。</p>
+<hr>
+<h2 id="4-电脑上看波形">4. 电脑上看波形</h2>
+<p>再开一个普通 CMD：</p>
+<pre><code class="language-cmd">python D:\workbuddy\docs\pd\tools\serial_plot_ne555.py COM5
+</code></pre>
+<p>会弹出一个实时波形窗口，控制台每 0.5 秒打印一行测量结果。</p>
+<h3 id="看到什么算成功">看到什么算成功</h3>
+<pre><code>100.2 Hz  周期 9.98 ms  占空比 50.1%  hi=2773(2.98V) lo=0(0.00V)
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>现象</th>
+<th>判断</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>波形是方波，读数 ~100Hz 或 ~50Hz</td>
+<td>✅ <strong>成功，Step 1 通过</strong>，可以进高压区了</td>
+</tr>
+<tr>
+<td><code>未起振/无跳变 hi=xx lo=xx</code> 且 hi≈lo</td>
+<td>❌ NE555 没起振，查模块供电和频率电位器</td>
+</tr>
+<tr>
+<td>波形是直线但 hi≈2773</td>
+<td>OUT 恒高，模块没振荡</td>
+</tr>
+<tr>
+<td>波形是直线但 hi≈0</td>
+<td>接线断开 / 没共地 / 插错 Type-C 口</td>
+</tr>
+<tr>
+<td>读数 50Hz 或 100Hz 之外的奇怪值</td>
+<td>模块频率电位器没调好，转一下</td>
+</tr>
+</tbody></table>
+<h3 id="想存数据">想存数据</h3>
+<pre><code class="language-cmd">python D:\workbuddy\docs\pd\tools\serial_plot_ne555.py COM5 --save D:\workbuddy\docs\pd\ne555_capture.csv
+</code></pre>
+<hr>
+<h2 id="5-三个最容易踩的坑">5. 三个最容易踩的坑</h2>
+<table>
+<thead>
+<tr>
+<th>坑</th>
+<th>症状</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>12V 直连 GPIO</strong></td>
+<td>板子可能烧</td>
+<td>一定要分压，这是硬性红线</td>
+</tr>
+<tr>
+<td><strong>没共地</strong></td>
+<td>波形乱跳或全是 0</td>
+<td>NE555 GND 必须与 P4 GND 相连</td>
+</tr>
+<tr>
+<td><strong>monitor 没退出</strong></td>
+<td>Python 报&quot;端口被占用&quot;</td>
+<td>在 ESP-IDF 终端按 <code>Ctrl+]</code></td>
+</tr>
+<tr>
+<td><strong>插错 Type-C 口</strong></td>
+<td><code>--list</code> 找不到串口</td>
+<td>插标 <code>UART</code> 的那个口，不是 USB OTG</td>
+</tr>
+<tr>
+<td><strong>虚拟环境缺失</strong></td>
+<td><code>idf.py</code> 报 no module named click</td>
+<td>用 ESP-IDF 专属终端，不要用普通 CMD</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="6-今天做完之后">6. 今天做完之后</h2>
+<p>看到波形后，把这三个数告诉我：</p>
+<ol>
+<li><strong>频率</strong>：实测多少 Hz（应该 50 或 100）</li>
+<li><strong>高电平 raw 值</strong>：应该在 2700~2800（对应 2.98V）</li>
+<li><strong>OUT 直流电压</strong>：万用表量 OUT 对 GND，是 12V 还是 5V（判断模块有没有内置 7805）</li>
+</ol>
+<p>有了这三个数，我就能把后面高压区的验源判据给你调准。</p>
+<hr>
+<h2 id="附文件位置">附：文件位置</h2>
+<table>
+<thead>
+<tr>
+<th>用途</th>
+<th>路径</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>固件工程</td>
+<td><code>D:\esp32\p4\esp32-p4-platform-main\examples\esp-idf\20_adc_ne555_capture\</code></td>
+</tr>
+<tr>
+<td>采集主程序</td>
+<td><code>...\20_adc_ne555_capture\main\adc_capture_main.c</code></td>
+</tr>
+<tr>
+<td>显示/测量脚本</td>
+<td><code>D:\workbuddy\docs\pd\tools\serial_plot_ne555.py</code></td>
+</tr>
+<tr>
+<td>本文档</td>
+<td><code>D:\workbuddy\docs\pd\docs\06-ESP32P4采集NE555波形_今天就能做.md</code></td>
+</tr>
+</tbody></table>
+<p>固件参数在 <code>main/Kconfig.projbuild</code> 里，用 <code>idf.py menuconfig</code> → <code>NE555 ADC Capture Configuration</code> 修改，不用改代码。</p>
+<div class="pager">
+    <a href="05-电路图图文讲解.html"><span class="dir">← 上一篇</span>电路图逐块图文讲解</a>
+    <a href="07-串口采集与示波器上位机.html" style="text-align:right"><span class="dir">下一篇 →</span>串口采集与示波器上位机开发实录</a>
+  </div></article></div>
+<footer><div class="wrap"><span>局放信号模拟源 V0 · 200–250V / 100Hz · 纯单机 DIY 记录</span>
+<span>静态博客 · 由 <code>tools/make_blog.js</code> 从 Markdown 生成</span></div></footer>
+<script>
+(function(){
+  var G={'\\times':'×','\\cdot':'·','\\approx':'≈','\\le':'≤','\\geq':'≥','\\ge':'≥',
+    '\\neq':'≠','\\tau':'τ','\\mu':'μ','\\Omega':'Ω','\\pi':'π','\\parallel':'∥',
+    '\\qquad':'　','\\quad':'　','\\,':' ','\;':' ','\!':'','\\ ':' ',
+    '\\cdots':'…','\\infty':'∞','\\Rightarrow':'⇒','\\pm':'±','\\left':'','\\right':'',
+    '\\%':'%','\\$':'$'};
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function render(src){
+    var i=0;
+    function group(){
+      if(src[i]!=='{') return null;
+      var d=0,out='';
+      for(;i<src.length;i++){
+        var c=src[i];
+        if(c==='{'){d++; if(d>1) out+=c; continue;}
+        if(c==='}'){d--; if(d===0){i++; return out;} out+=c; continue;}
+        out+=c;
+      }
+      return out;
+    }
+    function skip(){while(src[i]===' ')i++;}
+    function parse(){
+      var out='';
+      while(i<src.length){
+        var c=src[i];
+        if(c==='\\'){
+          var m=/^\\([a-zA-Z]+|.)/.exec(src.slice(i));
+          var tok=m?m[0]:'\\', cmd=m?m[1]:'';
+          i+=tok.length;
+          if(cmd==='frac'||cmd==='dfrac'||cmd==='tfrac'){
+            skip(); var a=group()||''; skip(); var b=group()||'';
+            out+='<span class="frac"><i>'+render(a)+'</i><b>'+render(b)+'</b></span>';
+          }else if(cmd==='text'||cmd==='mathrm'||cmd==='boxed'||cmd==='operatorname'){
+            skip(); var g=group(); out+= (g===null?'':esc(g));
+          }else if(cmd==='sqrt'){
+            skip(); var r=group(); out+='√'+(r===null?'':render(r));
+          }else if(G['\\'+cmd]!==undefined){ out+=G['\\'+cmd]; }
+          else if(/^[a-zA-Z]+$/.test(cmd)){ out+=cmd; }
+          continue;
+        }
+        if(c==='^'||c==='_'){
+          i++; var tag=(c==='^'?'sup':'sub'); skip();
+          var g2=group(); var body=(g2===null?(src[i++]||''):g2);
+          out+='<'+tag+'>'+render(body)+'</'+tag+'>';
+          continue;
+        }
+        if(c==='{'){ var g3=group(); out+=(g3===null?'':render(g3)); continue; }
+        if(c==='}'||c==='$'){ i++; continue; }
+        out+=esc(c); i++;
+      }
+      return out;
+    }
+    return parse();
+  }
+  document.querySelectorAll('.math').forEach(function(el){
+    el.innerHTML=render(el.getAttribute('data-tex')||el.textContent);
+  });
+})();
+</script>
+</body></html>
