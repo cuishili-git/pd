@@ -167,7 +167,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 </tr>
 <tr>
 <td>47kΩ 充电限流</td>
-<td><strong>单颗 1/4W 就能跑</strong>（持续仅 ≈2mW、跨压仅 ≈10V）；但为扛住「管子自持不关」这种故障，串联 <strong>4×12kΩ = 48k</strong> 更稳（见下方）</td>
+<td><strong>单颗 1/4W 就能跑</strong>（持续仅 ≈2mW、跨压仅 ≈10V）；但为扛住「管子自持不关」这种故障，串联更稳：<strong>4×12kΩ = 48k</strong>（零采购）或 <strong>5×9.1kΩ = 45.5k</strong>（手头有 3W 件时，见下方）</td>
 <td>☐</td>
 </tr>
 <tr>
@@ -290,6 +290,60 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 </tbody></table>
 <p><strong>零采购方案（推荐）</strong>：47k 位串 <strong>4 颗 12kΩ = 48k</strong>（+2.1%），τ 变 480µs、周期/τ = 20.4τ 仍充得满，验源判据从 10.05V 变 10.25V（基本不变）；故障时每颗分压 50V / <strong>0.21W</strong>，全在 1/4W 额定内。10M 位串 <strong>2 颗 5.1MΩ = 10.2M</strong>（+2%），每颗 95V / 2mW，τ=0.102s、5τ=0.51s，断电规程不变。串联件<strong>架空焊在洞洞板上、逐颗套热缩管</strong>，串得长反而拉大爬电距离。</p>
 <p><strong>为什么是 4 颗</strong>：等值 N 颗串联时，故障工况每颗功率 = 851mW / N，所以 <strong>N≥4 才压得住</strong>——3×15kΩ 每颗 296mW（略超）、2×22kΩ 每颗 455mW（明显超）。想省一颗只能用 1W 件。</p>
+<p><strong>手头有 9.1kΩ / 3W 的情况（2026-11-18）</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>接法</th>
+<th>总阻值</th>
+<th>τ</th>
+<th>周期/τ</th>
+<th>淬灭电流</th>
+<th>验源压降</th>
+<th>每颗故障功率</th>
+<th>判定</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>单颗 9.1kΩ</strong></td>
+<td>9.1 kΩ</td>
+<td>91 µs</td>
+<td>107τ</td>
+<td><strong>21.98 mA</strong></td>
+<td><strong>2.02 V</strong></td>
+<td><strong>4.40 W</strong></td>
+<td>❌ 三个硬伤，见下</td>
+</tr>
+<tr>
+<td>4 × 9.1kΩ</td>
+<td>36.4 kΩ</td>
+<td>364 µs</td>
+<td>26.8τ</td>
+<td>5.50 mA</td>
+<td>7.86 V</td>
+<td>275 mW</td>
+<td>⚠ 淬灭电流偏大</td>
+</tr>
+<tr>
+<td><strong>5 × 9.1kΩ</strong></td>
+<td><strong>45.5 kΩ</strong></td>
+<td><strong>455 µs</strong></td>
+<td><strong>21.5τ</strong></td>
+<td><strong>4.40 mA</strong></td>
+<td><strong>9.73 V</strong></td>
+<td><strong>176 mW</strong></td>
+<td>✅ <strong>完美等价于 47kΩ</strong></td>
+</tr>
+</tbody></table>
+<p><strong>单颗 9.1kΩ 为什么不行，三个硬伤</strong>：</p>
+<ol>
+<li><strong>淬灭电流 21.98 mA</strong>（47kΩ 只有 4.26 mA）——ZTX415 维持电流 I_H 是几十 mA，余量从 10 倍掉到 1.5 倍，雪崩可能自持不关断、烧管。</li>
+<li><strong>验源判据塌到 2.02 V</strong>（静态只有 0.18 V）——判读区间被万用表误差吃掉，0.18 V 的相对误差 &gt;25%，没法判断有没有点着火。</li>
+<li><strong>故障功率 4.40 W &gt; 3 W 额定</strong>——T 节点短路时这颗直接烧断；250 V 封顶档更惨，250²/9.1k = <strong>6.87 W</strong>，是额定的 2.3 倍。</li>
+</ol>
+<p><strong>5 颗 9.1kΩ 串起来为什么完美</strong>：总阻值 45.5kΩ 只差标称 −3.2%（电阻 5% 精度内），τ=455µs、周期/τ=21.5τ 仍充得满，淬灭电流 4.40mA 与 47kΩ 的 4.26mA 几乎一样，验源压降 9.73V 与原判据 10.05V 基本一致，每颗故障功率仅 176mW（3W 额定的 5.9%）。<strong>而且它比 4×12kΩ 1/4W 更抗故障</strong>：3W 水泥件在 0.176W 下根本不会烧断。</p>
+<p><strong>串联还顺带解决了一个隐蔽风险</strong>：3W 件多为线绕/水泥结构，200 V 脉冲下<strong>匝间电压可能超过绝缘能力而击穿短路</strong>（击穿后 47kΩ 直接短路 → T 节点怼到 200V → 储能电容和 ZTX415 当场完蛋）。串 5 颗后每颗只跨 40 V，匝间应力降到 1/5，这是串联除分摊功率外的第二层收益。</p>
+<p><strong>只买到 1~2 颗 9.1kΩ 时</strong>：9.1k + 3×10k + 8.2k = <strong>47.3kΩ</strong>（判据 10.11V，与标称最接近）；或 9.1k × 2 + 10k × 2 + 8.2k = 45.4kΩ。凑完务必用 <code>python tools/calc_params.py --set R_chg=47300</code> 复核一遍。</p>
 <p><strong>故障态自查</strong>：如果源跑着跑着突然不脉冲了，同时 47k 那一串摸上去发烫 → 说明 ZTX415 自持没有关断（电弧持续），此时<strong>要去修触发电路</strong>（100pF 换 470pF、确认 10kΩ 下拉没虚焊），而不是换更大的电阻顶过去。其余四只 1/4W 直接照用。<strong>Step 1（只插 NE555）用到的全是低压侧电阻，1/4W 完全够，不受影响。</strong></p>
 </blockquote>
 <h3 id="ne555-芯片-datasheet-核对2026-11-17来源-ti-zhcsms9j-中文版">NE555 芯片 datasheet 核对（2026-11-17，来源 TI ZHCSMS9J 中文版）</h3>

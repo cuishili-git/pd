@@ -261,13 +261,16 @@ def series_check(p: Params):
 
     print("  串联方案对照（等值 N 颗串联，每颗分压 1/N、功率 1/N）：")
     print(f"  {'方案':<16}{'总阻值':>10}{'偏差':>8}{'τ':>10}{'周期/τ':>9}"
-          f"{'每颗持续':>11}{'每颗故障':>11}   判定")
+          f"{'淬灭电流':>11}{'验源压降':>11}{'每颗故障':>10}   判定")
     cands = [
         ("单颗 47kΩ", 1, 47e3),
         ("2 × 22kΩ", 2, 22e3),
         ("3 × 15kΩ", 3, 15e3),
         ("4 × 12kΩ", 4, 12e3),
         ("5 × 10kΩ", 5, 10e3),
+        ("单颗 9.1kΩ", 1, 9.1e3),
+        ("4 × 9.1kΩ", 4, 9.1e3),
+        ("5 × 9.1kΩ", 5, 9.1e3),
     ]
     for label, n, r_each in cands:
         r_tot = n * r_each
@@ -278,16 +281,23 @@ def series_check(p: Params):
         ia = p.C_store * vt * f + vt / p.R_bleed
         v_norm = ia * r_tot / n                 # 每颗持续跨压
         p_norm = v_norm * v_norm / r_each        # 每颗持续功率
+        v_drop = ia * r_tot                     # 验源压降（整串两端）
         i_f = p.V_hv / r_tot
         v_f = p.V_hv / n                        # 每颗故障跨压
         p_f = v_f * i_f                         # 每颗故障功率
         ok_tau = "✅" if ratio >= 20 else "❌"
         ok_p = "✅" if p_f <= 0.25 else "❌"
-        verdict = f"{ok_tau}充得满  {ok_p}故障≤0.25W"
+        i_quench = p.V_hv / r_tot          # 雪崩导通时电源经限流电阻能补进的电流
+        ok_q = "✅" if i_quench < 0.008 else "❌"   # 必须远低于 ZTX415 维持电流 I_H
+        verdict = f"{ok_tau}充得满 {ok_q}淬灭 {ok_p}故障≤0.25W"
         print(f"  {label:<16}{si(r_tot, 'Ω'):>10}{(r_tot / 47e3 - 1) * 100:>+7.1f}%"
-              f"{si(tau, 's'):>10}{ratio:>8.1f}τ{si(v_norm, 'V'):>10}{si(p_f, 'W'):>10}   {verdict}")
-    print("  规则：**等值 N 颗串联 → 故障时每颗功率 = 0.85W / N，所以 N≥4 才扛得住**")
+              f"{si(tau, 's'):>10}{ratio:>8.1f}τ{si(i_quench, 'A'):>11}{si(v_drop, 'V'):>11}"
+              f"{si(p_f, 'W'):>10}   {verdict}")
+    print("  规则①：**等值 N 颗串联 → 故障时每颗功率 = 0.85W / N，所以 N≥4 才扛得住**")
     print("        （3×15k 每颗 0.28W 略超；2×22k 每颗 0.42W 明显超）。")
+    print("  规则②：**淬灭电流 = V_hv / 总阻值，必须远低于 ZTX415 维持电流 I_H（几十 mA）**")
+    print("        —— 单颗 9.1kΩ 会给出 21.9 mA，余量从 10× 掉到 1.5×，有自持烧管风险。")
+    print("  规则③：**验源压降要落在 8~12 V**，太小的读数被万用表误差吃掉（0.18V 相对误差 >25%）。")
     print("  10MΩ 泄放位同理，但它顶格的是**持续 190V 工作电压**，不是功率：")
     print("        2 × 5.1MΩ = 10.2MΩ，每颗 95V / 2mW，τ=0.102s，5τ=0.51s（断电规程不变）。")
 

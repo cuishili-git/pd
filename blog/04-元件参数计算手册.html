@@ -89,7 +89,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
   <nav class="top"><a href="../blog/00-新人教程.html">开始阅读</a>
   <a href="https://github.com/cuishili-git/pd">GitHub 源码</a></nav>
 </div></header>
-<div class="wrap layout"><aside class="toc"><div class="t">本页目录</div><a class="" href="#0-先跑一遍脚本">0. 先跑一遍脚本</a><a class="" href="#1-全电路一共-7-个电容位">1. 全电路一共 7 个电容位</a><a class="" href="#2-c1--储能电容为什么是-10-nf">2. C1 · 储能电容为什么是 10 nF</a><a class="lv3" href="#21-三条约束夹出取值">2.1 三条约束夹出取值</a><a class="lv3" href="#22-它决定四个关键量">2.2 它决定四个关键量</a><a class="lv3" href="#23-为什么-5-算充满而不是-">2.3 为什么 5τ 算充满，而不是 τ</a><a class="lv3" href="#24-换成-100-nf104会怎样--脚本实算">2.4 换成 100 nF（104）会怎样 —— 脚本实算</a><a class="lv3" href="#25-材质与耐压比容值更容易翻车">2.5 材质与耐压，比容值更容易翻车</a><a class="" href="#3-c2--定时电容-100-nf-决定-100-hz">3. C2 · 定时电容 100 nF 决定 100 Hz</a><a class="" href="#4-c3--微分电容-100-pf-只决定尖峰宽度">4. C3 · 微分电容 100 pF 只决定尖峰宽度</a><a class="" href="#5-c4--c5--c6--三颗配角电容">5. C4 / C5 / C6 · 三颗「配角」电容</a><a class="lv3" href="#51-c4--5-脚抗扰-10-nf可省">5.1 C4 · 5 脚抗扰 10 nF（可省）</a><a class="lv3" href="#52-c5--12-v-去耦-100-nf--10-f推荐加">5.2 C5 · 12 V 去耦 100 nF + 10 µF（推荐加）</a><a class="lv3" href="#53-c6--检波探头-100-pf--1-m">5.3 C6 · 检波探头 100 pF ∥ 1 MΩ</a><a class="" href="#6-六只电阻阻值怎么定功率够不够">6. 六只电阻：阻值怎么定、功率够不够</a><a class="" href="#7-高压-200-v-是怎么定的">7. 高压 200 V 是怎么定的</a><a class="" href="#8-验源判据-10-v-的完整推导最重要的一段">8. 验源判据 10 V 的完整推导（最重要的一段）</a><a class="" href="#9-两种口径名义估算-vs-稳态自洽解">9. 两种口径：名义估算 vs 稳态自洽解</a><a class="" href="#10-最容易算错的-6-件事">10. 最容易算错的 6 件事</a><a class="" href="#11-一页速查脚本实算值">11. 一页速查（脚本实算值）</a></aside><article>
+<div class="wrap layout"><aside class="toc"><div class="t">本页目录</div><a class="" href="#0-先跑一遍脚本">0. 先跑一遍脚本</a><a class="" href="#1-全电路一共-7-个电容位">1. 全电路一共 7 个电容位</a><a class="" href="#2-c1--储能电容为什么是-10-nf">2. C1 · 储能电容为什么是 10 nF</a><a class="lv3" href="#21-三条约束夹出取值">2.1 三条约束夹出取值</a><a class="lv3" href="#22-它决定四个关键量">2.2 它决定四个关键量</a><a class="lv3" href="#23-为什么-5-算充满而不是-">2.3 为什么 5τ 算充满，而不是 τ</a><a class="lv3" href="#24-换成-100-nf104会怎样--脚本实算">2.4 换成 100 nF（104）会怎样 —— 脚本实算</a><a class="lv3" href="#25-材质与耐压比容值更容易翻车">2.5 材质与耐压，比容值更容易翻车</a><a class="" href="#3-c2--定时电容-100-nf-决定-100-hz">3. C2 · 定时电容 100 nF 决定 100 Hz</a><a class="" href="#4-c3--微分电容-100-pf-只决定尖峰宽度">4. C3 · 微分电容 100 pF 只决定尖峰宽度</a><a class="" href="#5-c4--c5--c6--三颗配角电容">5. C4 / C5 / C6 · 三颗「配角」电容</a><a class="lv3" href="#51-c4--5-脚抗扰-10-nf可省">5.1 C4 · 5 脚抗扰 10 nF（可省）</a><a class="lv3" href="#52-c5--12-v-去耦-100-nf--10-f推荐加">5.2 C5 · 12 V 去耦 100 nF + 10 µF（推荐加）</a><a class="lv3" href="#53-c6--检波探头-100-pf--1-m">5.3 C6 · 检波探头 100 pF ∥ 1 MΩ</a><a class="" href="#6-六只电阻阻值怎么定功率够不够">6. 六只电阻：阻值怎么定、功率够不够</a><a class="lv3" href="#61-手上是-91-k--3-w-怎么办常见情况">6.1 手上是 9.1 kΩ / 3 W 怎么办（常见情况）</a><a class="" href="#7-高压-200-v-是怎么定的">7. 高压 200 V 是怎么定的</a><a class="" href="#8-验源判据-10-v-的完整推导最重要的一段">8. 验源判据 10 V 的完整推导（最重要的一段）</a><a class="" href="#9-两种口径名义估算-vs-稳态自洽解">9. 两种口径：名义估算 vs 稳态自洽解</a><a class="" href="#10-最容易算错的-6-件事">10. 最容易算错的 6 件事</a><a class="" href="#11-一页速查脚本实算值">11. 一页速查（脚本实算值）</a></aside><article>
     <h1>元件参数计算手册</h1><div class="article-sub">能自己重算一遍 · 计算</div>
     <blockquote>
 <p>这篇回答一个问题：<strong>清单上每个数字是怎么来的</strong>。主教程在 <a href="00-新人教程.html"><code>00-新人教程.md</code></a>，动手判据在 <a href="01-上电验收卡.html"><code>01-上电验收卡.md</code></a>，按疑问组织的讲解在 <a href="03-参数推导与踩坑FAQ.html"><code>03-参数推导与踩坑FAQ.md</code></a>。
@@ -621,6 +621,13 @@ T     = 9.75 ms   →   f = 102.5 Hz
 </tr>
 <tr>
 <td>47 kΩ</td>
+<td><strong>5 × 9.1 kΩ = 45.5 kΩ</strong>（−3.2%，手头有 3W 件时首选）</td>
+<td>1.95 V</td>
+<td>0.176 W</td>
+<td>✅ 最抗故障</td>
+</tr>
+<tr>
+<td>47 kΩ</td>
 <td>3 × 15 kΩ = 45 kΩ（−4.3%）</td>
 <td>3.21 V</td>
 <td>0.30 W</td>
@@ -645,6 +652,77 @@ T     = 9.75 ms   →   f = 102.5 Hz
 <span class="math" data-tex="851\ \text{mW} / N" style="display:inline;padding:1px 6px">851\ \text{mW} / N</span>
 <p>，所以 <strong>N ≥ 4 才压得住</strong>。</p>
 <p>τ 变 480 µs、5τ 变 2.4 ms、周期/τ = 20.4τ 仍充得满，验源判据从 10.05 V 变 <strong>10.25 V</strong>（基本不变）。串得长反而拉大爬电距离，是好事。</p>
+<h3 id="61-手上是-91-k--3-w-怎么办常见情况">6.1 手上是 9.1 kΩ / 3 W 怎么办（常见情况）</h3>
+<p><strong>单颗 9.1 kΩ 直接替 47 kΩ 会同时踩三个坑</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>坑</th>
+<th>47 kΩ（标称）</th>
+<th>单颗 9.1 kΩ</th>
+<th>机理</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>淬灭电流</strong></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<span class="math" data-tex="I = V_{hv}/R" style="display:inline;padding:1px 6px">I = V_{hv}/R</span>
+<p> | 4.26 mA | <strong>21.98 mA</strong> | ZTX415 维持电流 </p>
+<span class="math" data-tex="I_H" style="display:inline;padding:1px 6px">I_H</span>
+<p> 是几十 mA，余量从 10 倍掉到 1.5 倍 → 雪崩自持不关断、烧管 |
+| <strong>验源判据</strong> | 10.05 V | <strong>2.02 V</strong>（静态仅 0.18 V） | 判读区间被万用表误差吃掉，0.18 V 相对误差 &gt;25%，没法判断点没点着火 |
+| <strong>故障功率</strong> </p>
+<span class="math" data-tex="V^2/R" style="display:inline;padding:1px 6px">V^2/R</span>
+<p> | 0.851 W（1/4W 超 3.4×） | <strong>4.40 W</strong>（3W 超 1.47×） | T 节点短路即烧断；250 V 封顶档更惨，</p>
+<span class="math" data-tex="250^2/9.1\text{k} = 6.87" style="display:inline;padding:1px 6px">250^2/9.1\text{k} = 6.87</span>
+<p> W，是额定的 2.3 倍 |</p>
+<p><strong>正解：串 5 颗 = 45.5 kΩ</strong></p>
+<table>
+<thead>
+<tr>
+<th>量</th>
+<th>5 × 9.1 kΩ</th>
+<th>标称 47 kΩ</th>
+<th>差</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>总阻值</td>
+<td>45.5 kΩ</td>
+<td>47 kΩ</td>
+<td>−3.2%（在 5% 精度内）</td>
+</tr>
+<tr>
+<td>τ / 周期÷τ</td>
+<td>455 µs / 21.5τ</td>
+<td>470 µs / 20.8τ</td>
+<td>充得更足</td>
+</tr>
+<tr>
+<td>淬灭电流</td>
+<td>4.40 mA</td>
+<td>4.26 mA</td>
+<td>+3%</td>
+</tr>
+<tr>
+<td>验源压降</td>
+<td><strong>9.73 V</strong></td>
+<td>10.05 V</td>
+<td>−3%</td>
+</tr>
+<tr>
+<td>每颗故障功率</td>
+<td><strong>0.176 W</strong>（3W 额度的 5.9%）</td>
+<td>0.851 W（1/4W 额度的 340%）</td>
+<td>每颗几乎不发热</td>
+</tr>
+</tbody></table>
+<p><strong>串联的第二层收益（容易被忽略）</strong>：3 W 件多为线绕 / 水泥结构，200 V 脉冲下<strong>匝间电压可能超过绝缘能力而击穿短路</strong>——一旦击穿，47 kΩ 就变成 0 Ω，T 节点直接怼到 200 V，储能电容和 ZTX415 当场一起完蛋。串 5 颗后每颗只跨 40 V，匝间应力降到 1/5。</p>
+<p><strong>只有 1~2 颗时</strong>：9.1 k + 3 × 10 k + 8.2 k = <strong>47.3 kΩ</strong>（判据 10.11 V，与标称最接近）；或 2 × 9.1 k + 2 × 10 k + 8.2 k = 45.4 kΩ。凑完用 <code>python tools/calc_params.py --set R_chg=47300</code> 复核。</p>
 <blockquote>
 <p><strong>「47 kΩ / 3 W」这个规格里的 3 W 是故障余量，不是功率需求</strong>：正常功耗只有 2.1 mW；3 W 水泥/金属氧化膜件的真正价值是<strong>故障态不烧断</strong>（T 短路或管子自持时，0.85 W 持续灌进一颗 1/4 W 电阻，它会发热、漂移、最终烧开路——把「信号弱」变成「彻底不工作」）。4 颗 1/4 W 串联同样能兜住这个工况，且每颗故障功率 0.21 W 在额定内。</p>
 </blockquote>

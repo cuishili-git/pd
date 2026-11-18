@@ -523,8 +523,9 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 <p><strong>零采购方案（今天就能开工）</strong>：</p>
 <ul>
 <li>47 kΩ 位 → <strong>4 颗 12 kΩ 串联 = 48 kΩ</strong>（+2.1%）。正常每颗只跨 2.56 V；即使 T 节点被短路，故障电流 4.2 mA 下每颗也只有 <strong>0.21 W</strong>，全在 1/4 W 额定内。</li>
+<li>47 kΩ 位（<strong>手头有 9.1 kΩ / 3 W 时</strong>）→ <strong>串 5 颗 = 45.5 kΩ</strong>。总阻值只差标称 −3.2%，淬灭电流 4.40 mA、验源压降 9.73 V（与 47 kΩ 几乎一样），每颗故障功率仅 0.176 W（3 W 额度的 5.9%），<strong>比 4×12 kΩ 更抗故障</strong>。⚠ 单颗 9.1 kΩ 不行：淬灭电流飙到 21.98 mA、验源判据塌到 2.02 V、故障功率 4.40 W 超 3 W 额定。</li>
 <li>10 MΩ 位 → <strong>2 颗 5.1 MΩ 串联 = 10.2 MΩ</strong>（+2%）。每颗分压 95 V、功耗 2 mW。</li>
-<li>τ 从 470 µs 变 480 µs，5τ 从 2.35 ms 变 2.4 ms，周期/τ = 20.4τ 仍充得满，<strong>验源判据从 10.05 V 变 10.25 V，基本不动</strong>。</li>
+<li>τ 从 470 µs 变 480 µs（9.1k×5 则是 455 µs），5τ 从 2.35 ms 变 2.4 ms，周期/τ = 20.4τ 仍充得满，<strong>验源判据基本不动</strong>。</li>
 <li>串联件架空焊在洞洞板上、逐颗套热缩管；串得长反而拉大爬电距离，是好事。</li>
 </ul>
 <p><strong>为什么必须 4 颗而不是 2 颗</strong>：等值 N 颗串联时，故障工况每颗功率 = 851 mW / N——3×15 kΩ 每颗 296 mW（略超），2×22 kΩ 每颗 455 mW（明显超），只有 N≥4 才压得住。</p>
