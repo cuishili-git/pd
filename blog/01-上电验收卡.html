@@ -96,8 +96,9 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 硬件版本：ZTX415 + 45–390V 模块（<strong>200V 起步，250V 封顶</strong>）+ 12V 适配器 + 10nF/1kV + NE555 ≈100Hz（Ct=104）
 配套（看图顺序）：</p>
 <ol>
-<li><strong><code>ZTX415_雪崩级接线图_单张版.png</code> / <code>.svg</code></strong> —— <strong>先看这张</strong>，一张图把 ZTX415 与周边全部元件、C/B/E 脚位、高压数值画全，零交叉，照着接即可。</li>
-<li><strong><code>雪崩源_完整接线图_100Hz.png</code> / <code>.svg</code> / <code>_预览.html</code></strong> —— <strong>整机接线主图</strong>：NE555 逐脚（Ct=104）、12V 供电分配、高压充电级、ZTX415、输出、共地，按 100Hz 版重画。焊接照这张。</li>
+<li><strong><code>雪崩源_完整接线图_模块版.svg</code> / <code>_预览.html</code></strong> —— ⭐ <strong>施工依据图（2026-11-18 新增）</strong>：按<strong>你实际用的 NE555 集成模块</strong>画的三线接法（VCC / GND / OUT），47 kΩ 位画成 5×9.1 kΩ/3 W 串联、10 MΩ 位画成 2×5.1 MΩ 串联，含模块两大坑提示与共地说明。<strong>焊接照这张。</strong></li>
+<li><strong><code>ZTX415_雪崩级接线图_单张版.png</code> / <code>.svg</code></strong> —— <strong>雪崩级单张图</strong>：ZTX415 与周边全部元件、C/B/E 脚位、高压数值画全，零交叉，装管那一步照着接。</li>
+<li><strong><code>雪崩源_完整接线图_100Hz.png</code> / <code>.svg</code> / <code>_预览.html</code></strong> —— <strong>整机接线主图（分立 NE555 版）</strong>：NE555 逐脚（Ct=104）、12V 供电分配、高压充电级、ZTX415、输出、共地，按 100Hz 版重画。用分立芯片时才看这张。</li>
 <li><code>雪崩脉冲源接线图_V0终版.png</code> —— 同上内容的旧文件名，参数已同步为 100Hz，留作备份。</li>
 <li><code>ZTX415_引脚与接线专图.png</code> —— 脚位详细说明与参数表，脚位拿不准时再翻。</li>
 <li><code>局放信号模拟源子项目.md</code> 9.4 —— 清单与原理。

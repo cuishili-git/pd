@@ -113,8 +113,13 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 </tr>
 <tr>
 <td>②</td>
+<td><a href="../docs/figures/雪崩源_完整接线图_模块版.svg"><code>figures/雪崩源_完整接线图_模块版.svg</code></a></td>
+<td>⭐ <strong>施工依据图（NE555 集成模块版）</strong>，照着焊；<a href="../docs/figures/雪崩源_完整接线图_模块版_预览.html">网页版</a> 可无损缩放</td>
+</tr>
+<tr>
+<td>②′</td>
 <td><a href="../docs/figures/雪崩源_完整接线图_100Hz.png"><code>figures/雪崩源_完整接线图_100Hz.png</code></a></td>
-<td><strong>整机接线主图</strong>，照着焊；<a href="../docs/figures/雪崩源_完整接线图_预览.html">网页版</a> 可缩放</td>
+<td>整机接线主图（<strong>分立 NE555 版</strong>），只有用分立芯片才看这张；<a href="../docs/figures/雪崩源_完整接线图_预览.html">网页版</a> 可缩放</td>
 </tr>
 <tr>
 <td>③</td>
@@ -299,7 +304,14 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 <p><strong>最容易记错的一点</strong>：47 kΩ 上游接着电源，<strong>它不泄放、也不放电</strong>。真正把 10 nF 放空的是雪崩管 + 50 Ω 这条低阻通路。47 kΩ 的全部作用是「电源还在，但只准它以 4.3 mA 慢慢灌」，这样电容放空后电流跌破维持电流，管子才关得掉。这个机制叫<strong>限流淬灭（resistive quenching）</strong>，盖革管、SPAD 都是同一招。</p>
 <hr>
 <h2 id="2-一张图看懂整条电路">2. 一张图看懂整条电路</h2>
+<p>⭐ <strong>下面这张是施工依据</strong>（2026-11-18 版，按你实际用的 NE555 集成模块画的三线接法）：</p>
+<p><img src="../docs/figures/雪崩源_完整接线图_模块版.svg" alt="完整接线图（模块版）"></p>
+<details>
+<summary>展开：分立 NE555 芯片版总图（只有用分立芯片才需要）</summary>
+
 <p><img src="../docs/figures/雪崩源_完整接线图_100Hz.png" alt="完整接线图"></p>
+</details>
+
 <p>颜色约定（三张图一致）：<strong>红 = 高压</strong> · <strong>橙 = 12 V</strong> · <strong>紫 = 触发</strong> · <strong>绿 = 输出</strong> · <strong>灰 = GND</strong>。实心圆点 = 相连；全图零交叉，不用再记「交叉无圆点 = 不连」。</p>
 <blockquote>
 <p><strong>看不懂这张总图？直接翻 <a href="05-电路图图文讲解.html"><code>05-电路图图文讲解.md</code></a></strong>：它把整机拆成「低压触发链 / 高压充电级 / 雪崩输出级」三张局部图，逐根线讲从哪来、到哪去、参数怎么算、实物怎么焊，还给了充电波形和微分尖峰曲线。</p>

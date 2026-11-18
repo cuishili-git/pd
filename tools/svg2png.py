@@ -8,6 +8,7 @@
 黑填充/无描边。这里先把 SVG 包进一个定义了同名变量的 HTML，再用 Edge headless
 截图，得到任何看图软件都能正常显示的 PNG。原 SVG 文件不做任何修改。
 """
+import os
 import pathlib
 import re
 import subprocess
@@ -49,18 +50,22 @@ def main():
             + '</head><body>' + svg + '</body></html>')
     tmp = src.parent / ("_" + src.stem + "_render.html")
     tmp.write_text(html, encoding="utf-8")
+    # Edge 的 --screenshot / --user-data-dir 参数在 Windows 上必须用正斜杠，
+    # 反斜杠会被当成转义字符导致静默不落盘。
+    udir = f"{tempfile.gettempdir().replace(chr(92), '/')}/wb_svg_render_{os.getpid()}"
     try:
         subprocess.run([
             EDGE,
             "--headless=new",
             "--disable-gpu",
+            "--no-sandbox",
             "--hide-scrollbars",
             "--no-first-run",
             "--disable-extensions",
-            f"--user-data-dir={tempfile.gettempdir()}/wb_svg_render",
-            f"--screenshot={dst}",
+            f"--user-data-dir={udir}",
+            f"--screenshot={dst.as_posix()}",
             f"--window-size={W},{H}",
-            "--virtual-time-budget=1500",
+            "--virtual-time-budget=2500",
             tmp.as_uri(),
         ], check=True, timeout=90)
     finally:
