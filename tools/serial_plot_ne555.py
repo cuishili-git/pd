@@ -36,7 +36,11 @@ except ImportError:
 
 try:
     import matplotlib
-    matplotlib.use("TkAgg")
+    try:
+        import PyQt6  # noqa: F401  探测 PyQt6 是否可用
+        matplotlib.use("QtAgg")   # 优先 Qt 后端：venv 里有 PyQt6，不依赖 tkinter
+    except ImportError:
+        matplotlib.use("TkAgg")   # 系统 Python 带 tkinter 时走这条
     import matplotlib.pyplot as plt
 except ImportError:
     sys.exit("缺少 matplotlib，请先运行：python -m pip install pyserial matplotlib")
